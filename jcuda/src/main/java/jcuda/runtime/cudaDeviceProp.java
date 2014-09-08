@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -290,7 +290,7 @@ public class cudaDeviceProp
     public int pciDomainID;
     
     /**
-     *  1 if device is a Tesla device using TCC jcuda.driver, 0 otherwise
+     *  1 if device is a Tesla device using TCC driver, 0 otherwise
      */
     public int    tccDriver;
     

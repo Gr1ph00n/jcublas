@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -50,12 +50,12 @@ public class cudaLimit
     public static final int cudaLimitMallocHeapSize = 0x02;
     
     /**
-     * GPU device jcuda.runtime synchronize depth
+     * GPU device runtime synchronize depth
      */
     public static final int cudaLimitDevRuntimeSyncDepth          = 0x03;
     
     /**
-     * GPU device jcuda.runtime pending launch count
+     * GPU device runtime pending launch count 
      */
     public static final int cudaLimitDevRuntimePendingLaunchCount = 0x04;
     

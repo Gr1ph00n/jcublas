@@ -27,7 +27,7 @@
  */
 package jcuda.jcublas;
 
-import jcuda.NativePointerObject;
+import jcuda.*;
 
 /**
  * Java port of a cublasHandle

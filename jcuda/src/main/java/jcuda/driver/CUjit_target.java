@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -83,11 +83,6 @@ public class CUjit_target
     public static final int CU_TARGET_COMPUTE_35 = 35;
     
     /**
-     * Compute device class 3.7 
-     */
-    public static final int CU_TARGET_COMPUTE_37 = 37;
-    
-    /**
      * Compute device class 5.0 
      */
     public static final int CU_TARGET_COMPUTE_50 = 50;
@@ -111,7 +106,6 @@ public class CUjit_target
             case CU_TARGET_COMPUTE_30: return "CU_TARGET_COMPUTE_30";
             case CU_TARGET_COMPUTE_32: return "CU_TARGET_COMPUTE_32";
             case CU_TARGET_COMPUTE_35: return "CU_TARGET_COMPUTE_35";
-            case CU_TARGET_COMPUTE_37: return "CU_TARGET_COMPUTE_37";
             case CU_TARGET_COMPUTE_50: return "CU_TARGET_COMPUTE_50";
         }
         return "INVALID CUjit_target: "+n;

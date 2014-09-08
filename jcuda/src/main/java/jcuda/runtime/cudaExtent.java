@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -67,20 +67,6 @@ public class cudaExtent
      * @param depth The depth of the cudaExtent
      */
     public cudaExtent(int width, int height, int depth)
-    {
-        this.width = width;
-        this.height = height;
-        this.depth = depth;
-    }
-
-    /**
-     * Creates a new cudaExtent with the given sizes
-     *
-     * @param width The width of the cudaExtent
-     * @param height The height of the cudaExtent
-     * @param depth The depth of the cudaExtent
-     */
-    public cudaExtent(long width, long height, long depth)
     {
         this.width = width;
         this.height = height;

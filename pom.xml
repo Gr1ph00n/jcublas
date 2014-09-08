@@ -4,7 +4,7 @@
 
     <groupId>org.nd4j</groupId>
     <artifactId>jcuda-parent</artifactId>
-    <version>6.6-SNAPSHOT</version>
+    <version>6.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -103,7 +103,8 @@
         <connection>scm:git:git@github.com:SkymindIO/jcublas.git</connection>
         <developerConnection>scm:git:git@github.com:SkymindIO/jcublas.git</developerConnection>
         <url>git@github.com:SkymindIO/jcublas.git</url>
-    </scm>
+      <tag>HEAD</tag>
+  </scm>
 
 
 
@@ -172,7 +173,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.1</version>
+                    <version>2.3.2</version>
                     <configuration>
                         <mavenExecutorId>forked-path</mavenExecutorId>
                         <arguments> -Psonatype-oss-release</arguments>

@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -54,13 +54,13 @@ public class CUresult
     public static final int CUDA_ERROR_OUT_OF_MEMORY                  = 2;
 
     /**
-     * This indicates that the CUDA jcuda.driver has not been initialized with
+     * This indicates that the CUDA driver has not been initialized with
      * ::cuInit() or that initialization has failed.
      */
     public static final int CUDA_ERROR_NOT_INITIALIZED                = 3;
 
     /**
-     * This indicates that the CUDA jcuda.driver is in the process of shutting down.
+     * This indicates that the CUDA driver is in the process of shutting down.
      */
     public static final int CUDA_ERROR_DEINITIALIZED                  = 4;
 
@@ -100,7 +100,7 @@ public class CUresult
 
     /**
      * This indicates that no CUDA-capable devices were detected by the installed
-     * CUDA jcuda.driver.
+     * CUDA driver.
      */
     public static final int CUDA_ERROR_NO_DEVICE                      = 100;
 
@@ -216,11 +216,6 @@ public class CUresult
      * This indicates that a PTX JIT compilation failed.
      */
     public static final int CUDA_ERROR_INVALID_PTX                    = 218;
-    
-    /**
-     * This indicates an error with OpenGL or DirectX context.
-     */
-    public static final int CUDA_ERROR_INVALID_GRAPHICS_CONTEXT       = 219;
     
     /**
      * This indicates that the device kernel source is invalid.
@@ -492,7 +487,6 @@ public class CUresult
             case CUDA_ERROR_CONTEXT_ALREADY_IN_USE         : return "CUDA_ERROR_CONTEXT_ALREADY_IN_USE";
             case CUDA_ERROR_PEER_ACCESS_UNSUPPORTED        : return "CUDA_ERROR_PEER_ACCESS_UNSUPPORTED";
             case CUDA_ERROR_INVALID_PTX                    : return "CUDA_ERROR_INVALID_PTX";
-            case CUDA_ERROR_INVALID_GRAPHICS_CONTEXT       : return "CUDA_ERROR_INVALID_GRAPHICS_CONTEXT";
             case CUDA_ERROR_INVALID_SOURCE                 : return "CUDA_ERROR_INVALID_SOURCE";
             case CUDA_ERROR_FILE_NOT_FOUND                 : return "CUDA_ERROR_FILE_NOT_FOUND";
             case CUDA_ERROR_SHARED_OBJECT_SYMBOL_NOT_FOUND : return "CUDA_ERROR_SHARED_OBJECT_SYMBOL_NOT_FOUND";

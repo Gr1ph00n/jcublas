@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -54,7 +54,7 @@ public class cudaError
     public static final int cudaErrorMemoryAllocation             =      2;
 
     /**
-     * The API call failed because the CUDA jcuda.driver and jcuda.runtime could not be
+     * The API call failed because the CUDA driver and runtime could not be
      * initialized.
      */
     public static final int cudaErrorInitializationError          =      3;
@@ -187,7 +187,7 @@ public class cudaError
      * which was forbidden up until the CUDA 3.1 release.
      * @deprecated
      * This error return is deprecated as of CUDA 3.1. Variables in constant
-     * memory may now have their address taken by the jcuda.runtime via
+     * memory may now have their address taken by the runtime via
      * {@link JCuda#cudaGetSymbolAddress}.
      */
     public static final int cudaErrorAddressOfConstant            =     22;
@@ -242,7 +242,7 @@ public class cudaError
     /**
      * This indicates that a CUDA Runtime API call cannot be executed because
      * it is being called during process shut down, at a point in time after
-     * CUDA jcuda.driver has been unloaded.
+     * CUDA driver has been unloaded.
      */
     public static final int cudaErrorCudartUnloading              =     29;
 
@@ -283,9 +283,9 @@ public class cudaError
     public static final int cudaErrorNotReady                     =     34;
 
     /**
-     * This indicates that the installed NVIDIA CUDA jcuda.driver is older than the
-     * CUDA jcuda.runtime library. This is not a supported configuration. Users should
-     * install an updated NVIDIA display jcuda.driver to allow the application to run.
+     * This indicates that the installed NVIDIA CUDA driver is older than the
+     * CUDA runtime library. This is not a supported configuration. Users should
+     * install an updated NVIDIA display driver to allow the application to run.
      */
     public static final int cudaErrorInsufficientDriver           =     35;
 
@@ -293,10 +293,10 @@ public class cudaError
      * This indicates that the user has called 
      * {@link JCuda#cudaSetValidDevices(int[], int)},
      * {@link JCuda#cudaSetDeviceFlags(int)},
-     * after initializing the CUDA jcuda.runtime by
+     * after initializing the CUDA runtime by
      * calling non-device management operations (allocating memory and
      * launching kernels are examples of non-device management operations).
-     * This error can also be returned if using jcuda.runtime/jcuda.driver
+     * This error can also be returned if using runtime/driver
      * interoperability and there is an existing {@link CUcontext} 
      * active on the host thread.
      */
@@ -310,7 +310,7 @@ public class cudaError
 
     /**
      * This indicates that no CUDA-capable devices were detected by the installed
-     * CUDA jcuda.driver.
+     * CUDA driver.
      */
     public static final int cudaErrorNoDevice                     =     38;
 
@@ -381,9 +381,9 @@ public class cudaError
      * This indicates that the current context is not compatible with this
      * the CUDA Runtime. This can only occur if you are using CUDA
      * Runtime/Driver interoperability and have created an existing Driver
-     * context using the jcuda.driver API. The Driver context may be incompatible
+     * context using the driver API. The Driver context may be incompatible
      * either because the Driver context was created using an older version 
-     * of the API, because the Runtime API call expects a primary jcuda.driver
+     * of the API, because the Runtime API call expects a primary driver 
      * contextand the Driver context is not primary, or because the Driver 
      * context has been destroyed. Please see \ref CUDART_DRIVER "Interactions 
      * with the CUDA Driver API" for more information.
@@ -413,7 +413,7 @@ public class cudaError
     public static final int cudaErrorDeviceAlreadyInUse           =     54;
 
     /**
-     * This indicates profiler has been disabled for this run and thus jcuda.runtime
+     * This indicates profiler has been disabled for this run and thus runtime 
      * APIs cannot be used to profile subsets of the program. This can 
      * happen when the application is running with external profiling tools
      * like visual profiler.
@@ -494,7 +494,7 @@ public class cudaError
     public static final int cudaErrorPeerAccessUnsupported        =     64;
 
     /**
-     * This error indicates that a device jcuda.runtime grid launch did not occur
+     * This error indicates that a device runtime grid launch did not occur 
      * because the depth of the child grid would exceed the maximum supported
      * number of nested grid launches. 
      */
@@ -502,43 +502,43 @@ public class cudaError
 
     /**
      * This error indicates that a grid launch did not occur because the kernel 
-     * uses file-scoped textures which are unsupported by the device jcuda.runtime.
-     * Kernels launched via the device jcuda.runtime only support textures created with
+     * uses file-scoped textures which are unsupported by the device runtime. 
+     * Kernels launched via the device runtime only support textures created with 
      * the Texture Object API's.
      */
     public static final int cudaErrorLaunchFileScopedTex          =     66;
 
     /**
      * This error indicates that a grid launch did not occur because the kernel 
-     * uses file-scoped surfaces which are unsupported by the device jcuda.runtime.
-     * Kernels launched via the device jcuda.runtime only support surfaces created with
+     * uses file-scoped surfaces which are unsupported by the device runtime.
+     * Kernels launched via the device runtime only support surfaces created with
      * the Surface Object API's.
      */
     public static final int cudaErrorLaunchFileScopedSurf         =     67;
 
     /**
      * This error indicates that a call to ::cudaDeviceSynchronize made from
-     * the device jcuda.runtime failed because the call was made at grid depth greater
+     * the device runtime failed because the call was made at grid depth greater
      * than than either the default (2 levels of grids) or user specified device 
      * limit ::cudaLimitDevRuntimeSyncDepth. To be able to synchronize on 
      * launched grids at a greater depth successfully, the maximum nested 
      * depth at which ::cudaDeviceSynchronize will be called must be specified 
      * with the ::cudaLimitDevRuntimeSyncDepth limit to the ::cudaDeviceSetLimit
-     * api before the host-side launch of a kernel using the device jcuda.runtime.
-     * Keep in mind that additional levels of sync depth require the jcuda.runtime
+     * api before the host-side launch of a kernel using the device runtime. 
+     * Keep in mind that additional levels of sync depth require the runtime 
      * to reserve large amounts of device memory that cannot be used for 
      * user allocations.
      */
     public static final int cudaErrorSyncDepthExceeded            =     68;
 
     /**
-     * This error indicates that a device jcuda.runtime grid launch failed because
+     * This error indicates that a device runtime grid launch failed because
      * the launch would exceed the limit ::cudaLimitDevRuntimePendingLaunchCount.
      * For this launch to proceed successfully, ::cudaDeviceSetLimit must be
      * called to set the ::cudaLimitDevRuntimePendingLaunchCount to be higher 
      * than the upper bound of outstanding launches that can be issued to the
-     * device jcuda.runtime. Keep in mind that raising the limit of pending device
-     * jcuda.runtime launches will require the jcuda.runtime to reserve device memory that
+     * device runtime. Keep in mind that raising the limit of pending device
+     * runtime launches will require the runtime to reserve device memory that
      * cannot be used for user allocations.
      */
     public static final int cudaErrorLaunchPendingCountExceeded   =     69;
@@ -614,26 +614,15 @@ public class cudaError
      */
     public static final int cudaErrorIllegalAddress               =     77;
     
-    /**
-     * A PTX compilation failed. The jcuda.runtime may fall back to compiling PTX if
-     * an application does not contain a suitable binary for the current device.
-     */
-    public static final int cudaErrorInvalidPtx                   =     78;
-
-    /**
-     * This indicates an error with the OpenGL or DirectX context.
-     */
-    public static final int cudaErrorInvalidGraphicsContext       =     79;
-    
     
     /**
-     * This indicates an internal startup failure in the CUDA jcuda.runtime.
+     * This indicates an internal startup failure in the CUDA runtime.
      */
     public static final int cudaErrorStartupFailure               =   0x7f;
 
     /**
-     * Any unhandled CUDA jcuda.driver error is added to this value and returned via
-     * the jcuda.runtime. Production releases of CUDA should not return such errors.
+     * Any unhandled CUDA driver error is added to this value and returned via
+     * the runtime. Production releases of CUDA should not return such errors.
      * @deprecated This error return is deprecated as of CUDA 4.1.
      */
     public static final int cudaErrorApiFailureBase               =  10000;
@@ -729,8 +718,6 @@ public class cudaError
             case cudaErrorInvalidAddressSpace          : return "cudaErrorInvalidAddressSpace";
             case cudaErrorInvalidPc                    : return "cudaErrorInvalidPc";
             case cudaErrorIllegalAddress               : return "cudaErrorIllegalAddress";
-            case cudaErrorInvalidPtx                   : return "cudaErrorInvalidPtx";
-            case cudaErrorInvalidGraphicsContext       : return "cudaErrorInvalidGraphicsContext";
             case cudaErrorStartupFailure               : return "cudaErrorStartupFailure";
             case jcudaInternalError                    : return "jcudaInternalError";
         }

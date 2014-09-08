@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -203,7 +203,7 @@ public class cudaDeviceAttr
     public static final int cudaDevAttrPciDeviceId                    = 34; 
     
     /**
-     * Device is using TCC jcuda.driver model
+     * Device is using TCC driver model 
      */
     public static final int cudaDevAttrTccDriver                      = 35; 
     

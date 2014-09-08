@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -46,7 +46,7 @@ public class CUfunction_attribute
     /**
      * The size in bytes of statically-allocated shared memory required by
      * this function. This does not include dynamically-allocated shared
-     * memory requested by the user at jcuda.runtime.
+     * memory requested by the user at runtime.
      */
     public static final int CU_FUNC_ATTRIBUTE_SHARED_SIZE_BYTES = 1;
 
