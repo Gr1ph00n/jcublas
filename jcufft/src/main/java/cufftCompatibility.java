@@ -43,7 +43,9 @@ package jcuda.jcufft;
 public class cufftCompatibility
 {
     /**
-     * Disable any FFTW compatibility mode. 
+     * Disable any FFTW compatibility mode.
+     * 
+     * @deprecated as of CUDA 6.0RC
      */
     public static final int CUFFT_COMPATIBILITY_NATIVE          = 0x00;
     

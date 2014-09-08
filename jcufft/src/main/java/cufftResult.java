@@ -59,7 +59,7 @@ public class cufftResult
     public static final int CUFFT_INVALID_VALUE = 4;
     
     /**
-     * Used for all internal jcuda.driver errors.
+     * Used for all internal jcuda.jcublas.driver errors.
      */
     public static final int CUFFT_INTERNAL_ERROR = 5;
     

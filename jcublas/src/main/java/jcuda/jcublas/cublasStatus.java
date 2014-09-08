@@ -62,6 +62,9 @@ public class cublasStatus
     /** An internal CUBLAS operation failed */
     public static final int CUBLAS_STATUS_INTERNAL_ERROR   = 0x0000000E;
 
+    /** The functionality requested is not supported. */
+    public static final int CUBLAS_STATUS_NOT_SUPPORTED    = 0x0000000F;
+    
     /** JCublas status returns */
     public static final int JCUBLAS_STATUS_INTERNAL_ERROR      = 0x10000001;
 
@@ -83,6 +86,7 @@ public class cublasStatus
             case CUBLAS_STATUS_MAPPING_ERROR    : return "CUBLAS_STATUS_MAPPING_ERROR";
             case CUBLAS_STATUS_EXECUTION_FAILED : return "CUBLAS_STATUS_EXECUTION_FAILED";
             case CUBLAS_STATUS_INTERNAL_ERROR   : return "CUBLAS_STATUS_INTERNAL_ERROR";
+            case CUBLAS_STATUS_NOT_SUPPORTED   : return "CUBLAS_STATUS_NOT_SUPPORTED";
             case JCUBLAS_STATUS_INTERNAL_ERROR  : return "JCUBLAS_STATUS_INTERNAL_ERROR";
         }
         return "INVALID cublasStatus: "+n;

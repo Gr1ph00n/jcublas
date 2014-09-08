@@ -6,7 +6,7 @@
 
     <groupId>org.nd4j</groupId>
     <artifactId>jcuda-parent</artifactId>
-    <version>5.5</version>
+    <version>6.0</version>
 
     <packaging>pom</packaging>
 
@@ -115,7 +115,6 @@
         <module>jcuda</module>
         <module>jcufft</module>
         <module>jcurand</module>
-        <module>jcusparse2</module>
         <module>jcusparse</module>
     </modules>
 

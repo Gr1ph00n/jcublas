@@ -5467,6 +5467,162 @@ public class JCublas2
         int incx, 
         Pointer C, 
         int ldc);
+    
+    
+    
+    
+    
+    public static int cublasStpttr(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda)
+    {
+        return checkResult(cublasStpttrNative(handle, uplo, n, AP, A, lda));
+    }
+    private static native int cublasStpttrNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda);
+
+
+    public static int cublasDtpttr(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda)
+    {
+        return checkResult(cublasDtpttrNative(handle, uplo, n, AP, A, lda));
+    }
+    private static native int cublasDtpttrNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda);
+
+
+    public static int cublasCtpttr(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda)
+    {
+        return checkResult(cublasCtpttrNative(handle, uplo, n, AP, A, lda));
+    }
+    private static native int cublasCtpttrNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda);
+
+
+    public static int cublasZtpttr(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda)
+    {
+        return checkResult(cublasZtpttrNative(handle, uplo, n, AP, A, lda));
+    }
+    private static native int cublasZtpttrNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda);
+
+
+    public static int cublasStrttp(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP)
+    {
+        return checkResult(cublasStrttpNative(handle, uplo, n, A, lda, AP));
+    }
+    private static native int cublasStrttpNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP);
+
+
+    public static int cublasDtrttp(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP)
+    {
+        return checkResult(cublasDtrttpNative(handle, uplo, n, A, lda, AP));
+    }
+    private static native int cublasDtrttpNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP);
+
+
+    public static int cublasCtrttp(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP)
+    {
+        return checkResult(cublasCtrttpNative(handle, uplo, n, A, lda, AP));
+    }
+    private static native int cublasCtrttpNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP);
+
+
+    public static int cublasZtrttp(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP)
+    {
+        return checkResult(cublasZtrttpNative(handle, uplo, n, A, lda, AP));
+    }
+    private static native int cublasZtrttpNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP);
+    
 
 }
 

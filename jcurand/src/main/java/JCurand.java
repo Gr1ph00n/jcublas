@@ -148,6 +148,7 @@ public class JCurand
      * - CURAND_RNG_PSEUDO_XORWOW 
      * - CURAND_RNG_PSEUDO_MRG32K3A
      * - CURAND_RNG_PSEUDO_MTGP32
+     * - CURAND_RNG_PSEUDO_MT19937
      * - CURAND_RNG_PSEUDO_PHILOX4_32_10
      * - CURAND_RNG_QUASI_DEFAULT
      * - CURAND_RNG_QUASI_SOBOL32
@@ -171,6 +172,11 @@ public class JCurand
      * - ordering = CURAND_ORDERING_PSEUDO_DEFAULT
      *
      * The default values for rng_type = CURAND_RNG_PSEUDO_MTGP32 are:
+     * - seed = 0
+     * - offset = 0
+     * - ordering = CURAND_ORDERING_PSEUDO_DEFAULT
+     * 
+     * The default values for \p rng_type = CURAND_RNG_PSEUDO_MT19937 are:
      * - seed = 0
      * - offset = 0
      * - ordering = CURAND_ORDERING_PSEUDO_DEFAULT
@@ -231,6 +237,7 @@ public class JCurand
      * - CURAND_RNG_PSEUDO_XORWOW 
      * - CURAND_RNG_PSEUDO_MRG32K3A
      * - CURAND_RNG_PSEUDO_MTGP32
+     * - CURAND_RNG_PSEUDO_MT19937
      * - CURAND_RNG_PSEUDO_PHILOX4_32_10
      * - CURAND_RNG_QUASI_DEFAULT
      * - CURAND_RNG_QUASI_SOBOL32
@@ -251,6 +258,11 @@ public class JCurand
      * - ordering = CURAND_ORDERING_PSEUDO_DEFAULT
      *
      * The default values for rng_type = CURAND_RNG_PSEUDO_MTGP32 are:
+     * - seed = 0
+     * - offset = 0
+     * - ordering = CURAND_ORDERING_PSEUDO_DEFAULT
+     * 
+     * The default values for \p rng_type = CURAND_RNG_PSEUDO_MT19937 are:
      * - seed = 0
      * - offset = 0
      * - ordering = CURAND_ORDERING_PSEUDO_DEFAULT
@@ -593,7 +605,7 @@ public class JCurand
      * CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason 
      * CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is
      *    not a multiple of the quasirandom dimension 
-     * CURAND_STATUS_ARCH_MISMATCH if the GPU does not support double precision 
+     * CURAND_STATUS_DOUBLE_PRECISION_REQUIRED if the GPU does not support double precision 
      * CURAND_STATUS_SUCCESS if the results were generated successfully 
      * </pre>
      */
@@ -696,7 +708,7 @@ public class JCurand
      * CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is
      *    not a multiple of the quasirandom dimension, or is not a multiple
      *    of two for pseudorandom generators 
-     * CURAND_STATUS_ARCH_MISMATCH if the GPU does not support double precision 
+     * CURAND_STATUS_DOUBLE_PRECISION_REQUIRED if the GPU does not support double precision 
      * CURAND_STATUS_SUCCESS if the results were generated successfully 
      * </pre>
      */
@@ -801,7 +813,7 @@ public class JCurand
      * CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is
      *    not a multiple of the quasirandom dimension, or is not a multiple
      *    of two for pseudorandom generators 
-     * CURAND_STATUS_ARCH_MISMATCH if the GPU does not support double precision 
+     * CURAND_STATUS_DOUBLE_PRECISION_REQUIRED if the GPU does not support double precision 
      * CURAND_STATUS_SUCCESS if the results were generated successfully 
      * </pre>
      */
@@ -827,7 +839,7 @@ public class JCurand
      *
      * @return
      * - CURAND_STATUS_ALLOCATION_FAILED if memory could not be allocated 
-     * - CURAND_STATUS_ARCH_MISMATCH if the GPU does not support double precision 
+     * - CURAND_STATUS_DOUBLE_PRECISION_REQUIRED if the GPU does not support double precision 
      * - CURAND_STATUS_INITIALIZATION_FAILED if there was a problem setting up the GPU 
      * - CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from
      *    a previous kernel launch 
@@ -891,7 +903,7 @@ public class JCurand
      * - CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason 
      * - CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is
      *    not a multiple of the quasirandom dimension
-     * - CURAND_STATUS_ARCH_MISMATCH if the GPU or sm does not support double precision 
+     * - CURAND_STATUS_DOUBLE_PRECISION_REQUIRED if the GPU or sm does not support double precision 
      * - CURAND_STATUS_OUT_OF_RANGE if lambda is non-positive or greater than 400,000 
      * - CURAND_STATUS_SUCCESS if the results were generated successfully 
      * </pre>
