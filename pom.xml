@@ -4,7 +4,7 @@
 
     <groupId>org.nd4j</groupId>
     <artifactId>jcuda-parent</artifactId>
-    <version>6.0</version>
+    <version>6.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -103,7 +103,7 @@
         <connection>scm:git:git@github.com:SkymindIO/jcublas.git</connection>
         <developerConnection>scm:git:git@github.com:SkymindIO/jcublas.git</developerConnection>
         <url>git@github.com:SkymindIO/jcublas.git</url>
-      <tag>jcuda-parent-6.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
 
