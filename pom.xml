@@ -4,7 +4,11 @@
 
     <groupId>org.nd4j</groupId>
     <artifactId>jcuda-parent</artifactId>
+<<<<<<< HEAD
     <version>5.6-SNAPSHOT</version>
+=======
+    <version>5.5</version>
+>>>>>>> parent of 30af46b... add snapshot
 
     <packaging>pom</packaging>
 
