@@ -325,6 +325,7 @@ public class JCusparse
         cusparseMatDescr descrA);
 
 
+    /** sparse triangular solve */
     public static int cusparseCreateSolveAnalysisInfo(
         cusparseSolveAnalysisInfo info)
     {
@@ -361,12 +362,12 @@ public class JCusparse
 
 
     public static int cusparseCreateCsrsv2Info(
-        csrsv2Info[] info)
+        csrsv2Info info)
     {
         return checkResult(cusparseCreateCsrsv2InfoNative(info));
     }
     private static native int cusparseCreateCsrsv2InfoNative(
-        csrsv2Info[] info);
+        csrsv2Info info);
 
 
     public static int cusparseDestroyCsrsv2Info(
@@ -378,14 +379,13 @@ public class JCusparse
         csrsv2Info info);
 
 
-    /** incomplete Cholesky */
     public static int cusparseCreateCsric02Info(
-        csric02Info[] info)
+        csric02Info info)
     {
         return checkResult(cusparseCreateCsric02InfoNative(info));
     }
     private static native int cusparseCreateCsric02InfoNative(
-        csric02Info[] info);
+        csric02Info info);
 
 
     public static int cusparseDestroyCsric02Info(
@@ -398,12 +398,12 @@ public class JCusparse
 
 
     public static int cusparseCreateBsric02Info(
-        bsric02Info[] info)
+        bsric02Info info)
     {
         return checkResult(cusparseCreateBsric02InfoNative(info));
     }
     private static native int cusparseCreateBsric02InfoNative(
-        bsric02Info[] info);
+        bsric02Info info);
 
 
     public static int cusparseDestroyBsric02Info(
@@ -417,12 +417,12 @@ public class JCusparse
 
     /** incomplete LU */
     public static int cusparseCreateCsrilu02Info(
-        csrilu02Info[] info)
+        csrilu02Info info)
     {
         return checkResult(cusparseCreateCsrilu02InfoNative(info));
     }
     private static native int cusparseCreateCsrilu02InfoNative(
-        csrilu02Info[] info);
+        csrilu02Info info);
 
 
     public static int cusparseDestroyCsrilu02Info(
@@ -435,12 +435,12 @@ public class JCusparse
 
 
     public static int cusparseCreateBsrilu02Info(
-        bsrilu02Info[] info)
+        bsrilu02Info info)
     {
         return checkResult(cusparseCreateBsrilu02InfoNative(info));
     }
     private static native int cusparseCreateBsrilu02InfoNative(
-        bsrilu02Info[] info);
+        bsrilu02Info info);
 
 
     public static int cusparseDestroyBsrilu02Info(
@@ -454,12 +454,12 @@ public class JCusparse
 
     /** BSR triangular solber */
     public static int cusparseCreateBsrsv2Info(
-        bsrsv2Info[] info)
+        bsrsv2Info info)
     {
         return checkResult(cusparseCreateBsrsv2InfoNative(info));
     }
     private static native int cusparseCreateBsrsv2InfoNative(
-        bsrsv2Info[] info);
+        bsrsv2Info info);
 
 
     public static int cusparseDestroyBsrsv2Info(
@@ -471,6 +471,25 @@ public class JCusparse
         bsrsv2Info info);
 
 
+    public static int cusparseCreateBsrsm2Info(
+        bsrsm2Info info)
+    {
+        return checkResult(cusparseCreateBsrsm2InfoNative(info));
+    }
+    private static native int cusparseCreateBsrsm2InfoNative(
+        bsrsm2Info info);
+
+
+    public static int cusparseDestroyBsrsm2Info(
+        bsrsm2Info info)
+    {
+        return checkResult(cusparseDestroyBsrsm2InfoNative(info));
+    }
+    private static native int cusparseDestroyBsrsm2InfoNative(
+        bsrsm2Info info);
+
+
+    /** hybrid (HYB) format */
     public static int cusparseCreateHybMat(
         cusparseHybMat hybA)
     {
@@ -575,6 +594,7 @@ public class JCusparse
         int idxBase);
 
 
+    /** Description: dot product of a sparse vector x and a dense vector y. */
     public static int cusparseSdoti(
         cusparseHandle handle, 
         int nnz, 
@@ -985,7 +1005,6 @@ public class JCusparse
         int idxBase);
 
 
-    /** --- Sparse Level 2 routines --- */
     /** Description: Matrix-vector multiplication  y = alpha * op(A) * x  + beta * y, 
        where A is a sparse matrix in CSR storage format, x and y are dense vectors. */
     public static int cusparseScsrmv(
@@ -1539,6 +1558,8 @@ public class JCusparse
         Pointer y);
 
 
+    /** Description: Solution of triangular linear system op(A) * y = alpha * x, 
+       where A is a sparse matrix in CSR storage format, x and y are dense vectors. */
     public static int cusparseScsrsv_analysis(
         cusparseHandle handle, 
         int transA, 
@@ -1781,9 +1802,9 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrsv2Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseScsrsv2_bufferSizeNative(handle, transA, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSize));
+        return checkResult(cusparseScsrsv2_bufferSizeNative(handle, transA, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSizeInBytes));
     }
     private static native int cusparseScsrsv2_bufferSizeNative(
         cusparseHandle handle, 
@@ -1795,7 +1816,7 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrsv2Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseDcsrsv2_bufferSize(
@@ -1808,9 +1829,9 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrsv2Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseDcsrsv2_bufferSizeNative(handle, transA, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSize));
+        return checkResult(cusparseDcsrsv2_bufferSizeNative(handle, transA, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSizeInBytes));
     }
     private static native int cusparseDcsrsv2_bufferSizeNative(
         cusparseHandle handle, 
@@ -1822,7 +1843,7 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrsv2Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseCcsrsv2_bufferSize(
@@ -1835,9 +1856,9 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrsv2Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseCcsrsv2_bufferSizeNative(handle, transA, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSize));
+        return checkResult(cusparseCcsrsv2_bufferSizeNative(handle, transA, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSizeInBytes));
     }
     private static native int cusparseCcsrsv2_bufferSizeNative(
         cusparseHandle handle, 
@@ -1849,7 +1870,7 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrsv2Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseZcsrsv2_bufferSize(
@@ -1862,9 +1883,9 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrsv2Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseZcsrsv2_bufferSizeNative(handle, transA, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSize));
+        return checkResult(cusparseZcsrsv2_bufferSizeNative(handle, transA, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSizeInBytes));
     }
     private static native int cusparseZcsrsv2_bufferSizeNative(
         cusparseHandle handle, 
@@ -1876,7 +1897,7 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrsv2Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseScsrsv2_analysis(
@@ -1890,7 +1911,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrsv2Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseScsrsv2_analysisNative(handle, transA, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -1905,7 +1926,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrsv2Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDcsrsv2_analysis(
@@ -1919,7 +1940,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrsv2Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDcsrsv2_analysisNative(handle, transA, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -1934,7 +1955,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrsv2Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCcsrsv2_analysis(
@@ -1948,7 +1969,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrsv2Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCcsrsv2_analysisNative(handle, transA, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -1963,7 +1984,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrsv2Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZcsrsv2_analysis(
@@ -1977,7 +1998,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrsv2Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZcsrsv2_analysisNative(handle, transA, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -1992,7 +2013,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrsv2Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseScsrsv2_solve(
@@ -2009,7 +2030,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseScsrsv2_solveNative(handle, transA, m, nnz, alpha, descra, csrValA, csrRowPtrA, csrColIndA, info, x, y, policy, pBuffer));
     }
@@ -2027,7 +2048,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDcsrsv2_solve(
@@ -2044,7 +2065,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDcsrsv2_solveNative(handle, transA, m, nnz, alpha, descra, csrValA, csrRowPtrA, csrColIndA, info, x, y, policy, pBuffer));
     }
@@ -2062,7 +2083,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCcsrsv2_solve(
@@ -2079,7 +2100,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCcsrsv2_solveNative(handle, transA, m, nnz, alpha, descra, csrValA, csrRowPtrA, csrColIndA, info, x, y, policy, pBuffer));
     }
@@ -2097,7 +2118,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZcsrsv2_solve(
@@ -2114,7 +2135,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZcsrsv2_solveNative(handle, transA, m, nnz, alpha, descra, csrValA, csrRowPtrA, csrColIndA, info, x, y, policy, pBuffer));
     }
@@ -2132,7 +2153,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseXbsrsv2_zeroPivot(
@@ -2160,9 +2181,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrsv2Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseSbsrsv2_bufferSizeNative(handle, dirA, transA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSize));
+        return checkResult(cusparseSbsrsv2_bufferSizeNative(handle, dirA, transA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSizeInBytes));
     }
     private static native int cusparseSbsrsv2_bufferSizeNative(
         cusparseHandle handle, 
@@ -2176,7 +2197,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrsv2Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseDbsrsv2_bufferSize(
@@ -2191,9 +2212,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrsv2Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseDbsrsv2_bufferSizeNative(handle, dirA, transA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSize));
+        return checkResult(cusparseDbsrsv2_bufferSizeNative(handle, dirA, transA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSizeInBytes));
     }
     private static native int cusparseDbsrsv2_bufferSizeNative(
         cusparseHandle handle, 
@@ -2207,7 +2228,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrsv2Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseCbsrsv2_bufferSize(
@@ -2222,9 +2243,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrsv2Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseCbsrsv2_bufferSizeNative(handle, dirA, transA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSize));
+        return checkResult(cusparseCbsrsv2_bufferSizeNative(handle, dirA, transA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSizeInBytes));
     }
     private static native int cusparseCbsrsv2_bufferSizeNative(
         cusparseHandle handle, 
@@ -2238,7 +2259,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrsv2Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseZbsrsv2_bufferSize(
@@ -2253,9 +2274,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrsv2Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseZbsrsv2_bufferSizeNative(handle, dirA, transA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSize));
+        return checkResult(cusparseZbsrsv2_bufferSizeNative(handle, dirA, transA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSizeInBytes));
     }
     private static native int cusparseZbsrsv2_bufferSizeNative(
         cusparseHandle handle, 
@@ -2269,7 +2290,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrsv2Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseSbsrsv2_analysis(
@@ -2285,7 +2306,7 @@ public class JCusparse
         int blockDim, 
         bsrsv2Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseSbsrsv2_analysisNative(handle, dirA, transA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -2302,7 +2323,7 @@ public class JCusparse
         int blockDim, 
         bsrsv2Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDbsrsv2_analysis(
@@ -2318,7 +2339,7 @@ public class JCusparse
         int blockDim, 
         bsrsv2Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDbsrsv2_analysisNative(handle, dirA, transA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -2335,7 +2356,7 @@ public class JCusparse
         int blockDim, 
         bsrsv2Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCbsrsv2_analysis(
@@ -2351,7 +2372,7 @@ public class JCusparse
         int blockDim, 
         bsrsv2Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCbsrsv2_analysisNative(handle, dirA, transA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -2368,7 +2389,7 @@ public class JCusparse
         int blockDim, 
         bsrsv2Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZbsrsv2_analysis(
@@ -2384,7 +2405,7 @@ public class JCusparse
         int blockDim, 
         bsrsv2Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZbsrsv2_analysisNative(handle, dirA, transA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -2401,7 +2422,7 @@ public class JCusparse
         int blockDim, 
         bsrsv2Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseSbsrsv2_solve(
@@ -2420,7 +2441,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseSbsrsv2_solveNative(handle, dirA, transA, mb, nnzb, alpha, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, x, y, policy, pBuffer));
     }
@@ -2440,7 +2461,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDbsrsv2_solve(
@@ -2459,7 +2480,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDbsrsv2_solveNative(handle, dirA, transA, mb, nnzb, alpha, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, x, y, policy, pBuffer));
     }
@@ -2479,7 +2500,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCbsrsv2_solve(
@@ -2498,7 +2519,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCbsrsv2_solveNative(handle, dirA, transA, mb, nnzb, alpha, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, x, y, policy, pBuffer));
     }
@@ -2518,7 +2539,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZbsrsv2_solve(
@@ -2537,7 +2558,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZbsrsv2_solveNative(handle, dirA, transA, mb, nnzb, alpha, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, x, y, policy, pBuffer));
     }
@@ -2557,7 +2578,7 @@ public class JCusparse
         Pointer x, 
         Pointer y, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     /** Description: Solution of triangular linear system op(A) * y = alpha * x, 
@@ -3288,6 +3309,675 @@ public class JCusparse
         int ldy);
 
 
+    public static int cusparseSbsrmm(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transB, 
+        int mb, 
+        int n, 
+        int kb, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrValA, 
+        Pointer bsrRowPtrA, 
+        Pointer bsrColIndA, 
+        int blockSize, 
+        Pointer B, 
+        int ldb, 
+        Pointer beta, 
+        Pointer C, 
+        int ldc)
+    {
+        return checkResult(cusparseSbsrmmNative(handle, dirA, transA, transB, mb, n, kb, nnzb, alpha, descrA, bsrValA, bsrRowPtrA, bsrColIndA, blockSize, B, ldb, beta, C, ldc));
+    }
+    private static native int cusparseSbsrmmNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transB, 
+        int mb, 
+        int n, 
+        int kb, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrValA, 
+        Pointer bsrRowPtrA, 
+        Pointer bsrColIndA, 
+        int blockSize, 
+        Pointer B, 
+        int ldb, 
+        Pointer beta, 
+        Pointer C, 
+        int ldc);
+
+
+    public static int cusparseDbsrmm(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transB, 
+        int mb, 
+        int n, 
+        int kb, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrValA, 
+        Pointer bsrRowPtrA, 
+        Pointer bsrColIndA, 
+        int blockSize, 
+        Pointer B, 
+        int ldb, 
+        Pointer beta, 
+        Pointer C, 
+        int ldc)
+    {
+        return checkResult(cusparseDbsrmmNative(handle, dirA, transA, transB, mb, n, kb, nnzb, alpha, descrA, bsrValA, bsrRowPtrA, bsrColIndA, blockSize, B, ldb, beta, C, ldc));
+    }
+    private static native int cusparseDbsrmmNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transB, 
+        int mb, 
+        int n, 
+        int kb, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrValA, 
+        Pointer bsrRowPtrA, 
+        Pointer bsrColIndA, 
+        int blockSize, 
+        Pointer B, 
+        int ldb, 
+        Pointer beta, 
+        Pointer C, 
+        int ldc);
+
+
+    public static int cusparseCbsrmm(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transB, 
+        int mb, 
+        int n, 
+        int kb, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrValA, 
+        Pointer bsrRowPtrA, 
+        Pointer bsrColIndA, 
+        int blockSize, 
+        Pointer B, 
+        int ldb, 
+        Pointer beta, 
+        Pointer C, 
+        int ldc)
+    {
+        return checkResult(cusparseCbsrmmNative(handle, dirA, transA, transB, mb, n, kb, nnzb, alpha, descrA, bsrValA, bsrRowPtrA, bsrColIndA, blockSize, B, ldb, beta, C, ldc));
+    }
+    private static native int cusparseCbsrmmNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transB, 
+        int mb, 
+        int n, 
+        int kb, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrValA, 
+        Pointer bsrRowPtrA, 
+        Pointer bsrColIndA, 
+        int blockSize, 
+        Pointer B, 
+        int ldb, 
+        Pointer beta, 
+        Pointer C, 
+        int ldc);
+
+
+    public static int cusparseZbsrmm(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transB, 
+        int mb, 
+        int n, 
+        int kb, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrValA, 
+        Pointer bsrRowPtrA, 
+        Pointer bsrColIndA, 
+        int blockSize, 
+        Pointer B, 
+        int ldb, 
+        Pointer beta, 
+        Pointer C, 
+        int ldc)
+    {
+        return checkResult(cusparseZbsrmmNative(handle, dirA, transA, transB, mb, n, kb, nnzb, alpha, descrA, bsrValA, bsrRowPtrA, bsrColIndA, blockSize, B, ldb, beta, C, ldc));
+    }
+    private static native int cusparseZbsrmmNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transB, 
+        int mb, 
+        int n, 
+        int kb, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrValA, 
+        Pointer bsrRowPtrA, 
+        Pointer bsrColIndA, 
+        int blockSize, 
+        Pointer B, 
+        int ldb, 
+        Pointer beta, 
+        Pointer C, 
+        int ldc);
+
+
+    public static int cusparseXbsrsm2_zeroPivot(
+        cusparseHandle handle, 
+        bsrsm2Info info, 
+        Pointer position)
+    {
+        return checkResult(cusparseXbsrsm2_zeroPivotNative(handle, info, position));
+    }
+    private static native int cusparseXbsrsm2_zeroPivotNative(
+        cusparseHandle handle, 
+        bsrsm2Info info, 
+        Pointer position);
+
+
+    public static int cusparseSbsrsm2_bufferSize(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer pBufferSizeInBytes)
+    {
+        return checkResult(cusparseSbsrsm2_bufferSizeNative(handle, dirA, transA, transXY, mb, n, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockSize, info, pBufferSizeInBytes));
+    }
+    private static native int cusparseSbsrsm2_bufferSizeNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer pBufferSizeInBytes);
+
+
+    public static int cusparseDbsrsm2_bufferSize(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer pBufferSizeInBytes)
+    {
+        return checkResult(cusparseDbsrsm2_bufferSizeNative(handle, dirA, transA, transXY, mb, n, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockSize, info, pBufferSizeInBytes));
+    }
+    private static native int cusparseDbsrsm2_bufferSizeNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer pBufferSizeInBytes);
+
+
+    public static int cusparseCbsrsm2_bufferSize(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer pBufferSizeInBytes)
+    {
+        return checkResult(cusparseCbsrsm2_bufferSizeNative(handle, dirA, transA, transXY, mb, n, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockSize, info, pBufferSizeInBytes));
+    }
+    private static native int cusparseCbsrsm2_bufferSizeNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer pBufferSizeInBytes);
+
+
+    public static int cusparseZbsrsm2_bufferSize(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer pBufferSizeInBytes)
+    {
+        return checkResult(cusparseZbsrsm2_bufferSizeNative(handle, dirA, transA, transXY, mb, n, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockSize, info, pBufferSizeInBytes));
+    }
+    private static native int cusparseZbsrsm2_bufferSizeNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer pBufferSizeInBytes);
+
+
+    public static int cusparseSbsrsm2_analysis(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        int policy, 
+        Pointer pBuffer)
+    {
+        return checkResult(cusparseSbsrsm2_analysisNative(handle, dirA, transA, transXY, mb, n, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockSize, info, policy, pBuffer));
+    }
+    private static native int cusparseSbsrsm2_analysisNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        int policy, 
+        Pointer pBuffer);
+
+
+    public static int cusparseDbsrsm2_analysis(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        int policy, 
+        Pointer pBuffer)
+    {
+        return checkResult(cusparseDbsrsm2_analysisNative(handle, dirA, transA, transXY, mb, n, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockSize, info, policy, pBuffer));
+    }
+    private static native int cusparseDbsrsm2_analysisNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        int policy, 
+        Pointer pBuffer);
+
+
+    public static int cusparseCbsrsm2_analysis(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        int policy, 
+        Pointer pBuffer)
+    {
+        return checkResult(cusparseCbsrsm2_analysisNative(handle, dirA, transA, transXY, mb, n, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockSize, info, policy, pBuffer));
+    }
+    private static native int cusparseCbsrsm2_analysisNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        int policy, 
+        Pointer pBuffer);
+
+
+    public static int cusparseZbsrsm2_analysis(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        int policy, 
+        Pointer pBuffer)
+    {
+        return checkResult(cusparseZbsrsm2_analysisNative(handle, dirA, transA, transXY, mb, n, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockSize, info, policy, pBuffer));
+    }
+    private static native int cusparseZbsrsm2_analysisNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        int policy, 
+        Pointer pBuffer);
+
+
+    public static int cusparseSbsrsm2_solve(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer X, 
+        int ldx, 
+        Pointer Y, 
+        int ldy, 
+        int policy, 
+        Pointer pBuffer)
+    {
+        return checkResult(cusparseSbsrsm2_solveNative(handle, dirA, transA, transXY, mb, n, nnzb, alpha, descrA, bsrVal, bsrRowPtr, bsrColInd, blockSize, info, X, ldx, Y, ldy, policy, pBuffer));
+    }
+    private static native int cusparseSbsrsm2_solveNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer X, 
+        int ldx, 
+        Pointer Y, 
+        int ldy, 
+        int policy, 
+        Pointer pBuffer);
+
+
+    public static int cusparseDbsrsm2_solve(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer X, 
+        int ldx, 
+        Pointer Y, 
+        int ldy, 
+        int policy, 
+        Pointer pBuffer)
+    {
+        return checkResult(cusparseDbsrsm2_solveNative(handle, dirA, transA, transXY, mb, n, nnzb, alpha, descrA, bsrVal, bsrRowPtr, bsrColInd, blockSize, info, X, ldx, Y, ldy, policy, pBuffer));
+    }
+    private static native int cusparseDbsrsm2_solveNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer X, 
+        int ldx, 
+        Pointer Y, 
+        int ldy, 
+        int policy, 
+        Pointer pBuffer);
+
+
+    public static int cusparseCbsrsm2_solve(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer X, 
+        int ldx, 
+        Pointer Y, 
+        int ldy, 
+        int policy, 
+        Pointer pBuffer)
+    {
+        return checkResult(cusparseCbsrsm2_solveNative(handle, dirA, transA, transXY, mb, n, nnzb, alpha, descrA, bsrVal, bsrRowPtr, bsrColInd, blockSize, info, X, ldx, Y, ldy, policy, pBuffer));
+    }
+    private static native int cusparseCbsrsm2_solveNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer X, 
+        int ldx, 
+        Pointer Y, 
+        int ldy, 
+        int policy, 
+        Pointer pBuffer);
+
+
+    public static int cusparseZbsrsm2_solve(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer X, 
+        int ldx, 
+        Pointer Y, 
+        int ldy, 
+        int policy, 
+        Pointer pBuffer)
+    {
+        return checkResult(cusparseZbsrsm2_solveNative(handle, dirA, transA, transXY, mb, n, nnzb, alpha, descrA, bsrVal, bsrRowPtr, bsrColInd, blockSize, info, X, ldx, Y, ldy, policy, pBuffer));
+    }
+    private static native int cusparseZbsrsm2_solveNative(
+        cusparseHandle handle, 
+        int dirA, 
+        int transA, 
+        int transXY, 
+        int mb, 
+        int n, 
+        int nnzb, 
+        Pointer alpha, 
+        cusparseMatDescr descrA, 
+        Pointer bsrVal, 
+        Pointer bsrRowPtr, 
+        Pointer bsrColInd, 
+        int blockSize, 
+        bsrsm2Info info, 
+        Pointer X, 
+        int ldx, 
+        Pointer Y, 
+        int ldy, 
+        int policy, 
+        Pointer pBuffer);
+
+
     /** --- Preconditioners --- */
     /** Description: Compute the incomplete-LU factorization with 0 fill-in (ILU0)
        based on the information in the opaque structure info that was obtained 
@@ -3490,9 +4180,9 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrilu02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseScsrilu02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSize));
+        return checkResult(cusparseScsrilu02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSizeInBytes));
     }
     private static native int cusparseScsrilu02_bufferSizeNative(
         cusparseHandle handle, 
@@ -3503,7 +4193,7 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrilu02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseDcsrilu02_bufferSize(
@@ -3515,9 +4205,9 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrilu02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseDcsrilu02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSize));
+        return checkResult(cusparseDcsrilu02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSizeInBytes));
     }
     private static native int cusparseDcsrilu02_bufferSizeNative(
         cusparseHandle handle, 
@@ -3528,7 +4218,7 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrilu02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseCcsrilu02_bufferSize(
@@ -3540,9 +4230,9 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrilu02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseCcsrilu02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSize));
+        return checkResult(cusparseCcsrilu02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSizeInBytes));
     }
     private static native int cusparseCcsrilu02_bufferSizeNative(
         cusparseHandle handle, 
@@ -3553,7 +4243,7 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrilu02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseZcsrilu02_bufferSize(
@@ -3565,9 +4255,9 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrilu02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseZcsrilu02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSize));
+        return checkResult(cusparseZcsrilu02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSizeInBytes));
     }
     private static native int cusparseZcsrilu02_bufferSizeNative(
         cusparseHandle handle, 
@@ -3578,7 +4268,7 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csrilu02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseScsrilu02_analysis(
@@ -3591,7 +4281,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseScsrilu02_analysisNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -3605,7 +4295,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDcsrilu02_analysis(
@@ -3618,7 +4308,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDcsrilu02_analysisNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -3632,7 +4322,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCcsrilu02_analysis(
@@ -3645,7 +4335,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCcsrilu02_analysisNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -3659,7 +4349,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZcsrilu02_analysis(
@@ -3672,7 +4362,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZcsrilu02_analysisNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -3686,7 +4376,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseScsrilu02(
@@ -3701,7 +4391,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseScsrilu02Native(handle, m, nnz, descrA, csrValA_valM, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -3717,7 +4407,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDcsrilu02(
@@ -3732,7 +4422,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDcsrilu02Native(handle, m, nnz, descrA, csrValA_valM, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -3748,7 +4438,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCcsrilu02(
@@ -3763,7 +4453,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCcsrilu02Native(handle, m, nnz, descrA, csrValA_valM, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -3779,7 +4469,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZcsrilu02(
@@ -3794,7 +4484,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZcsrilu02Native(handle, m, nnz, descrA, csrValA_valM, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -3810,7 +4500,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseSbsrilu02_numericBoost(
@@ -3905,9 +4595,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrilu02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseSbsrilu02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSize));
+        return checkResult(cusparseSbsrilu02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSizeInBytes));
     }
     private static native int cusparseSbsrilu02_bufferSizeNative(
         cusparseHandle handle, 
@@ -3920,7 +4610,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrilu02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseDbsrilu02_bufferSize(
@@ -3934,9 +4624,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrilu02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseDbsrilu02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSize));
+        return checkResult(cusparseDbsrilu02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSizeInBytes));
     }
     private static native int cusparseDbsrilu02_bufferSizeNative(
         cusparseHandle handle, 
@@ -3949,7 +4639,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrilu02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseCbsrilu02_bufferSize(
@@ -3963,9 +4653,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrilu02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseCbsrilu02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSize));
+        return checkResult(cusparseCbsrilu02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSizeInBytes));
     }
     private static native int cusparseCbsrilu02_bufferSizeNative(
         cusparseHandle handle, 
@@ -3978,7 +4668,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrilu02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseZbsrilu02_bufferSize(
@@ -3992,9 +4682,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrilu02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseZbsrilu02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSize));
+        return checkResult(cusparseZbsrilu02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSizeInBytes));
     }
     private static native int cusparseZbsrilu02_bufferSizeNative(
         cusparseHandle handle, 
@@ -4007,7 +4697,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsrilu02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseSbsrilu02_analysis(
@@ -4022,7 +4712,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseSbsrilu02_analysisNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -4038,7 +4728,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDbsrilu02_analysis(
@@ -4053,7 +4743,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDbsrilu02_analysisNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -4069,7 +4759,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCbsrilu02_analysis(
@@ -4084,7 +4774,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCbsrilu02_analysisNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -4100,7 +4790,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZbsrilu02_analysis(
@@ -4115,7 +4805,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZbsrilu02_analysisNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -4131,7 +4821,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseSbsrilu02(
@@ -4146,7 +4836,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseSbsrilu02Native(handle, dirA, mb, nnzb, descra, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -4162,7 +4852,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDbsrilu02(
@@ -4177,7 +4867,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDbsrilu02Native(handle, dirA, mb, nnzb, descra, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -4193,7 +4883,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCbsrilu02(
@@ -4208,7 +4898,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCbsrilu02Native(handle, dirA, mb, nnzb, descra, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -4224,7 +4914,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZbsrilu02(
@@ -4239,7 +4929,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZbsrilu02Native(handle, dirA, mb, nnzb, descra, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -4255,7 +4945,7 @@ public class JCusparse
         int blockDim, 
         bsrilu02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     /** Description: Compute the incomplete-Cholesky factorization with 0 fill-in (IC0)
@@ -4391,9 +5081,9 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csric02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseScsric02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSize));
+        return checkResult(cusparseScsric02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSizeInBytes));
     }
     private static native int cusparseScsric02_bufferSizeNative(
         cusparseHandle handle, 
@@ -4404,7 +5094,7 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csric02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseDcsric02_bufferSize(
@@ -4416,9 +5106,9 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csric02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseDcsric02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSize));
+        return checkResult(cusparseDcsric02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSizeInBytes));
     }
     private static native int cusparseDcsric02_bufferSizeNative(
         cusparseHandle handle, 
@@ -4429,7 +5119,7 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csric02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseCcsric02_bufferSize(
@@ -4441,9 +5131,9 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csric02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseCcsric02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSize));
+        return checkResult(cusparseCcsric02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSizeInBytes));
     }
     private static native int cusparseCcsric02_bufferSizeNative(
         cusparseHandle handle, 
@@ -4454,7 +5144,7 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csric02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseZcsric02_bufferSize(
@@ -4466,9 +5156,9 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csric02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseZcsric02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSize));
+        return checkResult(cusparseZcsric02_bufferSizeNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, pBufferSizeInBytes));
     }
     private static native int cusparseZcsric02_bufferSizeNative(
         cusparseHandle handle, 
@@ -4479,7 +5169,7 @@ public class JCusparse
         Pointer csrRowPtrA, 
         Pointer csrColIndA, 
         csric02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseScsric02_analysis(
@@ -4492,7 +5182,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseScsric02_analysisNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -4506,7 +5196,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDcsric02_analysis(
@@ -4519,7 +5209,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDcsric02_analysisNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -4533,7 +5223,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCcsric02_analysis(
@@ -4546,7 +5236,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCcsric02_analysisNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -4560,7 +5250,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZcsric02_analysis(
@@ -4573,7 +5263,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZcsric02_analysisNative(handle, m, nnz, descrA, csrValA, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -4587,7 +5277,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseScsric02(
@@ -4602,7 +5292,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseScsric02Native(handle, m, nnz, descrA, csrValA_valM, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -4618,7 +5308,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDcsric02(
@@ -4633,7 +5323,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDcsric02Native(handle, m, nnz, descrA, csrValA_valM, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -4649,7 +5339,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCcsric02(
@@ -4664,7 +5354,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCcsric02Native(handle, m, nnz, descrA, csrValA_valM, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -4680,7 +5370,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZcsric02(
@@ -4695,7 +5385,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZcsric02Native(handle, m, nnz, descrA, csrValA_valM, csrRowPtrA, csrColIndA, info, policy, pBuffer));
     }
@@ -4711,7 +5401,7 @@ public class JCusparse
         Pointer csrColIndA, 
         csric02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseXbsric02_zeroPivot(
@@ -4738,9 +5428,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsric02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseSbsric02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSize));
+        return checkResult(cusparseSbsric02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSizeInBytes));
     }
     private static native int cusparseSbsric02_bufferSizeNative(
         cusparseHandle handle, 
@@ -4753,7 +5443,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsric02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseDbsric02_bufferSize(
@@ -4767,9 +5457,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsric02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseDbsric02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSize));
+        return checkResult(cusparseDbsric02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSizeInBytes));
     }
     private static native int cusparseDbsric02_bufferSizeNative(
         cusparseHandle handle, 
@@ -4782,7 +5472,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsric02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseCbsric02_bufferSize(
@@ -4796,9 +5486,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsric02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseCbsric02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSize));
+        return checkResult(cusparseCbsric02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSizeInBytes));
     }
     private static native int cusparseCbsric02_bufferSizeNative(
         cusparseHandle handle, 
@@ -4811,7 +5501,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsric02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseZbsric02_bufferSize(
@@ -4825,9 +5515,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsric02Info info, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseZbsric02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSize));
+        return checkResult(cusparseZbsric02_bufferSizeNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, pBufferSizeInBytes));
     }
     private static native int cusparseZbsric02_bufferSizeNative(
         cusparseHandle handle, 
@@ -4840,7 +5530,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int blockDim, 
         bsric02Info info, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseSbsric02_analysis(
@@ -4855,7 +5545,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pInputBuffer)
+        Pointer pInputBuffer)
     {
         return checkResult(cusparseSbsric02_analysisNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pInputBuffer));
     }
@@ -4871,7 +5561,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pInputBuffer);
+        Pointer pInputBuffer);
 
 
     public static int cusparseDbsric02_analysis(
@@ -4886,7 +5576,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pInputBuffer)
+        Pointer pInputBuffer)
     {
         return checkResult(cusparseDbsric02_analysisNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pInputBuffer));
     }
@@ -4902,7 +5592,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pInputBuffer);
+        Pointer pInputBuffer);
 
 
     public static int cusparseCbsric02_analysis(
@@ -4917,7 +5607,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pInputBuffer)
+        Pointer pInputBuffer)
     {
         return checkResult(cusparseCbsric02_analysisNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pInputBuffer));
     }
@@ -4933,7 +5623,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pInputBuffer);
+        Pointer pInputBuffer);
 
 
     public static int cusparseZbsric02_analysis(
@@ -4948,7 +5638,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pInputBuffer)
+        Pointer pInputBuffer)
     {
         return checkResult(cusparseZbsric02_analysisNative(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pInputBuffer));
     }
@@ -4964,7 +5654,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pInputBuffer);
+        Pointer pInputBuffer);
 
 
     public static int cusparseSbsric02(
@@ -4979,7 +5669,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseSbsric02Native(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -4995,7 +5685,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDbsric02(
@@ -5010,7 +5700,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDbsric02Native(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -5026,7 +5716,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCbsric02(
@@ -5041,7 +5731,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCbsric02Native(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -5057,7 +5747,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZbsric02(
@@ -5072,7 +5762,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZbsric02Native(handle, dirA, mb, nnzb, descrA, bsrVal, bsrRowPtr, bsrColInd, blockDim, info, policy, pBuffer));
     }
@@ -5088,7 +5778,7 @@ public class JCusparse
         int blockDim, 
         bsric02Info info, 
         int policy, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     /**
@@ -7406,9 +8096,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseSgebsr2gebsc_bufferSizeNative(handle, mb, nb, nnzb, bsrVal, bsrRowPtr, bsrColInd, rowBlockDim, colBlockDim, pBufferSize));
+        return checkResult(cusparseSgebsr2gebsc_bufferSizeNative(handle, mb, nb, nnzb, bsrVal, bsrRowPtr, bsrColInd, rowBlockDim, colBlockDim, pBufferSizeInBytes));
     }
     private static native int cusparseSgebsr2gebsc_bufferSizeNative(
         cusparseHandle handle, 
@@ -7420,7 +8110,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseDgebsr2gebsc_bufferSize(
@@ -7433,9 +8123,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseDgebsr2gebsc_bufferSizeNative(handle, mb, nb, nnzb, bsrVal, bsrRowPtr, bsrColInd, rowBlockDim, colBlockDim, pBufferSize));
+        return checkResult(cusparseDgebsr2gebsc_bufferSizeNative(handle, mb, nb, nnzb, bsrVal, bsrRowPtr, bsrColInd, rowBlockDim, colBlockDim, pBufferSizeInBytes));
     }
     private static native int cusparseDgebsr2gebsc_bufferSizeNative(
         cusparseHandle handle, 
@@ -7447,7 +8137,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseCgebsr2gebsc_bufferSize(
@@ -7460,9 +8150,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseCgebsr2gebsc_bufferSizeNative(handle, mb, nb, nnzb, bsrVal, bsrRowPtr, bsrColInd, rowBlockDim, colBlockDim, pBufferSize));
+        return checkResult(cusparseCgebsr2gebsc_bufferSizeNative(handle, mb, nb, nnzb, bsrVal, bsrRowPtr, bsrColInd, rowBlockDim, colBlockDim, pBufferSizeInBytes));
     }
     private static native int cusparseCgebsr2gebsc_bufferSizeNative(
         cusparseHandle handle, 
@@ -7474,7 +8164,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseZgebsr2gebsc_bufferSize(
@@ -7487,9 +8177,9 @@ public class JCusparse
         Pointer bsrColInd, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseZgebsr2gebsc_bufferSizeNative(handle, mb, nb, nnzb, bsrVal, bsrRowPtr, bsrColInd, rowBlockDim, colBlockDim, pBufferSize));
+        return checkResult(cusparseZgebsr2gebsc_bufferSizeNative(handle, mb, nb, nnzb, bsrVal, bsrRowPtr, bsrColInd, rowBlockDim, colBlockDim, pBufferSizeInBytes));
     }
     private static native int cusparseZgebsr2gebsc_bufferSizeNative(
         cusparseHandle handle, 
@@ -7501,7 +8191,7 @@ public class JCusparse
         Pointer bsrColInd, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseSgebsr2gebsc(
@@ -7519,7 +8209,7 @@ public class JCusparse
         Pointer bscColPtr, 
         int copyValues, 
         int baseIdx, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseSgebsr2gebscNative(handle, mb, nb, nnzb, bsrVal, bsrRowPtr, bsrColInd, rowBlockDim, colBlockDim, bscVal, bscRowInd, bscColPtr, copyValues, baseIdx, pBuffer));
     }
@@ -7538,7 +8228,7 @@ public class JCusparse
         Pointer bscColPtr, 
         int copyValues, 
         int baseIdx, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDgebsr2gebsc(
@@ -7556,7 +8246,7 @@ public class JCusparse
         Pointer bscColPtr, 
         int copyValues, 
         int baseIdx, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDgebsr2gebscNative(handle, mb, nb, nnzb, bsrVal, bsrRowPtr, bsrColInd, rowBlockDim, colBlockDim, bscVal, bscRowInd, bscColPtr, copyValues, baseIdx, pBuffer));
     }
@@ -7575,7 +8265,7 @@ public class JCusparse
         Pointer bscColPtr, 
         int copyValues, 
         int baseIdx, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCgebsr2gebsc(
@@ -7593,7 +8283,7 @@ public class JCusparse
         Pointer bscColPtr, 
         int copyValues, 
         int baseIdx, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCgebsr2gebscNative(handle, mb, nb, nnzb, bsrVal, bsrRowPtr, bsrColInd, rowBlockDim, colBlockDim, bscVal, bscRowInd, bscColPtr, copyValues, baseIdx, pBuffer));
     }
@@ -7612,7 +8302,7 @@ public class JCusparse
         Pointer bscColPtr, 
         int copyValues, 
         int baseIdx, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZgebsr2gebsc(
@@ -7630,7 +8320,7 @@ public class JCusparse
         Pointer bscColPtr, 
         int copyValues, 
         int baseIdx, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZgebsr2gebscNative(handle, mb, nb, nnzb, bsrVal, bsrRowPtr, bsrColInd, rowBlockDim, colBlockDim, bscVal, bscRowInd, bscColPtr, copyValues, baseIdx, pBuffer));
     }
@@ -7649,7 +8339,7 @@ public class JCusparse
         Pointer bscColPtr, 
         int copyValues, 
         int baseIdx, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseXgebsr2csr(
@@ -7834,9 +8524,9 @@ public class JCusparse
         Pointer csrColIndA, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseScsr2gebsr_bufferSizeNative(handle, dirA, m, n, descrA, csrValA, csrRowPtrA, csrColIndA, rowBlockDim, colBlockDim, pBufferSize));
+        return checkResult(cusparseScsr2gebsr_bufferSizeNative(handle, dirA, m, n, descrA, csrValA, csrRowPtrA, csrColIndA, rowBlockDim, colBlockDim, pBufferSizeInBytes));
     }
     private static native int cusparseScsr2gebsr_bufferSizeNative(
         cusparseHandle handle, 
@@ -7849,7 +8539,7 @@ public class JCusparse
         Pointer csrColIndA, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseDcsr2gebsr_bufferSize(
@@ -7863,9 +8553,9 @@ public class JCusparse
         Pointer csrColIndA, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseDcsr2gebsr_bufferSizeNative(handle, dirA, m, n, descrA, csrValA, csrRowPtrA, csrColIndA, rowBlockDim, colBlockDim, pBufferSize));
+        return checkResult(cusparseDcsr2gebsr_bufferSizeNative(handle, dirA, m, n, descrA, csrValA, csrRowPtrA, csrColIndA, rowBlockDim, colBlockDim, pBufferSizeInBytes));
     }
     private static native int cusparseDcsr2gebsr_bufferSizeNative(
         cusparseHandle handle, 
@@ -7878,7 +8568,7 @@ public class JCusparse
         Pointer csrColIndA, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseCcsr2gebsr_bufferSize(
@@ -7892,9 +8582,9 @@ public class JCusparse
         Pointer csrColIndA, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseCcsr2gebsr_bufferSizeNative(handle, dirA, m, n, descrA, csrValA, csrRowPtrA, csrColIndA, rowBlockDim, colBlockDim, pBufferSize));
+        return checkResult(cusparseCcsr2gebsr_bufferSizeNative(handle, dirA, m, n, descrA, csrValA, csrRowPtrA, csrColIndA, rowBlockDim, colBlockDim, pBufferSizeInBytes));
     }
     private static native int cusparseCcsr2gebsr_bufferSizeNative(
         cusparseHandle handle, 
@@ -7907,7 +8597,7 @@ public class JCusparse
         Pointer csrColIndA, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseZcsr2gebsr_bufferSize(
@@ -7921,9 +8611,9 @@ public class JCusparse
         Pointer csrColIndA, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseZcsr2gebsr_bufferSizeNative(handle, dirA, m, n, descrA, csrValA, csrRowPtrA, csrColIndA, rowBlockDim, colBlockDim, pBufferSize));
+        return checkResult(cusparseZcsr2gebsr_bufferSizeNative(handle, dirA, m, n, descrA, csrValA, csrRowPtrA, csrColIndA, rowBlockDim, colBlockDim, pBufferSizeInBytes));
     }
     private static native int cusparseZcsr2gebsr_bufferSizeNative(
         cusparseHandle handle, 
@@ -7936,7 +8626,7 @@ public class JCusparse
         Pointer csrColIndA, 
         int rowBlockDim, 
         int colBlockDim, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseXcsr2gebsrNnz(
@@ -7952,7 +8642,7 @@ public class JCusparse
         int rowBlockDim, 
         int colBlockDim, 
         Pointer nnzTotalDevHostPtr, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseXcsr2gebsrNnzNative(handle, dirA, m, n, descrA, csrRowPtrA, csrColIndA, descrC, bsrRowPtrC, rowBlockDim, colBlockDim, nnzTotalDevHostPtr, pBuffer));
     }
@@ -7969,7 +8659,7 @@ public class JCusparse
         int rowBlockDim, 
         int colBlockDim, 
         Pointer nnzTotalDevHostPtr, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseScsr2gebsr(
@@ -7987,7 +8677,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDim, 
         int colBlockDim, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseScsr2gebsrNative(handle, dirA, m, n, descrA, csrValA, csrRowPtrA, csrColIndA, descrC, bsrValC, bsrRowPtrC, bsrColIndC, rowBlockDim, colBlockDim, pBuffer));
     }
@@ -8006,7 +8696,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDim, 
         int colBlockDim, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDcsr2gebsr(
@@ -8024,7 +8714,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDim, 
         int colBlockDim, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDcsr2gebsrNative(handle, dirA, m, n, descrA, csrValA, csrRowPtrA, csrColIndA, descrC, bsrValC, bsrRowPtrC, bsrColIndC, rowBlockDim, colBlockDim, pBuffer));
     }
@@ -8043,7 +8733,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDim, 
         int colBlockDim, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCcsr2gebsr(
@@ -8061,7 +8751,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDim, 
         int colBlockDim, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCcsr2gebsrNative(handle, dirA, m, n, descrA, csrValA, csrRowPtrA, csrColIndA, descrC, bsrValC, bsrRowPtrC, bsrColIndC, rowBlockDim, colBlockDim, pBuffer));
     }
@@ -8080,7 +8770,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDim, 
         int colBlockDim, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZcsr2gebsr(
@@ -8098,7 +8788,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDim, 
         int colBlockDim, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZcsr2gebsrNative(handle, dirA, m, n, descrA, csrValA, csrRowPtrA, csrColIndA, descrC, bsrValC, bsrRowPtrC, bsrColIndC, rowBlockDim, colBlockDim, pBuffer));
     }
@@ -8117,7 +8807,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDim, 
         int colBlockDim, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseSgebsr2gebsr_bufferSize(
@@ -8134,9 +8824,9 @@ public class JCusparse
         int colBlockDimA, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseSgebsr2gebsr_bufferSizeNative(handle, dirA, mb, nb, nnzb, descrA, bsrValA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, rowBlockDimC, colBlockDimC, pBufferSize));
+        return checkResult(cusparseSgebsr2gebsr_bufferSizeNative(handle, dirA, mb, nb, nnzb, descrA, bsrValA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, rowBlockDimC, colBlockDimC, pBufferSizeInBytes));
     }
     private static native int cusparseSgebsr2gebsr_bufferSizeNative(
         cusparseHandle handle, 
@@ -8152,7 +8842,7 @@ public class JCusparse
         int colBlockDimA, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseDgebsr2gebsr_bufferSize(
@@ -8169,9 +8859,9 @@ public class JCusparse
         int colBlockDimA, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseDgebsr2gebsr_bufferSizeNative(handle, dirA, mb, nb, nnzb, descrA, bsrValA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, rowBlockDimC, colBlockDimC, pBufferSize));
+        return checkResult(cusparseDgebsr2gebsr_bufferSizeNative(handle, dirA, mb, nb, nnzb, descrA, bsrValA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, rowBlockDimC, colBlockDimC, pBufferSizeInBytes));
     }
     private static native int cusparseDgebsr2gebsr_bufferSizeNative(
         cusparseHandle handle, 
@@ -8187,7 +8877,7 @@ public class JCusparse
         int colBlockDimA, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseCgebsr2gebsr_bufferSize(
@@ -8204,9 +8894,9 @@ public class JCusparse
         int colBlockDimA, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseCgebsr2gebsr_bufferSizeNative(handle, dirA, mb, nb, nnzb, descrA, bsrValA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, rowBlockDimC, colBlockDimC, pBufferSize));
+        return checkResult(cusparseCgebsr2gebsr_bufferSizeNative(handle, dirA, mb, nb, nnzb, descrA, bsrValA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, rowBlockDimC, colBlockDimC, pBufferSizeInBytes));
     }
     private static native int cusparseCgebsr2gebsr_bufferSizeNative(
         cusparseHandle handle, 
@@ -8222,7 +8912,7 @@ public class JCusparse
         int colBlockDimA, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseZgebsr2gebsr_bufferSize(
@@ -8239,9 +8929,9 @@ public class JCusparse
         int colBlockDimA, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        Pointer pBufferSize)
+        Pointer pBufferSizeInBytes)
     {
-        return checkResult(cusparseZgebsr2gebsr_bufferSizeNative(handle, dirA, mb, nb, nnzb, descrA, bsrValA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, rowBlockDimC, colBlockDimC, pBufferSize));
+        return checkResult(cusparseZgebsr2gebsr_bufferSizeNative(handle, dirA, mb, nb, nnzb, descrA, bsrValA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, rowBlockDimC, colBlockDimC, pBufferSizeInBytes));
     }
     private static native int cusparseZgebsr2gebsr_bufferSizeNative(
         cusparseHandle handle, 
@@ -8257,7 +8947,7 @@ public class JCusparse
         int colBlockDimA, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        Pointer pBufferSize);
+        Pointer pBufferSizeInBytes);
 
 
     public static int cusparseXgebsr2gebsrNnz(
@@ -8276,7 +8966,7 @@ public class JCusparse
         int rowBlockDimC, 
         int colBlockDimC, 
         Pointer nnzTotalDevHostPtr, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseXgebsr2gebsrNnzNative(handle, dirA, mb, nb, nnzb, descrA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, descrC, bsrRowPtrC, rowBlockDimC, colBlockDimC, nnzTotalDevHostPtr, pBuffer));
     }
@@ -8296,7 +8986,7 @@ public class JCusparse
         int rowBlockDimC, 
         int colBlockDimC, 
         Pointer nnzTotalDevHostPtr, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseSgebsr2gebsr(
@@ -8317,7 +9007,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseSgebsr2gebsrNative(handle, dirA, mb, nb, nnzb, descrA, bsrValA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, descrC, bsrValC, bsrRowPtrC, bsrColIndC, rowBlockDimC, colBlockDimC, pBuffer));
     }
@@ -8339,7 +9029,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseDgebsr2gebsr(
@@ -8360,7 +9050,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseDgebsr2gebsrNative(handle, dirA, mb, nb, nnzb, descrA, bsrValA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, descrC, bsrValC, bsrRowPtrC, bsrColIndC, rowBlockDimC, colBlockDimC, pBuffer));
     }
@@ -8382,7 +9072,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseCgebsr2gebsr(
@@ -8403,7 +9093,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseCgebsr2gebsrNative(handle, dirA, mb, nb, nnzb, descrA, bsrValA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, descrC, bsrValC, bsrRowPtrC, bsrColIndC, rowBlockDimC, colBlockDimC, pBuffer));
     }
@@ -8425,7 +9115,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        byte[] pBuffer);
+        Pointer pBuffer);
 
 
     public static int cusparseZgebsr2gebsr(
@@ -8446,7 +9136,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        byte[] pBuffer)
+        Pointer pBuffer)
     {
         return checkResult(cusparseZgebsr2gebsrNative(handle, dirA, mb, nb, nnzb, descrA, bsrValA, bsrRowPtrA, bsrColIndA, rowBlockDimA, colBlockDimA, descrC, bsrValC, bsrRowPtrC, bsrColIndC, rowBlockDimC, colBlockDimC, pBuffer));
     }
@@ -8468,8 +9158,7 @@ public class JCusparse
         Pointer bsrColIndC, 
         int rowBlockDimC, 
         int colBlockDimC, 
-        byte[] pBuffer);
-
+        Pointer pBuffer);
 
 
 }

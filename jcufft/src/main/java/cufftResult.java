@@ -59,7 +59,7 @@ public class cufftResult
     public static final int CUFFT_INVALID_VALUE = 4;
     
     /**
-     * Used for all internal jcuda.jcublas.driver errors.
+     * Used for all internal driver errors.
      */
     public static final int CUFFT_INTERNAL_ERROR = 5;
     
@@ -104,6 +104,16 @@ public class cufftResult
     public static final int CUFFT_NO_WORKSPACE = 0xD;
     
     /**
+     * Not implemented
+     */
+    public static final int CUFFT_NOT_IMPLEMENTED = 0xE;
+                    
+    /**
+     * License error
+     */
+    public static final int CUFFT_LICENSE_ERROR = 0x0F;
+    
+    /**
      * An internal JCufft error occurred
      */
     public static final int JCUFFT_INTERNAL_ERROR = 0xFF;
@@ -128,6 +138,12 @@ public class cufftResult
             case CUFFT_SETUP_FAILED : return "CUFFT_SETUP_FAILED";
             case CUFFT_INVALID_SIZE : return "CUFFT_INVALID_SIZE";
             case CUFFT_UNALIGNED_DATA : return "CUFFT_UNALIGNED_DATA";
+            case CUFFT_INCOMPLETE_PARAMETER_LIST : return "CUFFT_INCOMPLETE_PARAMETER_LIST";
+            case CUFFT_INVALID_DEVICE : return "CUFFT_INVALID_DEVICE";
+            case CUFFT_PARSE_ERROR : return "CUFFT_PARSE_ERROR";
+            case CUFFT_NO_WORKSPACE : return "CUFFT_NO_WORKSPACE";
+            case CUFFT_NOT_IMPLEMENTED : return "CUFFT_NOT_IMPLEMENTED";
+            case CUFFT_LICENSE_ERROR : return "CUFFT_LICENSE_ERROR";
             case JCUFFT_INTERNAL_ERROR : return "JCUFFT_INTERNAL_ERROR";
         }
         return "INVALID cufftResult: " + m;
