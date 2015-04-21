@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -63,6 +63,10 @@ public class cudaPointerAttributes
      */
     public Pointer hostPointer = new Pointer();
 
+    /**
+     * Indicates if this pointer points to managed memory
+     */
+    public int isManaged;    
 
     /**
      * Creates a new, uninitialized cudaPointerAttributes
@@ -83,7 +87,8 @@ public class cudaPointerAttributes
             "memoryType="+cudaMemoryType.stringFor(memoryType)+","+
             "device="+device+","+
             "devicePointer="+devicePointer+","+
-            "hostPointer="+hostPointer+"]";
+            "hostPointer="+hostPointer+"," +
+            "isManaged="+isManaged+"]";
     }
 
 };

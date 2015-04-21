@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -76,8 +76,14 @@ public class cudaFuncAttributes
      * so a binary version 1.3 function would return the value 13.
      * For device emulation kernels, this is set to 9999.
      */
-    int binaryVersion;
+    public int binaryVersion;
 
+    /**
+     * The attribute to indicate whether the function has been compiled with 
+     * user specified option "-Xptxas --dlcm=ca" set.
+     */
+    public int cacheModeCA;
+    
     /**
      * Creates new, uninitialized cudaFuncAttributes
      */
@@ -100,7 +106,8 @@ public class cudaFuncAttributes
             "maxThreadsPerBlock="+maxThreadsPerBlock+","+
             "numRegs="+numRegs+","+
             "ptxVersion="+ptxVersion+","+
-            "binaryVersion="+binaryVersion+"]";
+            "binaryVersion="+binaryVersion+"," +
+            "cacheModeCA="+cacheModeCA+"]";
     }
 
 

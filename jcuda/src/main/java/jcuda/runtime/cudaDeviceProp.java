@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -290,7 +290,7 @@ public class cudaDeviceProp
     public int pciDomainID;
     
     /**
-     *  1 if device is a Tesla device using TCC jcuda.driver, 0 otherwise
+     *  1 if device is a Tesla device using TCC driver, 0 otherwise
      */
     public int    tccDriver;
     
@@ -333,6 +333,40 @@ public class cudaDeviceProp
      */
     public int streamPrioritiesSupported;
     
+    /** 
+     * Device supports caching globals in L1 
+     */
+    public int globalL1CacheSupported;     
+    
+    /**
+     * Device supports caching locals in L1
+     */
+    public int localL1CacheSupported;
+
+    /**
+     * Shared memory available per multiprocessor in bytes
+     */
+    public long sharedMemPerMultiprocessor;
+
+    /**
+     * 32-bit registers available per multiprocessor
+     */
+    public int regsPerMultiprocessor;
+
+    /**
+     * Device supports allocating managed memory on this system
+     */
+    public int managedMemory;
+
+    /**
+     * Device is on a multi-GPU board
+     */
+    public int isMultiGpuBoard;
+
+    /**
+     * Unique identifier for a group of devices on the same multi-GPU board
+     */
+    public int multiGpuBoardGroupID;
     
     /**
      * Returns the String describing the name of this cudaDeviceProp
@@ -442,7 +476,14 @@ public class cudaDeviceProp
             "memoryBusWidth="+memoryBusWidth+f+
             "l2CacheSize="+l2CacheSize+f+
             "maxThreadsPerMultiProcessor="+maxThreadsPerMultiProcessor+f+
-            "streamPrioritiesSupported="+streamPrioritiesSupported+f;
+            "streamPrioritiesSupported="+streamPrioritiesSupported+f+
+            "globalL1CacheSupported="+globalL1CacheSupported+f+
+            "localL1CacheSupported="+localL1CacheSupported+f+
+            "sharedMemPerMultiprocessor="+sharedMemPerMultiprocessor+f+
+            "regsPerMultiprocessor="+regsPerMultiprocessor+f+
+            "managedMemory="+managedMemory+f+
+            "isMultiGpuBoard="+isMultiGpuBoard+f+
+            "multiGpuBoardGroupID="+multiGpuBoardGroupID+f;
     }
 
     /**

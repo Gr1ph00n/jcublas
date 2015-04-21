@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -31,16 +31,16 @@ import jcuda.*;
 
 
 /**
- * Java bindings for the NVidia CUDA jcuda.runtime API.<br />
+ * Java bindings for the NVidia CUDA runtime API.<br />
  * <br />
  * Most comments are extracted from the CUDA online documentation
  */
 public class JCuda
 {
     /**
-     * CUDA jcuda.runtime version
+     * CUDA runtime version
      */
-    public static final int CUDART_VERSION = 5050;
+    public static final int CUDART_VERSION = 7000;
 
     /**
      * Default page-locked allocation flag
@@ -287,9 +287,57 @@ public class JCuda
      */
     public static final int cudaTextureTypeCubemapLayered = 0xFC;
 
+    /** 
+     * Memory can be accessed by any stream on any device
+     */
+    public static final int cudaMemAttachGlobal           = 0x01;
+    
+    /** 
+     * Memory cannot be accessed by any stream on any device 
+     */
+    public static final int cudaMemAttachHost             = 0x02;
+    
+    /** 
+     * Memory can only be accessed by a single stream on the associated device 
+     */
+    public static final int cudaMemAttachSingle           = 0x04;   
 
+    
+    /**
+     * Default behavior 
+     */
+    public static final int cudaOccupancyDefault                = 0x00;
+    
+    /**
+     * Assume global caching is enabled and cannot be automatically turned off 
+     */
+    public static final int cudaOccupancyDisableCachingOverride = 0x01;
+    
+    
+    /**
+     * Private inner class for the constant stream values
+     */
+    private static class ConstantCudaStream_t extends cudaStream_t
+    {
+        ConstantCudaStream_t(long value)
+        {
+            super(value);
+        }
+    }
 
+    /**
+     * Stream handle that can be passed as a cudaStream_t to use an implicit stream
+     * with legacy synchronization behavior.
+     */
+    public static cudaStream_t cudaStreamLegacy = new ConstantCudaStream_t(0x1);
 
+    /**
+     * Stream handle that can be passed as a cudaStream_t to use an implicit stream
+     * with per-thread synchronization behavior.
+     */
+    public static cudaStream_t cudaStreamPerThread = new ConstantCudaStream_t(0x2);
+    
+    
     /**
      * The flag that indicates whether the native library has been
      * loaded
@@ -330,7 +378,7 @@ public class JCuda
     }
 
     /**
-     * Set the specified log level for the JCuda jcuda.runtime library.<br />
+     * Set the specified log level for the JCuda runtime library.<br />
      * <br />
      * Currently supported log levels:
      * <br />
@@ -399,7 +447,7 @@ public class JCuda
      *     compute capability greater or equal to 1.0 that are available for
      *     execution. If there is no such
      *     device then cudaGetDeviceCount() will
-     *     return cudaErrorNoDevice. If no jcuda.driver can be loaded to determine if
+     *     return cudaErrorNoDevice. If no driver can be loaded to determine if
      *     any such devices exist then cudaGetDeviceCount() will return
      *     cudaErrorInsufficientDriver.
      *   </p>
@@ -596,6 +644,51 @@ public class JCuda
     }
     private static native int cudaSetDeviceFlagsNative(int flags);
 
+    /**
+     * Gets the flags for the current device.
+     *
+     * Returns in flags the flags for the current device. If there is a 
+     * current device for the calling thread, and the device has been 
+     * initialized or flags have been set on that device specifically, 
+     * the flags for the device are returned. If there is no current 
+     * device, but flags have been set for the thread with 
+     * cudaSetDeviceFlags, the thread flags are returned. Finally, 
+     * if there is no current device and no thread flags, the flags
+     * for the first device are returned, which may be the default
+     * flags. Compare to the behavior of cudaSetDeviceFlags.
+     * 
+     * Typically, the flags returned should match the behavior that will 
+     * be seen if the calling thread uses a device after this call, 
+     * without any change to the flags or current device inbetween 
+     * by this or another thread. Note that if the device is not 
+     * initialized, it is possible for another thread to change the 
+     * flags for the current device before it is initialized. 
+     * Additionally, when using exclusive mode, if this thread has
+     * not requested a specific device, it may use a device other 
+     * than the first device, contrary to the assumption made by this function.
+     * 
+     * If a context has been created via the driver API and is current 
+     * to the calling thread, the flags for that context are always returned.
+     * 
+     * Flags returned by this function may specifically include 
+     * cudaDeviceMapHost even though it is not accepted by 
+     * cudaSetDeviceFlags because it is implicit in runtime API flags. 
+     * The reason for this is that the current context may have been 
+     * created via the driver API in which case the flag is not 
+     * implicit and may be unset.
+     * 
+     * @param flags Pointer to store the device flags
+     * @return cudaSuccess, cudaErrorInvalidDevice
+     * @see JCuda#cudaGetDevice
+     * @see JCuda#cudaGetDeviceProperties
+     * @see JCuda#cudaSetDevice
+     * @see JCuda#cudaSetDeviceFlags
+     */
+    public static int cudaGetDeviceFlags(int flags[])
+    {
+        return checkResult(cudaGetDeviceFlagsNative(flags));
+    }
+    private static native int cudaGetDeviceFlagsNative(int flags[]);
 
     /**
      * Set a list of devices that can be used for CUDA.
@@ -898,7 +991,7 @@ public class JCuda
      *               immediately returned indicating the device cannot be used. When an
      *               occupied exclusive mode device is chosen with
      *               cudaSetDevice, all
-     *               subsequent non-device management jcuda.runtime functions will return
+     *               subsequent non-device management runtime functions will return
      *               cudaErrorDevicesUnavailable.
      *             </p>
      *           </li>
@@ -1038,7 +1131,7 @@ public class JCuda
      *     </li>
      *     <li>
      *       <p>tccDriver is 1 if the device
-     *         is using a TCC jcuda.driver or 0 if not.
+     *         is using a TCC driver or 0 if not.
      *       </p>
      *     </li>
      *     <li>
@@ -1475,7 +1568,7 @@ public class JCuda
      *     </li>
      *     <li>
      *       <p>cudaDevAttrTccDriver: 1 if the
-     *         device is using a TCC jcuda.driver. TCC is only available on Tesla hardware
+     *         device is using a TCC driver. TCC is only available on Tesla hardware
      *         running Windows Vista or later;
      *       </p>
      *     </li>
@@ -3370,7 +3463,7 @@ public class JCuda
      * <div>
      *   <p>Allocates page-locked memory on the host.
      *     Allocates <tt>size</tt> bytes of host memory that is page-locked and
-     *     accessible to the device. The jcuda.driver tracks the virtual memory ranges
+     *     accessible to the device. The driver tracks the virtual memory ranges
      *     allocated
      *     with this function and automatically
      *     accelerates calls to functions such as cudaMemcpy(). Since the memory
@@ -3654,7 +3747,11 @@ public class JCuda
 
 
 
-
+    public static int cudaMallocManaged(Pointer devPtr, long size, int flags)
+    {
+      return checkResult(cudaMallocManagedNative(devPtr, size, flags));
+    }
+    private static native int cudaMallocManagedNative(Pointer devPtr, long size, int flags);
 
 
     /**
@@ -3709,7 +3806,7 @@ public class JCuda
      * <div>
      *   <p>[C++ API] Allocates page-locked memory
      *     on the host  Allocates <tt>size</tt> bytes of host memory that is
-     *     page-locked and accessible to the device. The jcuda.driver tracks the virtual
+     *     page-locked and accessible to the device. The driver tracks the virtual
      *     memory ranges allocated
      *     with this function and automatically
      *     accelerates calls to functions such as cudaMemcpy(). Since the memory
@@ -6061,16 +6158,16 @@ public class JCuda
     private static native cudaChannelFormatDesc cudaCreateChannelDescNative(int x, int y, int z, int w, int cudaChannelFormatKind_f);
 
     /**
-     * Returns the last error from a jcuda.runtime call.
+     * Returns the last error from a runtime call.
      * 
      * <pre>
      * cudaError_t cudaGetLastError (
      *      void )
      * </pre>
      * <div>
-     *   <p>Returns the last error from a jcuda.runtime
+     *   <p>Returns the last error from a runtime
      *     call.  Returns the last error that has been produced by any of the
-     *     jcuda.runtime calls in
+     *     runtime calls in
      *     the same host thread and resets it to
      *     cudaSuccess.
      *   </p>
@@ -6111,16 +6208,16 @@ public class JCuda
 
 
     /**
-     * Returns the last error from a jcuda.runtime call.
+     * Returns the last error from a runtime call.
      * 
      * <pre>
      * cudaError_t cudaPeekAtLastError (
      *      void )
      * </pre>
      * <div>
-     *   <p>Returns the last error from a jcuda.runtime
+     *   <p>Returns the last error from a runtime
      *     call.  Returns the last error that has been produced by any of the
-     *     jcuda.runtime calls in
+     *     runtime calls in
      *     the same host thread. Note that this call
      *     does not reset the error to cudaSuccess like cudaGetLastError().
      *   </p>
@@ -6159,6 +6256,26 @@ public class JCuda
     }
     private static native int cudaPeekAtLastErrorNative();
 
+    /**
+     * <code><pre>
+     * \brief Returns the string representation of an error code enum name
+     *
+     * Returns a string containing the name of an error code in the enum, or NULL
+     * if the error code is not valid.
+     *
+     * \param error - Error code to convert to string
+     *
+     * \return
+     * \p char* pointer to a NULL-terminated string, or NULL if the error code is not valid.
+     *
+     * \sa ::cudaGetErrorString, ::cudaGetLastError, ::cudaPeekAtLastError, ::cudaError
+     * </pre></code>
+     */
+    public static String cudaGetErrorName(int error)
+    {
+        return cudaGetErrorNameNative(error);
+    }
+    private static native String cudaGetErrorNameNative(int error);
 
     /**
      * Returns the message string from an error code.
@@ -6195,6 +6312,7 @@ public class JCuda
     }
     private static native String cudaGetErrorStringNative(int error);
 
+    
     /**
      * Create an asynchronous stream.
      * 
@@ -6566,6 +6684,13 @@ public class JCuda
     }
     private static native int cudaStreamQueryNative(cudaStream_t stream);
 
+    
+    public static int cudaStreamAttachMemAsync(cudaStream_t stream, Pointer devPtr, long length, int flags)
+    {
+      return checkResult(cudaStreamAttachMemAsyncNative(stream, devPtr, length, flags));
+    }    
+    private static native int cudaStreamAttachMemAsyncNative(cudaStream_t stream, Pointer devPtr, long length, int flags);
+    
 
     /**
      * [C++ API] Creates an event object with the specified flags
@@ -7063,7 +7188,7 @@ public class JCuda
      * </pre>
      * <div>
      *   <p>Set resource limits.  Setting <tt>limit</tt> to <tt>value</tt> is a request by the application to
-     *     update the current limit maintained by the device. The jcuda.driver is free
+     *     update the current limit maintained by the device. The driver is free
      *     to modify the requested
      *     value to meet h/w requirements (this
      *     could be clamping to minimum or maximum values, rounding up to nearest
@@ -7124,14 +7249,14 @@ public class JCuda
      *       <p>cudaLimitDevRuntimeSyncDepth
      *         controls the maximum nesting depth of a grid at which a thread can
      *         safely call cudaDeviceSynchronize(). Setting this limit must be
-     *         performed before any launch of a kernel that uses the device jcuda.runtime
+     *         performed before any launch of a kernel that uses the device runtime
      *         and calls cudaDeviceSynchronize() above the default sync depth, two
      *         levels of grids. Calls to cudaDeviceSynchronize() will fail with error
      *         code cudaErrorSyncDepthExceeded if the limitation is violated. This
      *         limit can be set smaller than the default or up the maximum launch
      *         depth of 24. When
      *         setting this limit, keep in mind
-     *         that additional levels of sync depth require the jcuda.runtime to reserve
+     *         that additional levels of sync depth require the runtime to reserve
      *         large amounts of device
      *         memory which can no longer be
      *         used for user allocations. If these reservations of device memory fail,
@@ -7148,19 +7273,19 @@ public class JCuda
      *   <ul>
      *     <li>
      *       <p>cudaLimitDevRuntimePendingLaunchCount
-     *         controls the maximum number of outstanding device jcuda.runtime launches that
+     *         controls the maximum number of outstanding device runtime launches that
      *         can be made from the current device. A grid is outstanding
      *         from the point of launch up
-     *         until the grid is known to have been completed. Device jcuda.runtime launches
+     *         until the grid is known to have been completed. Device runtime launches
      *         which violate this limitation
      *         fail and return
      *         cudaErrorLaunchPendingCountExceeded when cudaGetLastError() is called
      *         after launch. If more pending launches than the default (2048 launches)
      *         are needed for a module using the device
-     *         jcuda.runtime, this limit can be
+     *         runtime, this limit can be
      *         increased. Keep in mind that being able to sustain additional pending
      *         launches will require the
-     *         jcuda.runtime to reserve larger
+     *         runtime to reserve larger
      *         amounts of device memory upfront which can no longer be used for
      *         allocations. If these reservations
      *         fail, cudaDeviceSetLimit will
@@ -7229,13 +7354,13 @@ public class JCuda
      *     </li>
      *     <li>
      *       <p>cudaLimitDevRuntimeSyncDepth:
-     *         maximum grid depth at which a thread can isssue the device jcuda.runtime call
+     *         maximum grid depth at which a thread can isssue the device runtime call
      *         cudaDeviceSynchronize() to wait on child grid launches to complete.
      *       </p>
      *     </li>
      *     <li>
      *       <p>cudaLimitDevRuntimePendingLaunchCount:
-     *         maximum number of outstanding device jcuda.runtime launches.
+     *         maximum number of outstanding device runtime launches.
      *       </p>
      *     </li>
      *   </ul>
@@ -7276,7 +7401,7 @@ public class JCuda
      *     memory use the
      *     same hardware resources, this returns
      *     through <tt>pCacheConfig</tt> the preferred cache configuration for
-     *     the current device. This is only a preference. The jcuda.runtime will use
+     *     the current device. This is only a preference. The runtime will use
      *     the requested configuration
      *     if possible, but it is free to choose a
      *     different configuration if required to execute functions.
@@ -7486,7 +7611,7 @@ public class JCuda
      *     memory use the same
      *     hardware resources, this sets through
      *     <tt>cacheConfig</tt> the preferred cache configuration for the current
-     *     device. This is only a preference. The jcuda.runtime will use the requested
+     *     device. This is only a preference. The runtime will use the requested
      *     configuration
      *     if possible, but it is free to choose a
      *     different configuration if required to execute the function. Any
@@ -7994,7 +8119,7 @@ public class JCuda
      *     which should be used instead.
      *   </p>
      *   <p>Setting <tt>limit</tt> to <tt>value</tt> is a request by the application to update the current limit
-     *     maintained by the device. The jcuda.driver is free to modify the requested
+     *     maintained by the device. The driver is free to modify the requested
      *     value to meet h/w requirements (this
      *     could be clamping to minimum or maximum values, rounding up to nearest
      *     element size,
@@ -8091,7 +8216,7 @@ public class JCuda
      *   </p>
      *   <p>On devices where the L1 cache and shared
      *     memory use the same hardware resources, this returns through <tt>pCacheConfig</tt> the preferred cache configuration for the current
-     *     device. This is only a preference. The jcuda.runtime will use the requested
+     *     device. This is only a preference. The runtime will use the requested
      *     configuration
      *     if possible, but it is free to choose a
      *     different configuration if required to execute functions.
@@ -8160,7 +8285,7 @@ public class JCuda
      *   </p>
      *   <p>On devices where the L1 cache and shared
      *     memory use the same hardware resources, this sets through <tt>cacheConfig</tt> the preferred cache configuration for the current
-     *     device. This is only a preference. The jcuda.runtime will use the requested
+     *     device. This is only a preference. The runtime will use the requested
      *     configuration
      *     if possible, but it is free to choose a
      *     different configuration if required to execute the function. Any
@@ -9549,6 +9674,8 @@ public class JCuda
      * @see JCuda#cudaSetDoubleForDevice
      * @see JCuda#cudaSetDoubleForHost
      * @see JCuda#cudaSetupArgument
+     * 
+     * @deprecated This function is deprecated as of CUDA 7.0
      */    
     public static int cudaConfigureCall(dim3 gridDim, dim3 blockDim, long sharedMem, cudaStream_t stream)
     {
@@ -9596,6 +9723,8 @@ public class JCuda
      * @see JCuda#cudaSetDoubleForDevice
      * @see JCuda#cudaSetDoubleForHost
      * @see JCuda#cudaSetupArgument
+     * 
+     * @deprecated This function is deprecated as of CUDA 7.0
      */    
     public static int cudaSetupArgument(Pointer arg, long size, long offset)
     {
@@ -10360,16 +10489,16 @@ public class JCuda
 
 
     /**
-     * Returns the CUDA jcuda.driver version.
+     * Returns the CUDA driver version.
      * 
      * <pre>
      * cudaError_t cudaDriverGetVersion (
      *      int* driverVersion )
      * </pre>
      * <div>
-     *   <p>Returns the CUDA jcuda.driver version.  Returns
+     *   <p>Returns the CUDA driver version.  Returns
      *     in <tt>*driverVersion</tt> the version number of the installed CUDA
-     *     jcuda.driver. If no jcuda.driver is installed, then 0 is returned as the jcuda.driver
+     *     driver. If no driver is installed, then 0 is returned as the driver
      *     version (via
      *     <tt>driverVersion</tt>). This function
      *     automatically returns cudaErrorInvalidValue if the <tt>driverVersion</tt>
@@ -10385,7 +10514,7 @@ public class JCuda
      *   </p>
      * </div>
      * 
-     * @param driverVersion Returns the CUDA jcuda.driver version.
+     * @param driverVersion Returns the CUDA driver version.
      * 
      * @return cudaSuccess, cudaErrorInvalidValue
      * 

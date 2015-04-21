@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -46,7 +46,7 @@ public class CUfunction_attribute
     /**
      * The size in bytes of statically-allocated shared memory required by
      * this function. This does not include dynamically-allocated shared
-     * memory requested by the user at jcuda.runtime.
+     * memory requested by the user at runtime.
      */
     public static final int CU_FUNC_ATTRIBUTE_SHARED_SIZE_BYTES = 1;
 
@@ -76,7 +76,13 @@ public class CUfunction_attribute
      */
     public static final int CU_FUNC_ATTRIBUTE_BINARY_VERSION = 6;
 
-    //public static final int CU_FUNC_ATTRIBUTE_MAX = 7;
+    /**
+     * The attribute to indicate whether the function has been compiled with 
+     * user specified option "-Xptxas --dlcm=ca" set .
+     */
+    public static final int CU_FUNC_ATTRIBUTE_CACHE_MODE_CA = 7;
+    
+    //public static final int CU_FUNC_ATTRIBUTE_MAX = 8;
 
 
     /**
@@ -96,6 +102,7 @@ public class CUfunction_attribute
             case CU_FUNC_ATTRIBUTE_NUM_REGS: return "CU_FUNC_ATTRIBUTE_NUM_REGS";
             case CU_FUNC_ATTRIBUTE_PTX_VERSION: return "CU_FUNC_ATTRIBUTE_PTX_VERSION";
             case CU_FUNC_ATTRIBUTE_BINARY_VERSION: return "CU_FUNC_ATTRIBUTE_BINARY_VERSION";
+            case CU_FUNC_ATTRIBUTE_CACHE_MODE_CA: return "CU_FUNC_ATTRIBUTE_CACHE_MODE_CA";
         }
         return "INVALID CUfunction_attribute: "+n;
     }

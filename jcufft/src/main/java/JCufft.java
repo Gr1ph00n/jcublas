@@ -187,6 +187,9 @@ public class JCufft
      *
      * JCUFFT_INTERNAL_ERROR If an internal JCufft error occurred
      * <pre>
+     * NOTE: Batch sizes other than 1 for cufftPlan1d() have been 
+     * deprecated as of CUDA 6.0RC. Use cufftPlanMany() for 
+     * multiple batch execution.
      */
     public static int cufftPlan1d(cufftHandle plan, int nx, int type, int batch)
     {
@@ -468,7 +471,6 @@ public class JCufft
     }
     private static native int cufftCreateNative(cufftHandle cufftHandle);
 
-    
     
     public static int cufftGetSize1d(cufftHandle handle, 
         int nx, 

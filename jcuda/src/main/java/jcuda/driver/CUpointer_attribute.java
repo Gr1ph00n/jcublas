@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -59,6 +59,21 @@ public class CUpointer_attribute
      */
     public static final int CU_POINTER_ATTRIBUTE_P2P_TOKENS = 5;
     
+    /** 
+     * Synchronize every synchronous memory operation initiated on this region 
+     */
+    public static final int CU_POINTER_ATTRIBUTE_SYNC_MEMOPS = 6;
+    
+    /** 
+     * A process-wide unique ID for an allocated memory region
+     */
+    public static final int CU_POINTER_ATTRIBUTE_BUFFER_ID = 7;
+    
+    /** 
+     * Indicates if the pointer points to managed memory 
+     */
+    public static final int CU_POINTER_ATTRIBUTE_IS_MANAGED = 8;
+    
     /**
      * Returns the String identifying the given CUpointer_attribute
      *
@@ -74,6 +89,9 @@ public class CUpointer_attribute
             case CU_POINTER_ATTRIBUTE_DEVICE_POINTER : return "CU_POINTER_ATTRIBUTE_DEVICE_POINTER";
             case CU_POINTER_ATTRIBUTE_HOST_POINTER : return "CU_POINTER_ATTRIBUTE_HOST_POINTER";
             case CU_POINTER_ATTRIBUTE_P2P_TOKENS : return "CU_POINTER_ATTRIBUTE_P2P_TOKENS";
+            case CU_POINTER_ATTRIBUTE_SYNC_MEMOPS : return "CU_POINTER_ATTRIBUTE_SYNC_MEMOPS";
+            case CU_POINTER_ATTRIBUTE_BUFFER_ID : return "CU_POINTER_ATTRIBUTE_BUFFER_ID";
+            case CU_POINTER_ATTRIBUTE_IS_MANAGED : return "CU_POINTER_ATTRIBUTE_IS_MANAGED";
         }
         return "INVALID CUpointer_attribute: "+n;
     }

@@ -60,7 +60,7 @@ public class cusparseFillMode
             case CUSPARSE_FILL_MODE_LOWER: return "CUSPARSE_FILL_MODE_LOWER";
             case CUSPARSE_FILL_MODE_UPPER: return "CUSPARSE_FILL_MODE_UPPER";
         }
-        return "INVALID cusparseFillMode";
+        return "INVALID cusparseFillMode: "+n;
     }
 }
 

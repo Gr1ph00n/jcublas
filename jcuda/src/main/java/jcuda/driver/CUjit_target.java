@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -40,43 +40,63 @@ public class CUjit_target
     /**
      * Compute device class 1.0
      */
-    public static final int CU_TARGET_COMPUTE_10 = 0;
-
+    public static final int CU_TARGET_COMPUTE_10 = 10;
 
     /**
      * Compute device class 1.1
      */
-    public static final int CU_TARGET_COMPUTE_11 = 1;
+    public static final int CU_TARGET_COMPUTE_11 = 11;
 
     /**
      * Compute device class 1.2
      */
-    public static final int CU_TARGET_COMPUTE_12 = 2;
+    public static final int CU_TARGET_COMPUTE_12 = 12;
 
     /**
      * Compute device class 1.3
      */
-    public static final int CU_TARGET_COMPUTE_13 = 3;
+    public static final int CU_TARGET_COMPUTE_13 = 13;
 
     /**
      * Compute device class 2.0
      */
-    public static final int CU_TARGET_COMPUTE_20 = 4;
+    public static final int CU_TARGET_COMPUTE_20 = 20;
 
     /**
      * Compute device class 2.1
      */
-    public static final int CU_TARGET_COMPUTE_21 = 5;
+    public static final int CU_TARGET_COMPUTE_21 = 21;
     
     /** 
      * Compute device class 3.0 
      */
-    public static final int CU_TARGET_COMPUTE_30 = 6;
+    public static final int CU_TARGET_COMPUTE_30 = 30;
+    
+    /** 
+     * Compute device class 3.2 
+     */
+    public static final int CU_TARGET_COMPUTE_32 = 32;
     
     /**
      * Compute device class 3.5 
      */
-    public static final int CU_TARGET_COMPUTE_35 = 7;
+    public static final int CU_TARGET_COMPUTE_35 = 35;
+    
+    /**
+     * Compute device class 3.7 
+     */
+    public static final int CU_TARGET_COMPUTE_37 = 37;
+    
+    /**
+     * Compute device class 5.0 
+     */
+    public static final int CU_TARGET_COMPUTE_50 = 50;
+
+    /**
+     * Compute device class 5.2 
+     */
+    public static final int CU_TARGET_COMPUTE_52 = 52;
+    
     /**
      * Returns the String identifying the given CUjit_target
      *
@@ -94,7 +114,11 @@ public class CUjit_target
             case CU_TARGET_COMPUTE_20: return "CU_TARGET_COMPUTE_20";
             case CU_TARGET_COMPUTE_21: return "CU_TARGET_COMPUTE_21";
             case CU_TARGET_COMPUTE_30: return "CU_TARGET_COMPUTE_30";
+            case CU_TARGET_COMPUTE_32: return "CU_TARGET_COMPUTE_32";
             case CU_TARGET_COMPUTE_35: return "CU_TARGET_COMPUTE_35";
+            case CU_TARGET_COMPUTE_37: return "CU_TARGET_COMPUTE_37";
+            case CU_TARGET_COMPUTE_50: return "CU_TARGET_COMPUTE_50";
+            case CU_TARGET_COMPUTE_52: return "CU_TARGET_COMPUTE_52";
         }
         return "INVALID CUjit_target: "+n;
     }

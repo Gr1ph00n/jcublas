@@ -60,7 +60,7 @@ public class cusparseDirection
             case CUSPARSE_DIRECTION_ROW: return "CUSPARSE_DIRECTION_ROW";
             case CUSPARSE_DIRECTION_COLUMN: return "CUSPARSE_DIRECTION_COLUMN";
         }
-        return "INVALID cusparseDirection";
+        return "INVALID cusparseDirection: "+n;
     }
 }
 

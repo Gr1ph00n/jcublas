@@ -71,7 +71,7 @@ public class cusparseMatrixType
             case CUSPARSE_MATRIX_TYPE_HERMITIAN: return "CUSPARSE_MATRIX_TYPE_HERMITIAN";
             case CUSPARSE_MATRIX_TYPE_TRIANGULAR: return "CUSPARSE_MATRIX_TYPE_TRIANGULAR";
         }
-        return "INVALID cusparseMatrixType";
+        return "INVALID cusparseMatrixType: "+n;
     }
 }
 

@@ -79,6 +79,12 @@ public class cusparseStatus
     public static final int CUSPARSE_STATUS_MATRIX_TYPE_NOT_SUPPORTED = 8;
     
     /**
+     * An entry of the matrix is either structural zero or numerical
+     * zero (singular block)
+     */
+    public static final int CUSPARSE_STATUS_ZERO_PIVOT = 9;
+    
+    /**
      * An internal JCusparse error occurred 
      */
     public static final int JCUSPARSE_STATUS_INTERNAL_ERROR = -1;
@@ -106,9 +112,10 @@ public class cusparseStatus
             case CUSPARSE_STATUS_EXECUTION_FAILED: return "CUSPARSE_STATUS_EXECUTION_FAILED";
             case CUSPARSE_STATUS_INTERNAL_ERROR: return "CUSPARSE_STATUS_INTERNAL_ERROR";
             case CUSPARSE_STATUS_MATRIX_TYPE_NOT_SUPPORTED: return "CUSPARSE_STATUS_MATRIX_TYPE_NOT_SUPPORTED";
+            case CUSPARSE_STATUS_ZERO_PIVOT: return "CUSPARSE_STATUS_ZERO_PIVOT";
             case JCUSPARSE_STATUS_INTERNAL_ERROR: return "JCUSPARSE_STATUS_INTERNAL_ERROR";
         }
-        return "INVALID cusparseStatus";
+        return "INVALID cusparseStatus: "+n;
     }
 }
 

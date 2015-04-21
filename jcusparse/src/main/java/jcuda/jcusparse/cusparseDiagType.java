@@ -63,7 +63,7 @@ public class cusparseDiagType
             case CUSPARSE_DIAG_TYPE_NON_UNIT: return "CUSPARSE_DIAG_TYPE_NON_UNIT";
             case CUSPARSE_DIAG_TYPE_UNIT: return "CUSPARSE_DIAG_TYPE_UNIT";
         }
-        return "INVALID cusparseDiagType";
+        return "INVALID cusparseDiagType: "+n;
     }
 }
 

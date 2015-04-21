@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -203,7 +203,7 @@ public class cudaDeviceAttr
     public static final int cudaDevAttrPciDeviceId                    = 34; 
     
     /**
-     * Device is using TCC jcuda.driver model
+     * Device is using TCC driver model 
      */
     public static final int cudaDevAttrTccDriver                      = 35; 
     
@@ -417,6 +417,41 @@ public class cudaDeviceAttr
      */
     public static final int cudaDevAttrStreamPrioritiesSupported      = 78;
     
+    /** 
+     * Device supports caching globals in L1 
+     */
+    public static final int cudaDevAttrGlobalL1CacheSupported         = 79;
+    
+    /** 
+     * Device supports caching locals in L1 
+     */
+    public static final int cudaDevAttrLocalL1CacheSupported          = 80;
+    
+    /** 
+     * Maximum shared memory available per multiprocessor in bytes 
+     */
+    public static final int cudaDevAttrMaxSharedMemoryPerMultiprocessor = 81;
+    
+    /** 
+     * Maximum number of 32-bit registers available per multiprocessor 
+     */
+    public static final int cudaDevAttrMaxRegistersPerMultiprocessor  = 82;
+    
+    /** 
+     * Device can allocate managed memory on this system 
+     */
+    public static final int cudaDevAttrManagedMemory                  = 83; 
+    
+    /**
+     * Device is on a multi-GPU board 
+     */
+    public static final int cudaDevAttrIsMultiGpuBoard                = 84; 
+    
+    /** 
+     * Unique identifier for a group of devices on the same multi-GPU board 
+     */
+    public static final int cudaDevAttrMultiGpuBoardGroupID           = 85;  
+    
     /**
      * Returns the String identifying the given cudaDeviceAttr
      *
@@ -427,83 +462,90 @@ public class cudaDeviceAttr
     {
         switch (n)
         {
-            case cudaDevAttrMaxThreadsPerBlock             : return"cudaDevAttrMaxThreadsPerBlock";
-            case cudaDevAttrMaxBlockDimX                   : return"cudaDevAttrMaxBlockDimX";
-            case cudaDevAttrMaxBlockDimY                   : return"cudaDevAttrMaxBlockDimY";
-            case cudaDevAttrMaxBlockDimZ                   : return"cudaDevAttrMaxBlockDimZ";
-            case cudaDevAttrMaxGridDimX                    : return"cudaDevAttrMaxGridDimX";
-            case cudaDevAttrMaxGridDimY                    : return"cudaDevAttrMaxGridDimY";
-            case cudaDevAttrMaxGridDimZ                    : return"cudaDevAttrMaxGridDimZ";
-            case cudaDevAttrMaxSharedMemoryPerBlock        : return"cudaDevAttrMaxSharedMemoryPerBlock";
-            case cudaDevAttrTotalConstantMemory            : return"cudaDevAttrTotalConstantMemory";
-            case cudaDevAttrWarpSize                       : return"cudaDevAttrWarpSize";
-            case cudaDevAttrMaxPitch                       : return"cudaDevAttrMaxPitch";
-            case cudaDevAttrMaxRegistersPerBlock           : return"cudaDevAttrMaxRegistersPerBlock";
-            case cudaDevAttrClockRate                      : return"cudaDevAttrClockRate";
-            case cudaDevAttrTextureAlignment               : return"cudaDevAttrTextureAlignment";
-            case cudaDevAttrGpuOverlap                     : return"cudaDevAttrGpuOverlap";
-            case cudaDevAttrMultiProcessorCount            : return"cudaDevAttrMultiProcessorCount";
-            case cudaDevAttrKernelExecTimeout              : return"cudaDevAttrKernelExecTimeout";
-            case cudaDevAttrIntegrated                     : return"cudaDevAttrIntegrated";
-            case cudaDevAttrCanMapHostMemory               : return"cudaDevAttrCanMapHostMemory";
-            case cudaDevAttrComputeMode                    : return"cudaDevAttrComputeMode";
-            case cudaDevAttrMaxTexture1DWidth              : return"cudaDevAttrMaxTexture1DWidth";
-            case cudaDevAttrMaxTexture2DWidth              : return"cudaDevAttrMaxTexture2DWidth";
-            case cudaDevAttrMaxTexture2DHeight             : return"cudaDevAttrMaxTexture2DHeight";
-            case cudaDevAttrMaxTexture3DWidth              : return"cudaDevAttrMaxTexture3DWidth";
-            case cudaDevAttrMaxTexture3DHeight             : return"cudaDevAttrMaxTexture3DHeight";
-            case cudaDevAttrMaxTexture3DDepth              : return"cudaDevAttrMaxTexture3DDepth";
-            case cudaDevAttrMaxTexture2DLayeredWidth       : return"cudaDevAttrMaxTexture2DLayeredWidth";
-            case cudaDevAttrMaxTexture2DLayeredHeight      : return"cudaDevAttrMaxTexture2DLayeredHeight";
-            case cudaDevAttrMaxTexture2DLayeredLayers      : return"cudaDevAttrMaxTexture2DLayeredLayers";
-            case cudaDevAttrSurfaceAlignment               : return"cudaDevAttrSurfaceAlignment";
-            case cudaDevAttrConcurrentKernels              : return"cudaDevAttrConcurrentKernels";
-            case cudaDevAttrEccEnabled                     : return"cudaDevAttrEccEnabled";
-            case cudaDevAttrPciBusId                       : return"cudaDevAttrPciBusId";
-            case cudaDevAttrPciDeviceId                    : return"cudaDevAttrPciDeviceId";
-            case cudaDevAttrTccDriver                      : return"cudaDevAttrTccDriver";
-            case cudaDevAttrMemoryClockRate                : return"cudaDevAttrMemoryClockRate";
-            case cudaDevAttrGlobalMemoryBusWidth           : return"cudaDevAttrGlobalMemoryBusWidth";
-            case cudaDevAttrL2CacheSize                    : return"cudaDevAttrL2CacheSize";
-            case cudaDevAttrMaxThreadsPerMultiProcessor    : return"cudaDevAttrMaxThreadsPerMultiProcessor";
-            case cudaDevAttrAsyncEngineCount               : return"cudaDevAttrAsyncEngineCount";
-            case cudaDevAttrUnifiedAddressing              : return"cudaDevAttrUnifiedAddressing";
-            case cudaDevAttrMaxTexture1DLayeredWidth       : return"cudaDevAttrMaxTexture1DLayeredWidth";
-            case cudaDevAttrMaxTexture1DLayeredLayers      : return"cudaDevAttrMaxTexture1DLayeredLayers";
-            case cudaDevAttrMaxTexture2DGatherWidth        : return"cudaDevAttrMaxTexture2DGatherWidth";
-            case cudaDevAttrMaxTexture2DGatherHeight       : return"cudaDevAttrMaxTexture2DGatherHeight";
-            case cudaDevAttrMaxTexture3DWidthAlt           : return"cudaDevAttrMaxTexture3DWidthAlt";
-            case cudaDevAttrMaxTexture3DHeightAlt          : return"cudaDevAttrMaxTexture3DHeightAlt";
-            case cudaDevAttrMaxTexture3DDepthAlt           : return"cudaDevAttrMaxTexture3DDepthAlt";
-            case cudaDevAttrPciDomainId                    : return"cudaDevAttrPciDomainId";
-            case cudaDevAttrTexturePitchAlignment          : return"cudaDevAttrTexturePitchAlignment";
-            case cudaDevAttrMaxTextureCubemapWidth         : return"cudaDevAttrMaxTextureCubemapWidth";
-            case cudaDevAttrMaxTextureCubemapLayeredWidth  : return"cudaDevAttrMaxTextureCubemapLayeredWidth";
-            case cudaDevAttrMaxTextureCubemapLayeredLayers : return"cudaDevAttrMaxTextureCubemapLayeredLayers";
-            case cudaDevAttrMaxSurface1DWidth              : return"cudaDevAttrMaxSurface1DWidth";
-            case cudaDevAttrMaxSurface2DWidth              : return"cudaDevAttrMaxSurface2DWidth";
-            case cudaDevAttrMaxSurface2DHeight             : return"cudaDevAttrMaxSurface2DHeight";
-            case cudaDevAttrMaxSurface3DWidth              : return"cudaDevAttrMaxSurface3DWidth";
-            case cudaDevAttrMaxSurface3DHeight             : return"cudaDevAttrMaxSurface3DHeight";
-            case cudaDevAttrMaxSurface3DDepth              : return"cudaDevAttrMaxSurface3DDepth";
-            case cudaDevAttrMaxSurface1DLayeredWidth       : return"cudaDevAttrMaxSurface1DLayeredWidth";
-            case cudaDevAttrMaxSurface1DLayeredLayers      : return"cudaDevAttrMaxSurface1DLayeredLayers";
-            case cudaDevAttrMaxSurface2DLayeredWidth       : return"cudaDevAttrMaxSurface2DLayeredWidth";
-            case cudaDevAttrMaxSurface2DLayeredHeight      : return"cudaDevAttrMaxSurface2DLayeredHeight";
-            case cudaDevAttrMaxSurface2DLayeredLayers      : return"cudaDevAttrMaxSurface2DLayeredLayers";
-            case cudaDevAttrMaxSurfaceCubemapWidth         : return"cudaDevAttrMaxSurfaceCubemapWidth";
-            case cudaDevAttrMaxSurfaceCubemapLayeredWidth  : return"cudaDevAttrMaxSurfaceCubemapLayeredWidth";
-            case cudaDevAttrMaxSurfaceCubemapLayeredLayers : return"cudaDevAttrMaxSurfaceCubemapLayeredLayers";
-            case cudaDevAttrMaxTexture1DLinearWidth        : return"cudaDevAttrMaxTexture1DLinearWidth";
-            case cudaDevAttrMaxTexture2DLinearWidth        : return"cudaDevAttrMaxTexture2DLinearWidth";
-            case cudaDevAttrMaxTexture2DLinearHeight       : return"cudaDevAttrMaxTexture2DLinearHeight";
-            case cudaDevAttrMaxTexture2DLinearPitch        : return"cudaDevAttrMaxTexture2DLinearPitch";
-            case cudaDevAttrMaxTexture2DMipmappedWidth     : return"cudaDevAttrMaxTexture2DMipmappedWidth";
-            case cudaDevAttrMaxTexture2DMipmappedHeight    : return"cudaDevAttrMaxTexture2DMipmappedHeight";
-            case cudaDevAttrComputeCapabilityMajor         : return"cudaDevAttrComputeCapabilityMajor";
-            case cudaDevAttrComputeCapabilityMinor         : return"cudaDevAttrComputeCapabilityMinor";
-            case cudaDevAttrMaxTexture1DMipmappedWidth     : return"cudaDevAttrMaxTexture1DMipmappedWidth";
-            case cudaDevAttrStreamPrioritiesSupported      : return"cudaDevAttrStreamPrioritiesSupported";
+            case cudaDevAttrMaxThreadsPerBlock               : return "cudaDevAttrMaxThreadsPerBlock";
+            case cudaDevAttrMaxBlockDimX                     : return "cudaDevAttrMaxBlockDimX";
+            case cudaDevAttrMaxBlockDimY                     : return "cudaDevAttrMaxBlockDimY";
+            case cudaDevAttrMaxBlockDimZ                     : return "cudaDevAttrMaxBlockDimZ";
+            case cudaDevAttrMaxGridDimX                      : return "cudaDevAttrMaxGridDimX";
+            case cudaDevAttrMaxGridDimY                      : return "cudaDevAttrMaxGridDimY";
+            case cudaDevAttrMaxGridDimZ                      : return "cudaDevAttrMaxGridDimZ";
+            case cudaDevAttrMaxSharedMemoryPerBlock          : return "cudaDevAttrMaxSharedMemoryPerBlock";
+            case cudaDevAttrTotalConstantMemory              : return "cudaDevAttrTotalConstantMemory";
+            case cudaDevAttrWarpSize                         : return "cudaDevAttrWarpSize";
+            case cudaDevAttrMaxPitch                         : return "cudaDevAttrMaxPitch";
+            case cudaDevAttrMaxRegistersPerBlock             : return "cudaDevAttrMaxRegistersPerBlock";
+            case cudaDevAttrClockRate                        : return "cudaDevAttrClockRate";
+            case cudaDevAttrTextureAlignment                 : return "cudaDevAttrTextureAlignment";
+            case cudaDevAttrGpuOverlap                       : return "cudaDevAttrGpuOverlap";
+            case cudaDevAttrMultiProcessorCount              : return "cudaDevAttrMultiProcessorCount";
+            case cudaDevAttrKernelExecTimeout                : return "cudaDevAttrKernelExecTimeout";
+            case cudaDevAttrIntegrated                       : return "cudaDevAttrIntegrated";
+            case cudaDevAttrCanMapHostMemory                 : return "cudaDevAttrCanMapHostMemory";
+            case cudaDevAttrComputeMode                      : return "cudaDevAttrComputeMode";
+            case cudaDevAttrMaxTexture1DWidth                : return "cudaDevAttrMaxTexture1DWidth";
+            case cudaDevAttrMaxTexture2DWidth                : return "cudaDevAttrMaxTexture2DWidth";
+            case cudaDevAttrMaxTexture2DHeight               : return "cudaDevAttrMaxTexture2DHeight";
+            case cudaDevAttrMaxTexture3DWidth                : return "cudaDevAttrMaxTexture3DWidth";
+            case cudaDevAttrMaxTexture3DHeight               : return "cudaDevAttrMaxTexture3DHeight";
+            case cudaDevAttrMaxTexture3DDepth                : return "cudaDevAttrMaxTexture3DDepth";
+            case cudaDevAttrMaxTexture2DLayeredWidth         : return "cudaDevAttrMaxTexture2DLayeredWidth";
+            case cudaDevAttrMaxTexture2DLayeredHeight        : return "cudaDevAttrMaxTexture2DLayeredHeight";
+            case cudaDevAttrMaxTexture2DLayeredLayers        : return "cudaDevAttrMaxTexture2DLayeredLayers";
+            case cudaDevAttrSurfaceAlignment                 : return "cudaDevAttrSurfaceAlignment";
+            case cudaDevAttrConcurrentKernels                : return "cudaDevAttrConcurrentKernels";
+            case cudaDevAttrEccEnabled                       : return "cudaDevAttrEccEnabled";
+            case cudaDevAttrPciBusId                         : return "cudaDevAttrPciBusId";
+            case cudaDevAttrPciDeviceId                      : return "cudaDevAttrPciDeviceId";
+            case cudaDevAttrTccDriver                        : return "cudaDevAttrTccDriver";
+            case cudaDevAttrMemoryClockRate                  : return "cudaDevAttrMemoryClockRate";
+            case cudaDevAttrGlobalMemoryBusWidth             : return "cudaDevAttrGlobalMemoryBusWidth";
+            case cudaDevAttrL2CacheSize                      : return "cudaDevAttrL2CacheSize";
+            case cudaDevAttrMaxThreadsPerMultiProcessor      : return "cudaDevAttrMaxThreadsPerMultiProcessor";
+            case cudaDevAttrAsyncEngineCount                 : return "cudaDevAttrAsyncEngineCount";
+            case cudaDevAttrUnifiedAddressing                : return "cudaDevAttrUnifiedAddressing";
+            case cudaDevAttrMaxTexture1DLayeredWidth         : return "cudaDevAttrMaxTexture1DLayeredWidth";
+            case cudaDevAttrMaxTexture1DLayeredLayers        : return "cudaDevAttrMaxTexture1DLayeredLayers";
+            case cudaDevAttrMaxTexture2DGatherWidth          : return "cudaDevAttrMaxTexture2DGatherWidth";
+            case cudaDevAttrMaxTexture2DGatherHeight         : return "cudaDevAttrMaxTexture2DGatherHeight";
+            case cudaDevAttrMaxTexture3DWidthAlt             : return "cudaDevAttrMaxTexture3DWidthAlt";
+            case cudaDevAttrMaxTexture3DHeightAlt            : return "cudaDevAttrMaxTexture3DHeightAlt";
+            case cudaDevAttrMaxTexture3DDepthAlt             : return "cudaDevAttrMaxTexture3DDepthAlt";
+            case cudaDevAttrPciDomainId                      : return "cudaDevAttrPciDomainId";
+            case cudaDevAttrTexturePitchAlignment            : return "cudaDevAttrTexturePitchAlignment";
+            case cudaDevAttrMaxTextureCubemapWidth           : return "cudaDevAttrMaxTextureCubemapWidth";
+            case cudaDevAttrMaxTextureCubemapLayeredWidth    : return "cudaDevAttrMaxTextureCubemapLayeredWidth";
+            case cudaDevAttrMaxTextureCubemapLayeredLayers   : return "cudaDevAttrMaxTextureCubemapLayeredLayers";
+            case cudaDevAttrMaxSurface1DWidth                : return "cudaDevAttrMaxSurface1DWidth";
+            case cudaDevAttrMaxSurface2DWidth                : return "cudaDevAttrMaxSurface2DWidth";
+            case cudaDevAttrMaxSurface2DHeight               : return "cudaDevAttrMaxSurface2DHeight";
+            case cudaDevAttrMaxSurface3DWidth                : return "cudaDevAttrMaxSurface3DWidth";
+            case cudaDevAttrMaxSurface3DHeight               : return "cudaDevAttrMaxSurface3DHeight";
+            case cudaDevAttrMaxSurface3DDepth                : return "cudaDevAttrMaxSurface3DDepth";
+            case cudaDevAttrMaxSurface1DLayeredWidth         : return "cudaDevAttrMaxSurface1DLayeredWidth";
+            case cudaDevAttrMaxSurface1DLayeredLayers        : return "cudaDevAttrMaxSurface1DLayeredLayers";
+            case cudaDevAttrMaxSurface2DLayeredWidth         : return "cudaDevAttrMaxSurface2DLayeredWidth";
+            case cudaDevAttrMaxSurface2DLayeredHeight        : return "cudaDevAttrMaxSurface2DLayeredHeight";
+            case cudaDevAttrMaxSurface2DLayeredLayers        : return "cudaDevAttrMaxSurface2DLayeredLayers";
+            case cudaDevAttrMaxSurfaceCubemapWidth           : return "cudaDevAttrMaxSurfaceCubemapWidth";
+            case cudaDevAttrMaxSurfaceCubemapLayeredWidth    : return "cudaDevAttrMaxSurfaceCubemapLayeredWidth";
+            case cudaDevAttrMaxSurfaceCubemapLayeredLayers   : return "cudaDevAttrMaxSurfaceCubemapLayeredLayers";
+            case cudaDevAttrMaxTexture1DLinearWidth          : return "cudaDevAttrMaxTexture1DLinearWidth";
+            case cudaDevAttrMaxTexture2DLinearWidth          : return "cudaDevAttrMaxTexture2DLinearWidth";
+            case cudaDevAttrMaxTexture2DLinearHeight         : return "cudaDevAttrMaxTexture2DLinearHeight";
+            case cudaDevAttrMaxTexture2DLinearPitch          : return "cudaDevAttrMaxTexture2DLinearPitch";
+            case cudaDevAttrMaxTexture2DMipmappedWidth       : return "cudaDevAttrMaxTexture2DMipmappedWidth";
+            case cudaDevAttrMaxTexture2DMipmappedHeight      : return "cudaDevAttrMaxTexture2DMipmappedHeight";
+            case cudaDevAttrComputeCapabilityMajor           : return "cudaDevAttrComputeCapabilityMajor";
+            case cudaDevAttrComputeCapabilityMinor           : return "cudaDevAttrComputeCapabilityMinor";
+            case cudaDevAttrMaxTexture1DMipmappedWidth       : return "cudaDevAttrMaxTexture1DMipmappedWidth";
+            case cudaDevAttrStreamPrioritiesSupported        : return "cudaDevAttrStreamPrioritiesSupported";
+            case cudaDevAttrGlobalL1CacheSupported           : return "cudaDevAttrGlobalL1CacheSupported";
+            case cudaDevAttrLocalL1CacheSupported            : return "cudaDevAttrLocalL1CacheSupported";
+            case cudaDevAttrMaxSharedMemoryPerMultiprocessor : return "cudaDevAttrMaxSharedMemoryPerMultiprocessor";
+            case cudaDevAttrMaxRegistersPerMultiprocessor    : return "cudaDevAttrMaxRegistersPerMultiprocessor";
+            case cudaDevAttrManagedMemory                    : return "cudaDevAttrManagedMemory";
+            case cudaDevAttrIsMultiGpuBoard                  : return "cudaDevAttrIsMultiGpuBoard";
+            case cudaDevAttrMultiGpuBoardGroupID             : return "cudaDevAttrMultiGpuBoardGroupID";
         }
         return "INVALID cudaDeviceAttr: "+n;
     }

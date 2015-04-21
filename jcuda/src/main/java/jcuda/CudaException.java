@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -30,12 +30,12 @@ package jcuda;
 /**
  * An exception that may be thrown due to a CUDA error. <br />
  * <br />
- * For the JCuda jcuda.runtime API, exceptions may be enabled or disabled using
+ * For the JCuda runtime API, exceptions may be enabled or disabled using
  * {@link jcuda.runtime.JCuda#setExceptionsEnabled(boolean) JCuda#setExceptionsEnabled(boolean)}.
  * If exceptions are enabled, the CUDA binding methods will throw a
  * CudaException if the CUDA function did not return cudaError.cudaSuccess.<br />
  * <br />
- * For the JCuda jcuda.driver API, exceptions may be enabled or disabled using
+ * For the JCuda driver API, exceptions may be enabled or disabled using
  * {@link jcuda.driver.JCudaDriver#setExceptionsEnabled(boolean) JCudaDriver#setExceptionsEnabled(boolean)}.
  * If exceptions are enabled, the CUDA binding methods will throw a
  * CudaException if the CUDA function did not return CUresult.CUDA_SUCCESS.<br />

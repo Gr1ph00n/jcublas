@@ -3,7 +3,7 @@
  * to be used with JCuda
  *
  * Copyright (c) 2008-2012 Marco Hutter - http://www.jcuda.org
- * 
+ *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
  * files (the "Software"), to deal in the Software without
@@ -12,10 +12,10 @@
  * copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following
  * conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -51,14 +51,14 @@ public class JCublas
      * to set a result code that is not cublasStatus.CUBLAS_STATUS_SUCCESS
      */
     private static boolean exceptionsEnabled = false;
-    
+
     /**
      * The last result code that was set by any of the BLAS functions.
-     * This will be stored in the checkResultBLAS() method if 
+     * This will be stored in the checkResultBLAS() method if
      * exceptions are enabled.
      */
     private static int lastResult = cublasStatus.CUBLAS_STATUS_SUCCESS;
-    
+
     /* Private constructor to prevent instantiation */
     private JCublas()
     {
@@ -69,7 +69,7 @@ public class JCublas
     {
         initialize();
     }
-    
+
     /**
      * Initializes the native library. Note that this method
      * does not have to be called explicitly, since it will
@@ -84,7 +84,7 @@ public class JCublas
         }
     }
 
-    
+
 
     /**
      * Set the specified log level for the JCublas library.<br />
@@ -107,26 +107,26 @@ public class JCublas
 
     /**
      * Enables or disables exceptions. By default, the methods of this class
-     * only set the result status which may be queried with 
+     * only set the result status which may be queried with
      * {@link JCublas#cublasGetError()}.
-     * If exceptions are enabled, a CudaException with a detailed error 
-     * message will be thrown if a method is about to set a result code 
+     * If exceptions are enabled, a CudaException with a detailed error
+     * message will be thrown if a method is about to set a result code
      * that is not cublasStatus.CUBLAS_STATUS_SUCCESS
-     * 
+     *
      * @param enabled Whether exceptions are enabled
      */
     public static void setExceptionsEnabled(boolean enabled)
     {
         exceptionsEnabled = enabled;
     }
-    
+
     /**
      * If the given result is different to cublasStatus.CUBLAS_STATUS_SUCCESS
-     * and exceptions have been enabled, this method will throw a 
+     * and exceptions have been enabled, this method will throw a
      * CudaException with an error message that corresponds to the
      * given result code. Otherwise, the given result is simply
      * returned.
-     * 
+     *
      * @param result The result to check
      * @return The result that was given as the parameter
      * @throws CudaException If exceptions have been enabled and
@@ -140,12 +140,12 @@ public class JCublas
         }
         return result;
     }
-    
+
     /**
      * Obtain the current CUBLAS status by calling cublasGetErrorNative,
      * and store the result as the lastResult. If the obtained result
      * code is not cublasStatus.CUBLAS_STATUS_SUCCESS and exceptions
-     * have been enabled, an CudaException will be thrown. 
+     * have been enabled, an CudaException will be thrown.
      */
     private static void checkResultBLAS()
     {
@@ -158,8 +158,8 @@ public class JCublas
             }
         }
     }
-    
-    
+
+
 
 
 
@@ -335,7 +335,7 @@ public class JCublas
      */
     private static native int cublasGetMatrixAsyncNative(int rows, int cols, int elemSize, Pointer A, int lda, Pointer B, int ldb, cudaStream_t stream);
 
-    
+
 
 
 
@@ -728,8 +728,8 @@ public class JCublas
     /*
      * <pre>
      * Set the CUBLAS stream in which all subsequent CUBLAS kernel launches will run.
-     * 
-     * cublasStatus 
+     *
+     * cublasStatus
      * cublasSetKernelStream ( cudaStream_t stream )
      *
      * set the CUBLAS stream in which all subsequent CUBLAS kernel launches will run.
@@ -750,11 +750,11 @@ public class JCublas
     private static native int cublasSetKernelStreamNative(cudaStream_t stream);
 
 
-    /* 
+    /*
      * Wrapper for CUBLAS function.
      * <pre>
-     * cublasStatus 
-     * cublasSetVectorAsync ( int n, int elemSize, const void *x, int incx, 
+     * cublasStatus
+     * cublasSetVectorAsync ( int n, int elemSize, const void *x, int incx,
      *                       void *y, int incy, cudaStream_t stream );
      *
      * cublasSetVectorAsync has the same functionnality as cublasSetVector
@@ -765,7 +765,7 @@ public class JCublas
      * -------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if incx, incy, or elemSize <= 0
-     * CUBLAS_STATUS_MAPPING_ERROR    if an error occurred accessing GPU memory   
+     * CUBLAS_STATUS_MAPPING_ERROR    if an error occurred accessing GPU memory
      * CUBLAS_STATUS_SUCCESS          if the operation completed successfully
      * </pre>
      */
@@ -773,13 +773,13 @@ public class JCublas
     {
         return checkResult(cublasSetVectorAsyncNative(n, elemSize, hostPtr, incx, devicePtr, incy, stream));
     }
-    /* 
+    /*
      * Wrapper for CUBLAS function.
      * <pre>
-     * cublasStatus 
-     * cublasGetVectorAsync( int n, int elemSize, const void *x, int incx, 
+     * cublasStatus
+     * cublasGetVectorAsync( int n, int elemSize, const void *x, int incx,
      *                       void *y, int incy, cudaStream_t stream)
-     * 
+     *
      * cublasGetVectorAsync has the same functionnality as cublasGetVector
      * but the transfer is done asynchronously within the CUDA stream passed
      * in parameter.
@@ -788,7 +788,7 @@ public class JCublas
      * -------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if incx, incy, or elemSize <= 0
-     * CUBLAS_STATUS_MAPPING_ERROR    if an error occurred accessing GPU memory   
+     * CUBLAS_STATUS_MAPPING_ERROR    if an error occurred accessing GPU memory
      * CUBLAS_STATUS_SUCCESS          if the operation completed successfully
      * </pre>
      */
@@ -800,18 +800,18 @@ public class JCublas
     /*
      * Wrapper for CUBLAS function.
      * <pre>
-     * cublasStatus 
-     * cublasSetMatrixAsync (int rows, int cols, int elemSize, const void *A, 
+     * cublasStatus
+     * cublasSetMatrixAsync (int rows, int cols, int elemSize, const void *A,
      *                       int lda, void *B, int ldb, cudaStream_t stream)
      *
      * cublasSetMatrixAsync has the same functionnality as cublasSetMatrix
      * but the transfer is done asynchronously within the CUDA stream passed
      * in parameter.
      *
-     * Return Values 
+     * Return Values
      * -------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
-     * CUBLAS_STATUS_INVALID_VALUE    if rows or cols < 0, or elemSize, lda, or 
+     * CUBLAS_STATUS_INVALID_VALUE    if rows or cols < 0, or elemSize, lda, or
      *                                ldb <= 0
      * CUBLAS_STATUS_MAPPING_ERROR    if error occurred accessing GPU memory
      * CUBLAS_STATUS_SUCCESS          if the operation completed successfully
@@ -825,15 +825,15 @@ public class JCublas
     /*
      * Wrapper for CUBLAS function.
      * <pre>
-     * cublasStatus 
-     * cublasGetMatrixAsync (int rows, int cols, int elemSize, const void *A, 
+     * cublasStatus
+     * cublasGetMatrixAsync (int rows, int cols, int elemSize, const void *A,
      *                       int lda, void *B, int ldb, cudaStream_t stream)
      *
      * cublasGetMatrixAsync has the same functionnality as cublasGetMatrix
      * but the transfer is done asynchronously within the CUDA stream passed
      * in parameter.
      *
-     * Return Values 
+     * Return Values
      * -------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if rows, cols, eleSize, lda, or ldb <= 0
@@ -1103,13 +1103,13 @@ public class JCublas
 
     /**
      * <pre>
-     * int 
+     * int
      * cublasIsamax (int n, const float *x, int incx)
      *
      * finds the smallest index of the maximum magnitude element of single
-     * precision vector x; that is, the result is the first i, i = 0 to n - 1, 
+     * precision vector x; that is, the result is the first i, i = 0 to n - 1,
      * that maximizes abs(x[1 + i * incx])).
-     * 
+     *
      * Input
      * -----
      * n      number of elements in input vector
@@ -1145,13 +1145,13 @@ public class JCublas
 
     /**
      * <pre>
-     * int 
+     * int
      * cublasIsamin (int n, const float *x, int incx)
      *
      * finds the smallest index of the minimum magnitude element of single
-     * precision vector x; that is, the result is the first i, i = 0 to n - 1, 
+     * precision vector x; that is, the result is the first i, i = 0 to n - 1,
      * that minimizes abs(x[1 + i * incx])).
-     * 
+     *
      * Input
      * -----
      * n      number of elements in input vector
@@ -1187,13 +1187,13 @@ public class JCublas
 
     /**
      * <pre>
-     * float 
+     * float
      * cublasSasum (int n, const float *x, int incx)
      *
-     * computes the sum of the absolute values of the elements of single 
-     * precision vector x; that is, the result is the sum from i = 0 to n - 1 of 
+     * computes the sum of the absolute values of the elements of single
+     * precision vector x; that is, the result is the sum from i = 0 to n - 1 of
      * abs(x[1 + i * incx]).
-     * 
+     *
      * Input
      * -----
      * n      number of elements in input vector
@@ -1207,7 +1207,7 @@ public class JCublas
      *
      * Reference: http://www.netlib.org/blas/sasum.f
      *
-     * Error status for this function can be retrieved via cublasGetError(). 
+     * Error status for this function can be retrieved via cublasGetError().
      *
      * Error Status
      * ------------
@@ -1231,14 +1231,14 @@ public class JCublas
     /**
      * <pre>
      * void
-     * cublasSaxpy (int n, float alpha, const float *x, int incx, float *y, 
+     * cublasSaxpy (int n, float alpha, const float *x, int incx, float *y,
      *              int incy)
      *
-     * multiplies single precision vector x by single precision scalar alpha 
-     * and adds the result to single precision vector y; that is, it overwrites 
-     * single precision y with single precision alpha * x + y. For i = 0 to n - 1, 
+     * multiplies single precision vector x by single precision scalar alpha
+     * and adds the result to single precision vector y; that is, it overwrites
+     * single precision y with single precision alpha * x + y. For i = 0 to n - 1,
      * it replaces y[ly + i * incy] with alpha * x[lx + i * incx] + y[ly + i *
-     * incy], where lx = 1 if incx >= 0, else lx = 1 +(1 - n) * incx, and ly is 
+     * incy], where lx = 1 if incx >= 0, else lx = 1 +(1 - n) * incx, and ly is
      * defined in a similar way using incy.
      *
      * Input
@@ -1257,7 +1257,7 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/saxpy.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -1278,12 +1278,12 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasScopy (int n, const float *x, int incx, float *y, int incy)
      *
-     * copies the single precision vector x to the single precision vector y. For 
-     * i = 0 to n-1, copies x[lx + i * incx] to y[ly + i * incy], where lx = 1 if 
-     * incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a similar 
+     * copies the single precision vector x to the single precision vector y. For
+     * i = 0 to n-1, copies x[lx + i * incx] to y[ly + i * incy], where lx = 1 if
+     * incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a similar
      * way using incy.
      *
      * Input
@@ -1300,7 +1300,7 @@ public class JCublas
      *
      * Reference: http://www.netlib.org/blas/scopy.f
      *
-     * Error status for this function can be retrieved via cublasGetError(). 
+     * Error status for this function can be retrieved via cublasGetError().
      *
      * Error Status
      * ------------
@@ -1322,12 +1322,12 @@ public class JCublas
 
     /**
      * <pre>
-     * float 
+     * float
      * cublasSdot (int n, const float *x, int incx, const float *y, int incy)
      *
-     * computes the dot product of two single precision vectors. It returns the 
+     * computes the dot product of two single precision vectors. It returns the
      * dot product of the single precision vectors x and y if successful, and
-     * 0.0f otherwise. It computes the sum for i = 0 to n - 1 of x[lx + i * 
+     * 0.0f otherwise. It computes the sum for i = 0 to n - 1 of x[lx + i *
      * incx] * y[ly + i * incy], where lx = 1 if incx >= 0, else lx = 1 + (1 - n)
      * *incx, and ly is defined in a similar way using incy.
      *
@@ -1368,11 +1368,11 @@ public class JCublas
 
     /**
      * <pre>
-     * float 
+     * float
      * cublasSnrm2 (int n, const float *x, int incx)
      *
      * computes the Euclidean norm of the single precision n-vector x (with
-     * storage increment incx). This code uses a multiphase model of 
+     * storage increment incx). This code uses a multiphase model of
      * accumulation to avoid intermediate underflow and overflow.
      *
      * Input
@@ -1389,7 +1389,7 @@ public class JCublas
      * Reference: http://www.netlib.org/slatec/lin/snrm2.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -1411,15 +1411,15 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasSrot (int n, float *x, int incx, float *y, int incy, float sc, 
+     * void
+     * cublasSrot (int n, float *x, int incx, float *y, int incy, float sc,
      *             float ss)
      *
      * multiplies a 2x2 matrix ( sc ss) with the 2xn matrix ( transpose(x) )
      *                         (-ss sc)                     ( transpose(y) )
      *
-     * The elements of x are in x[lx + i * incx], i = 0 ... n - 1, where lx = 1 if 
-     * incx >= 0, else lx = 1 + (1 - n) * incx, and similarly for y using ly and 
+     * The elements of x are in x[lx + i * incx], i = 0 ... n - 1, where lx = 1 if
+     * incx >= 0, else lx = 1 + (1 - n) * incx, and similarly for y using ly and
      * incy.
      *
      * Input
@@ -1461,7 +1461,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasSrotg (float *host_sa, float *host_sb, float *host_sc, float *host_ss)
      *
      * constructs the Givens tranformation
@@ -1472,8 +1472,8 @@ public class JCublas
      *
      * which zeros the second entry of the 2-vector transpose(sa, sb).
      *
-     * The quantity r = (+/-) sqrt (sa^2 + sb^2) overwrites sa in storage. The 
-     * value of sb is overwritten by a value z which allows sc and ss to be 
+     * The quantity r = (+/-) sqrt (sa^2 + sb^2) overwrites sa in storage. The
+     * value of sb is overwritten by a value z which allows sc and ss to be
      * recovered by the following algorithm:
      *
      *    if z=1          set sc = 0.0 and ss = 1.0
@@ -1482,7 +1482,7 @@ public class JCublas
      *
      * The function srot (n, x, incx, y, incy, sc, ss) normally is called next
      * to apply the transformation to a 2 x n matrix.
-     * Note that is function is provided for completeness and run exclusively 
+     * Note that is function is provided for completeness and run exclusively
      * on the Host.
      *
      * Input
@@ -1519,8 +1519,8 @@ public class JCublas
      * void
      * sscal (int n, float alpha, float *x, int incx)
      *
-     * replaces single precision vector x with single precision alpha * x. For i 
-     * = 0 to n - 1, it replaces x[ix + i * incx] with alpha * x[ix + i * incx], 
+     * replaces single precision vector x with single precision alpha * x. For i
+     * = 0 to n - 1, it replaces x[ix + i * incx] with alpha * x[ix + i * incx],
      * where ix = 1 if incx >= 0, else ix = 1 + (1 - n) * incx.
      *
      * Input
@@ -1537,7 +1537,7 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/sscal.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -1561,25 +1561,28 @@ public class JCublas
      * void
      * cublasSswap (int n, float *x, int incx, float *y, int incy)
      *
-     * replaces single precision vector x with single precision alpha * x. For i 
-     * = 0 to n - 1, it replaces x[ix + i * incx] with alpha * x[ix + i * incx], 
-     * where ix = 1 if incx >= 0, else ix = 1 + (1 - n) * incx.
+     * interchanges the single-precision vector x with the single-precision vector y.
+     * For i = 0 to n-1, interchanges x[lx + i * incx] with y[ly + i * incy], where
+     * lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a
+     * similar way using incy.
      *
      * Input
      * -----
      * n      number of elements in input vectors
-     * alpha  single precision scalar multiplier
      * x      single precision vector with n elements
      * incx   storage spacing between elements of x
+     * y      single precision vector with n elements
+     * incy   storage spacing between elements of y
      *
      * Output
      * ------
-     * x      single precision result (unchanged if n <= 0 or incx <= 0)
+     * x      contains single precision vector y
+     * y      contains single precision vector x
      *
      * Reference: http://www.netlib.org/blas/sscal.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -1601,14 +1604,14 @@ public class JCublas
     /**
      * <pre>
      * void
-     * cublasCaxpy (int n, cuComplex alpha, const cuComplex *x, int incx, 
+     * cublasCaxpy (int n, cuComplex alpha, const cuComplex *x, int incx,
      *              cuComplex *y, int incy)
      *
-     * multiplies single-complex vector x by single-complex scalar alpha and adds 
+     * multiplies single-complex vector x by single-complex scalar alpha and adds
      * the result to single-complex vector y; that is, it overwrites single-complex
-     * y with single-complex alpha * x + y. For i = 0 to n - 1, it replaces 
-     * y[ly + i * incy] with alpha * x[lx + i * incx] + y[ly + i * incy], where 
-     * lx = 0 if incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a 
+     * y with single-complex alpha * x + y. For i = 0 to n - 1, it replaces
+     * y[ly + i * incy] with alpha * x[lx + i * incx] + y[ly + i * incy], where
+     * lx = 0 if incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a
      * similar way using incy.
      *
      * Input
@@ -1651,9 +1654,9 @@ public class JCublas
      * void
      * cublasCcopy (int n, const cuComplex *x, int incx, cuComplex *y, int incy)
      *
-     * copies the single-complex vector x to the single-complex vector y. For 
-     * i = 0 to n-1, copies x[lx + i * incx] to y[ly + i * incy], where lx = 1 if 
-     * incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a similar 
+     * copies the single-complex vector x to the single-complex vector y. For
+     * i = 0 to n-1, copies x[lx + i * incx] to y[ly + i * incy], where lx = 1 if
+     * incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a similar
      * way using incy.
      *
      * Input
@@ -1695,9 +1698,9 @@ public class JCublas
      * void
      * cublasZcopy (int n, const cuDoubleComplex *x, int incx, cuDoubleComplex *y, int incy)
      *
-     * copies the double-complex vector x to the double-complex vector y. For 
-     * i = 0 to n-1, copies x[lx + i * incx] to y[ly + i * incy], where lx = 1 if 
-     * incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a similar 
+     * copies the double-complex vector x to the double-complex vector y. For
+     * i = 0 to n-1, copies x[lx + i * incx] to y[ly + i * incy], where lx = 1 if
+     * incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a similar
      * way using incy.
      *
      * Input
@@ -1739,8 +1742,8 @@ public class JCublas
      * void
      * cublasCscal (int n, cuComplex alpha, cuComplex *x, int incx)
      *
-     * replaces single-complex vector x with single-complex alpha * x. For i 
-     * = 0 to n - 1, it replaces x[ix + i * incx] with alpha * x[ix + i * incx], 
+     * replaces single-complex vector x with single-complex alpha * x. For i
+     * = 0 to n - 1, it replaces x[ix + i * incx] with alpha * x[ix + i * incx],
      * where ix = 1 if incx >= 0, else ix = 1 + (1 - n) * incx.
      *
      * Input
@@ -1757,7 +1760,7 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/cscal.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -1778,7 +1781,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasCrotg (cuComplex *host_ca, cuComplex cb, float *host_sc, cuComplex *host_cs)
      *
      * constructs the complex Givens tranformation
@@ -1786,13 +1789,13 @@ public class JCublas
      *        ( sc  cs )
      *    G = (        ) ,  sc^2 + cabs(cs)^2 = 1,
      *        (-cs  sc )
-     * 
+     *
      * which zeros the second entry of the complex 2-vector transpose(ca, cb).
      *
-     * The quantity ca/cabs(ca)*norm(ca,cb) overwrites ca in storage. The 
+     * The quantity ca/cabs(ca)*norm(ca,cb) overwrites ca in storage. The
      * function crot (n, x, incx, y, incy, sc, cs) is normally called next
      * to apply the transformation to a 2 x n matrix.
-     * Note that is function is provided for completeness and run exclusively 
+     * Note that is function is provided for completeness and run exclusively
      * on the Host.
      *
      * Input
@@ -1825,15 +1828,15 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasCrot (int n, cuComplex *x, int incx, cuComplex *y, int incy, float sc,
      *             cuComplex cs)
      *
      * multiplies a 2x2 matrix ( sc       cs) with the 2xn matrix ( transpose(x) )
      *                         (-conj(cs) sc)                     ( transpose(y) )
      *
-     * The elements of x are in x[lx + i * incx], i = 0 ... n - 1, where lx = 1 if 
-     * incx >= 0, else lx = 1 + (1 - n) * incx, and similarly for y using ly and 
+     * The elements of x are in x[lx + i * incx], i = 0 ... n - 1, where lx = 1 if
+     * incx >= 0, else lx = 1 + (1 - n) * incx, and similarly for y using ly and
      * incy.
      *
      * Input
@@ -1875,15 +1878,15 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * csrot (int n, cuComplex *x, int incx, cuCumplex *y, int incy, float c, 
+     * void
+     * csrot (int n, cuComplex *x, int incx, cuCumplex *y, int incy, float c,
      *        float s)
      *
      * multiplies a 2x2 rotation matrix ( c s) with a 2xn matrix ( transpose(x) )
      *                                  (-s c)                   ( transpose(y) )
      *
-     * The elements of x are in x[lx + i * incx], i = 0 ... n - 1, where lx = 1 if 
-     * incx >= 0, else lx = 1 + (1 - n) * incx, and similarly for y using ly and 
+     * The elements of x are in x[lx + i * incx], i = 0 ... n - 1, where lx = 1 if
+     * incx >= 0, else lx = 1 + (1 - n) * incx, and similarly for y using ly and
      * incy.
      *
      * Input
@@ -1928,8 +1931,8 @@ public class JCublas
      * void
      * cublasCsscal (int n, float alpha, cuComplex *x, int incx)
      *
-     * replaces single-complex vector x with single-complex alpha * x. For i 
-     * = 0 to n - 1, it replaces x[ix + i * incx] with alpha * x[ix + i * incx], 
+     * replaces single-complex vector x with single-complex alpha * x. For i
+     * = 0 to n - 1, it replaces x[ix + i * incx] with alpha * x[ix + i * incx],
      * where ix = 1 if incx >= 0, else ix = 1 + (1 - n) * incx.
      *
      * Input
@@ -1946,7 +1949,7 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/csscal.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -1970,9 +1973,9 @@ public class JCublas
      * void
      * cublasCswap (int n, const cuComplex *x, int incx, cuComplex *y, int incy)
      *
-     * interchanges the single-complex vector x with the single-complex vector y. 
+     * interchanges the single-complex vector x with the single-complex vector y.
      * For i = 0 to n-1, interchanges x[lx + i * incx] with y[ly + i * incy], where
-     * lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a 
+     * lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a
      * similar way using incy.
      *
      * Input
@@ -2015,9 +2018,9 @@ public class JCublas
      * void
      * cublasZswap (int n, const cuDoubleComplex *x, int incx, cuDoubleComplex *y, int incy)
      *
-     * interchanges the double-complex vector x with the double-complex vector y. 
+     * interchanges the double-complex vector x with the double-complex vector y.
      * For i = 0 to n-1, interchanges x[lx + i * incx] with y[ly + i * incy], where
-     * lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a 
+     * lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a
      * similar way using incy.
      *
      * Input
@@ -2057,13 +2060,13 @@ public class JCublas
 
     /**
      * <pre>
-     * cuComplex 
+     * cuComplex
      * cdotu (int n, const cuComplex *x, int incx, const cuComplex *y, int incy)
      *
-     * computes the dot product of two single-complex vectors. It returns the 
+     * computes the dot product of two single-complex vectors. It returns the
      * dot product of the single-complex vectors x and y if successful, and complex
      * zero otherwise. It computes the sum for i = 0 to n - 1 of x[lx + i * incx] *
-     * y[ly + i * incy], where lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx; 
+     * y[ly + i * incy], where lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx;
      * ly is defined in a similar way using incy.
      *
      * Input
@@ -2103,14 +2106,14 @@ public class JCublas
 
     /**
      * <pre>
-     * cuComplex 
-     * cublasCdotc (int n, const cuComplex *x, int incx, const cuComplex *y, 
+     * cuComplex
+     * cublasCdotc (int n, const cuComplex *x, int incx, const cuComplex *y,
      *              int incy)
      *
-     * computes the dot product of two single-complex vectors. It returns the 
+     * computes the dot product of two single-complex vectors. It returns the
      * dot product of the single-complex vectors x and y if successful, and complex
      * zero otherwise. It computes the sum for i = 0 to n - 1 of x[lx + i * incx] *
-     * y[ly + i * incy], where lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx; 
+     * y[ly + i * incy], where lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx;
      * ly is defined in a similar way using incy.
      *
      * Input
@@ -2150,13 +2153,13 @@ public class JCublas
 
     /**
      * <pre>
-     * int 
+     * int
      * cublasIcamax (int n, const float *x, int incx)
      *
      * finds the smallest index of the element having maximum absolute value
-     * in single-complex vector x; that is, the result is the first i, i = 0 
+     * in single-complex vector x; that is, the result is the first i, i = 0
      * to n - 1 that maximizes abs(real(x[1+i*incx]))+abs(imag(x[1 + i * incx])).
-     * 
+     *
      * Input
      * -----
      * n      number of elements in input vector
@@ -2192,13 +2195,13 @@ public class JCublas
 
     /**
      * <pre>
-     * int 
+     * int
      * cublasIcamin (int n, const float *x, int incx)
      *
      * finds the smallest index of the element having minimum absolute value
-     * in single-complex vector x; that is, the result is the first i, i = 0 
+     * in single-complex vector x; that is, the result is the first i, i = 0
      * to n - 1 that minimizes abs(real(x[1+i*incx]))+abs(imag(x[1 + i * incx])).
-     * 
+     *
      * Input
      * -----
      * n      number of elements in input vector
@@ -2234,14 +2237,14 @@ public class JCublas
 
     /**
      * <pre>
-     * float 
+     * float
      * cublasScasum (int n, const cuDouble *x, int incx)
      *
      * takes the sum of the absolute values of a complex vector and returns a
      * single precision result. Note that this is not the L1 norm of the vector.
      * The result is the sum from 0 to n-1 of abs(real(x[ix+i*incx])) +
      * abs(imag(x(ix+i*incx))), where ix = 1 if incx <= 0, else ix = 1+(1-n)*incx.
-     * 
+     *
      * Input
      * -----
      * n      number of elements in input vector
@@ -2255,7 +2258,7 @@ public class JCublas
      *
      * Reference: http://www.netlib.org/blas/scasum.f
      *
-     * Error status for this function can be retrieved via cublasGetError(). 
+     * Error status for this function can be retrieved via cublasGetError().
      *
      * Error Status
      * ------------
@@ -2278,10 +2281,10 @@ public class JCublas
 
     /**
      * <pre>
-     * float 
+     * float
      * cublasScnrm2 (int n, const cuComplex *x, int incx)
      *
-     * computes the Euclidean norm of the single-complex n-vector x. This code 
+     * computes the Euclidean norm of the single-complex n-vector x. This code
      * uses simple scaling to avoid intermediate underflow and overflow.
      *
      * Input
@@ -2297,7 +2300,7 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/scnrm2.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -2320,14 +2323,14 @@ public class JCublas
     /**
      * <pre>
      * void
-     * cublasZaxpy (int n, cuDoubleComplex alpha, const cuDoubleComplex *x, int incx, 
+     * cublasZaxpy (int n, cuDoubleComplex alpha, const cuDoubleComplex *x, int incx,
      *              cuDoubleComplex *y, int incy)
      *
-     * multiplies double-complex vector x by double-complex scalar alpha and adds 
+     * multiplies double-complex vector x by double-complex scalar alpha and adds
      * the result to double-complex vector y; that is, it overwrites double-complex
-     * y with double-complex alpha * x + y. For i = 0 to n - 1, it replaces 
-     * y[ly + i * incy] with alpha * x[lx + i * incx] + y[ly + i * incy], where 
-     * lx = 0 if incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a 
+     * y with double-complex alpha * x + y. For i = 0 to n - 1, it replaces
+     * y[ly + i * incy] with alpha * x[lx + i * incx] + y[ly + i * incy], where
+     * lx = 0 if incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a
      * similar way using incy.
      *
      * Input
@@ -2367,13 +2370,13 @@ public class JCublas
 
     /**
      * <pre>
-     * cuDoubleComplex 
+     * cuDoubleComplex
      * zdotu (int n, const cuDoubleComplex *x, int incx, const cuDoubleComplex *y, int incy)
      *
-     * computes the dot product of two double-complex vectors. It returns the 
+     * computes the dot product of two double-complex vectors. It returns the
      * dot product of the double-complex vectors x and y if successful, and double-complex
      * zero otherwise. It computes the sum for i = 0 to n - 1 of x[lx + i * incx] *
-     * y[ly + i * incy], where lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx; 
+     * y[ly + i * incy], where lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx;
      * ly is defined in a similar way using incy.
      *
      * Input
@@ -2395,7 +2398,7 @@ public class JCublas
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has nor been initialized
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support   
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to execute on GPU
      * </pre>
      */
@@ -2414,14 +2417,14 @@ public class JCublas
 
     /**
      * <pre>
-     * cuDoubleComplex 
+     * cuDoubleComplex
      * cublasZdotc (int n, const cuDoubleComplex *x, int incx, const cuDoubleComplex *y, int incy)
      *
-     * computes the dot product of two double-precision complex vectors. It returns the 
+     * computes the dot product of two double-precision complex vectors. It returns the
      * dot product of the double-precision complex vectors conjugate(x) and y if successful,
      * and double-precision complex zero otherwise. It computes the
      * sum for i = 0 to n - 1 of conjugate(x[lx + i * incx]) *  y[ly + i * incy],
-     * where lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx; 
+     * where lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx;
      * ly is defined in a similar way using incy.
      *
      * Input
@@ -2443,7 +2446,7 @@ public class JCublas
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has nor been initialized
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support  
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to execute on GPU
      * </pre>
      */
@@ -2465,8 +2468,8 @@ public class JCublas
      * void
      * cublasZscal (int n, cuComplex alpha, cuComplex *x, int incx)
      *
-     * replaces double-complex vector x with double-complex alpha * x. For i 
-     * = 0 to n - 1, it replaces x[ix + i * incx] with alpha * x[ix + i * incx], 
+     * replaces double-complex vector x with double-complex alpha * x. For i
+     * = 0 to n - 1, it replaces x[ix + i * incx] with alpha * x[ix + i * incx],
      * where ix = 1 if incx >= 0, else ix = 1 + (1 - n) * incx.
      *
      * Input
@@ -2483,7 +2486,7 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/zscal.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -2507,8 +2510,8 @@ public class JCublas
      * void
      * cublasZdscal (int n, double alpha, cuDoubleComplex *x, int incx)
      *
-     * replaces double-complex vector x with double-complex alpha * x. For i 
-     * = 0 to n - 1, it replaces x[ix + i * incx] with alpha * x[ix + i * incx], 
+     * replaces double-complex vector x with double-complex alpha * x. For i
+     * = 0 to n - 1, it replaces x[ix + i * incx] with alpha * x[ix + i * incx],
      * where ix = 1 if incx >= 0, else ix = 1 + (1 - n) * incx.
      *
      * Input
@@ -2525,11 +2528,11 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/zdscal.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support   
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -2547,10 +2550,10 @@ public class JCublas
 
     /**
      * <pre>
-     * double 
+     * double
      * cublasDznrm2 (int n, const cuDoubleComplex *x, int incx)
      *
-     * computes the Euclidean norm of the double precision complex n-vector x. This code 
+     * computes the Euclidean norm of the double precision complex n-vector x. This code
      * uses simple scaling to avoid intermediate underflow and overflow.
      *
      * Input
@@ -2566,11 +2569,11 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/dznrm2.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -2589,7 +2592,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasZrotg (cuDoubleComplex *host_ca, cuDoubleComplex cb, double *host_sc, double *host_cs)
      *
      * constructs the complex Givens tranformation
@@ -2597,14 +2600,14 @@ public class JCublas
      *        ( sc  cs )
      *    G = (        ) ,  sc^2 + cabs(cs)^2 = 1,
      *        (-cs  sc )
-     * 
+     *
      * which zeros the second entry of the complex 2-vector transpose(ca, cb).
      *
-     * The quantity ca/cabs(ca)*norm(ca,cb) overwrites ca in storage. The 
+     * The quantity ca/cabs(ca)*norm(ca,cb) overwrites ca in storage. The
      * function crot (n, x, incx, y, incy, sc, cs) is normally called next
      * to apply the transformation to a 2 x n matrix.
-     * Note that is function is provided for completeness and run exclusively 
-     * on the Host. 
+     * Note that is function is provided for completeness and run exclusively
+     * on the Host.
      *
      * Input
      * -----
@@ -2642,8 +2645,8 @@ public class JCublas
      * multiplies a 2x2 matrix ( sc       cs) with the 2xn matrix ( transpose(x) )
      *                         (-conj(cs) sc)                     ( transpose(y) )
      *
-     * The elements of x are in x[lx + i * incx], i = 0 ... n - 1, where lx = 1 if 
-     * incx >= 0, else lx = 1 + (1 - n) * incx, and similarly for y using ly and 
+     * The elements of x are in x[lx + i * incx], i = 0 ... n - 1, where lx = 1 if
+     * incx >= 0, else lx = 1 + (1 - n) * incx, and similarly for y using ly and
      * incy.
      *
      * Input
@@ -2668,7 +2671,7 @@ public class JCublas
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support    
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -2686,15 +2689,15 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * zdrot (int n, cuDoubleComplex *x, int incx, cuCumplex *y, int incy, double c, 
+     * void
+     * zdrot (int n, cuDoubleComplex *x, int incx, cuCumplex *y, int incy, double c,
      *        double s)
      *
      * multiplies a 2x2 matrix ( c s) with the 2xn matrix ( transpose(x) )
      *                         (-s c)                     ( transpose(y) )
      *
-     * The elements of x are in x[lx + i * incx], i = 0 ... n - 1, where lx = 1 if 
-     * incx >= 0, else lx = 1 + (1 - n) * incx, and similarly for y using ly and 
+     * The elements of x are in x[lx + i * incx], i = 0 ... n - 1, where lx = 1 if
+     * incx >= 0, else lx = 1 + (1 - n) * incx, and similarly for y using ly and
      * incy.
      *
      * Input
@@ -2719,7 +2722,7 @@ public class JCublas
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support    
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -2737,13 +2740,13 @@ public class JCublas
 
     /**
      * <pre>
-     * int 
+     * int
      * cublasIzamax (int n, const double *x, int incx)
      *
      * finds the smallest index of the element having maximum absolute value
-     * in double-complex vector x; that is, the result is the first i, i = 0 
+     * in double-complex vector x; that is, the result is the first i, i = 0
      * to n - 1 that maximizes abs(real(x[1+i*incx]))+abs(imag(x[1 + i * incx])).
-     * 
+     *
      * Input
      * -----
      * n      number of elements in input vector
@@ -2761,7 +2764,7 @@ public class JCublas
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support  
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -2780,13 +2783,13 @@ public class JCublas
 
     /**
      * <pre>
-     * int 
+     * int
      * cublasIzamin (int n, const cuDoubleComplex *x, int incx)
      *
      * finds the smallest index of the element having minimum absolute value
-     * in double-complex vector x; that is, the result is the first i, i = 0 
+     * in double-complex vector x; that is, the result is the first i, i = 0
      * to n - 1 that minimizes abs(real(x[1+i*incx]))+abs(imag(x[1 + i * incx])).
-     * 
+     *
      * Input
      * -----
      * n      number of elements in input vector
@@ -2804,7 +2807,7 @@ public class JCublas
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -2823,14 +2826,14 @@ public class JCublas
 
     /**
      * <pre>
-     * double 
+     * double
      * cublasDzasum (int n, const cuDoubleComplex *x, int incx)
      *
      * takes the sum of the absolute values of a complex vector and returns a
      * double precision result. Note that this is not the L1 norm of the vector.
      * The result is the sum from 0 to n-1 of abs(real(x[ix+i*incx])) +
      * abs(imag(x(ix+i*incx))), where ix = 1 if incx <= 0, else ix = 1+(1-n)*incx.
-     * 
+     *
      * Input
      * -----
      * n      number of elements in input vector
@@ -2844,12 +2847,12 @@ public class JCublas
      *
      * Reference: http://www.netlib.org/blas/dzasum.f
      *
-     * Error status for this function can be retrieved via cublasGetError(). 
+     * Error status for this function can be retrieved via cublasGetError().
      *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support  
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -2868,7 +2871,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasSgbmv (char trans, int m, int n, int kl, int ku, float alpha,
      *              const float *A, int lda, const float *x, int incx, float beta,
      *              float *y, int incy)
@@ -2883,33 +2886,33 @@ public class JCublas
      *
      * Input
      * -----
-     * trans  specifies op(A). If trans == 'N' or 'n', op(A) = A. If trans == 'T', 
+     * trans  specifies op(A). If trans == 'N' or 'n', op(A) = A. If trans == 'T',
      *        't', 'C', or 'c', op(A) = transpose(A)
-     * m      specifies the number of rows of the matrix A. m must be at least 
+     * m      specifies the number of rows of the matrix A. m must be at least
      *        zero.
      * n      specifies the number of columns of the matrix A. n must be at least
      *        zero.
-     * kl     specifies the number of sub-diagonals of matrix A. It must be at 
+     * kl     specifies the number of sub-diagonals of matrix A. It must be at
      *        least zero.
-     * ku     specifies the number of super-diagonals of matrix A. It must be at 
+     * ku     specifies the number of super-diagonals of matrix A. It must be at
      *        least zero.
      * alpha  single precision scalar multiplier applied to op(A).
      * A      single precision array of dimensions (lda, n). The leading
      *        (kl + ku + 1) x n part of the array A must contain the band matrix A,
-     *        supplied column by column, with the leading diagonal of the matrix 
-     *        in row (ku + 1) of the array, the first super-diagonal starting at 
+     *        supplied column by column, with the leading diagonal of the matrix
+     *        in row (ku + 1) of the array, the first super-diagonal starting at
      *        position 2 in row ku, the first sub-diagonal starting at position 1
-     *        in row (ku + 2), and so on. Elements in the array A that do not 
-     *        correspond to elements in the band matrix (such as the top left 
+     *        in row (ku + 2), and so on. Elements in the array A that do not
+     *        correspond to elements in the band matrix (such as the top left
      *        ku x ku triangle) are not referenced.
      * lda    leading dimension of A. lda must be at least (kl + ku + 1).
-     * x      single precision array of length at least (1+(n-1)*abs(incx)) when 
+     * x      single precision array of length at least (1+(n-1)*abs(incx)) when
      *        trans == 'N' or 'n' and at least (1+(m-1)*abs(incx)) otherwise.
      * incx   storage spacing between elements of x. incx must not be zero.
-     * beta   single precision scalar multiplier applied to vector y. If beta is 
+     * beta   single precision scalar multiplier applied to vector y. If beta is
      *        zero, y is not read.
-     * y      single precision array of length at least (1+(m-1)*abs(incy)) when 
-     *        trans == 'N' or 'n' and at least (1+(n-1)*abs(incy)) otherwise. If 
+     * y      single precision array of length at least (1+(m-1)*abs(incy)) when
+     *        trans == 'N' or 'n' and at least (1+(n-1)*abs(incy)) otherwise. If
      *        beta is zero, y is not read.
      * incy   storage spacing between elements of y. incy must not be zero.
      *
@@ -2953,7 +2956,7 @@ public class JCublas
      *
      *    op(A) = A   or   op(A) = transpose(A)
      *
-     * where alpha and beta are single precision scalars, x and y are single 
+     * where alpha and beta are single precision scalars, x and y are single
      * precision vectors, and A is an m x n matrix consisting of single precision
      * elements. Matrix A is stored in column major format, and lda is the leading
      * dimension of the two-dimensional array in which A is stored.
@@ -2962,24 +2965,24 @@ public class JCublas
      * -----
      * trans  specifies op(A). If transa = 'n' or 'N', op(A) = A. If trans =
      *        trans = 't', 'T', 'c', or 'C', op(A) = transpose(A)
-     * m      specifies the number of rows of the matrix A. m must be at least 
+     * m      specifies the number of rows of the matrix A. m must be at least
      *        zero.
-     * n      specifies the number of columns of the matrix A. n must be at least 
+     * n      specifies the number of columns of the matrix A. n must be at least
      *        zero.
      * alpha  single precision scalar multiplier applied to op(A).
-     * A      single precision array of dimensions (lda, n) if trans = 'n' or 
-     *        'N'), and of dimensions (lda, m) otherwise. lda must be at least 
+     * A      single precision array of dimensions (lda, n) if trans = 'n' or
+     *        'N'), and of dimensions (lda, m) otherwise. lda must be at least
      *        max(1, m) and at least max(1, n) otherwise.
      * lda    leading dimension of two-dimensional array used to store matrix A
      * x      single precision array of length at least (1 + (n - 1) * abs(incx))
-     *        when trans = 'N' or 'n' and at least (1 + (m - 1) * abs(incx)) 
+     *        when trans = 'N' or 'n' and at least (1 + (m - 1) * abs(incx))
      *        otherwise.
-     * incx   specifies the storage spacing between elements of x. incx must not 
+     * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
-     * beta   single precision scalar multiplier applied to vector y. If beta 
+     * beta   single precision scalar multiplier applied to vector y. If beta
      *        is zero, y is not read.
      * y      single precision array of length at least (1 + (m - 1) * abs(incy))
-     *        when trans = 'N' or 'n' and at least (1 + (n - 1) * abs(incy)) 
+     *        when trans = 'N' or 'n' and at least (1 + (n - 1) * abs(incy))
      *        otherwise.
      * incy   specifies the storage spacing between elements of x. incx must not
      *        be zero.
@@ -3013,31 +3016,31 @@ public class JCublas
 
     /**
      * <pre>
-     * cublasSger (int m, int n, float alpha, const float *x, int incx, 
+     * cublasSger (int m, int n, float alpha, const float *x, int incx,
      *             const float *y, int incy, float *A, int lda)
      *
      * performs the symmetric rank 1 operation
      *
      *    A = alpha * x * transpose(y) + A,
      *
-     * where alpha is a single precision scalar, x is an m element single 
-     * precision vector, y is an n element single precision vector, and A 
+     * where alpha is a single precision scalar, x is an m element single
+     * precision vector, y is an n element single precision vector, and A
      * is an m by n matrix consisting of single precision elements. Matrix A
      * is stored in column major format, and lda is the leading dimension of
      * the two-dimensional array used to store A.
-     * 
+     *
      * Input
      * -----
-     * m      specifies the number of rows of the matrix A. It must be at least 
+     * m      specifies the number of rows of the matrix A. It must be at least
      *        zero.
-     * n      specifies the number of columns of the matrix A. It must be at 
+     * n      specifies the number of columns of the matrix A. It must be at
      *        least zero.
      * alpha  single precision scalar multiplier applied to x * transpose(y)
      * x      single precision array of length at least (1 + (m - 1) * abs(incx))
      * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
      * y      single precision array of length at least (1 + (n - 1) * abs(incy))
-     * incy   specifies the storage spacing between elements of y. incy must not 
+     * incy   specifies the storage spacing between elements of y. incy must not
      *        be zero.
      * A      single precision array of dimensions (lda, n).
      * lda    leading dimension of two-dimensional array used to store matrix A
@@ -3049,7 +3052,7 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/sger.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -3071,7 +3074,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasSsbmv (char uplo, int n, int k, float alpha, const float *A, int lda,
      *              const float *x, int incx, float beta, float *y, int incy)
      *
@@ -3080,15 +3083,15 @@ public class JCublas
      *     y := alpha*A*x + beta*y
      *
      * alpha and beta are single precision scalars. x and y are single precision
-     * vectors with n elements. A is an n x n symmetric band matrix consisting 
+     * vectors with n elements. A is an n x n symmetric band matrix consisting
      * of single precision elements, with k super-diagonals and the same number
      * of sub-diagonals.
      *
      * Input
      * -----
      * uplo   specifies whether the upper or lower triangular part of the symmetric
-     *        band matrix A is being supplied. If uplo == 'U' or 'u', the upper 
-     *        triangular part is being supplied. If uplo == 'L' or 'l', the lower 
+     *        band matrix A is being supplied. If uplo == 'U' or 'u', the upper
+     *        triangular part is being supplied. If uplo == 'L' or 'l', the lower
      *        triangular part is being supplied.
      * n      specifies the number of rows and the number of columns of the
      *        symmetric matrix A. n must be at least zero.
@@ -3096,14 +3099,14 @@ public class JCublas
      *        is symmetric, this is also the number of sub-diagonals. k must be at
      *        least zero.
      * alpha  single precision scalar multiplier applied to A*x.
-     * A      single precision array of dimensions (lda, n). When uplo == 'U' or 
+     * A      single precision array of dimensions (lda, n). When uplo == 'U' or
      *        'u', the leading (k + 1) x n part of array A must contain the upper
      *        triangular band of the symmetric matrix, supplied column by column,
      *        with the leading diagonal of the matrix in row (k+1) of the array,
      *        the first super-diagonal starting at position 2 in row k, and so on.
      *        The top left k x k triangle of the array A is not referenced. When
      *        uplo == 'L' or 'l', the leading (k + 1) x n part of the array A must
-     *        contain the lower triangular band part of the symmetric matrix, 
+     *        contain the lower triangular band part of the symmetric matrix,
      *        supplied column by column, with the leading diagonal of the matrix in
      *        row 1 of the array, the first sub-diagonal starting at position 1 in
      *        row 2, and so on. The bottom right k x k triangle of the array A is
@@ -3111,9 +3114,9 @@ public class JCublas
      * lda    leading dimension of A. lda must be at least (k + 1).
      * x      single precision array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
-     * beta   single precision scalar multiplier applied to vector y. If beta is 
+     * beta   single precision scalar multiplier applied to vector y. If beta is
      *        zero, y is not read.
-     * y      single precision array of length at least (1 + (n - 1) * abs(incy)). 
+     * y      single precision array of length at least (1 + (n - 1) * abs(incy)).
      *        If beta is zero, y is not read.
      * incy   storage spacing between elements of y. incy must not be zero.
      *
@@ -3145,39 +3148,39 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasSspmv (char uplo, int n, float alpha, const float *AP, const float *x,
      *              int incx, float beta, float *y, int incy)
      *
      * performs the matrix-vector operation
-     * 
+     *
      *    y = alpha * A * x + beta * y
      *
-     * Alpha and beta are single precision scalars, and x and y are single 
-     * precision vectors with n elements. A is a symmetric n x n matrix 
+     * Alpha and beta are single precision scalars, and x and y are single
+     * precision vectors with n elements. A is a symmetric n x n matrix
      * consisting of single precision elements that is supplied in packed form.
      *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper 
-     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then 
+     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper
+     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then
      *        the lower triangular part of A is supplied in AP.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
      * alpha  single precision scalar multiplier applied to A*x.
      * AP     single precision array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      * x      single precision array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * beta   single precision scalar multiplier applied to vector y;
-     * y      single precision array of length at least (1 + (n - 1) * abs(incy)). 
-     *        If beta is zero, y is not read. 
+     * y      single precision array of length at least (1 + (n - 1) * abs(incy)).
+     *        If beta is zero, y is not read.
      * incy   storage spacing between elements of y. incy must not be zero.
      *
      * Output
@@ -3209,23 +3212,23 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasSspr (char uplo, int n, float alpha, const float *x, int incx, 
+     * void
+     * cublasSspr (char uplo, int n, float alpha, const float *x, int incx,
      *             float *AP)
      *
      * performs the symmetric rank 1 operation
-     * 
+     *
      *    A = alpha * x * transpose(x) + A,
-     * 
-     * where alpha is a single precision scalar and x is an n element single 
-     * precision vector. A is a symmetric n x n matrix consisting of single 
+     *
+     * where alpha is a single precision scalar and x is an n element single
+     * precision vector. A is a symmetric n x n matrix consisting of single
      * precision elements that is supplied in packed form.
      *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper 
-     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then 
+     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper
+     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then
      *        the lower triangular part of A is supplied in AP.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
@@ -3233,11 +3236,11 @@ public class JCublas
      * x      single precision array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * AP     single precision array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      *
      * Output
@@ -3268,41 +3271,41 @@ public class JCublas
 
 
     /**
-     * <pre> 
-     * void 
-     * cublasSspr2 (char uplo, int n, float alpha, const float *x, int incx, 
+     * <pre>
+     * void
+     * cublasSspr2 (char uplo, int n, float alpha, const float *x, int incx,
      *              const float *y, int incy, float *AP)
      *
      * performs the symmetric rank 2 operation
      *
      *    A = alpha*x*transpose(y) + alpha*y*transpose(x) + A,
      *
-     * where alpha is a single precision scalar, and x and y are n element single 
-     * precision vectors. A is a symmetric n x n matrix consisting of single 
+     * where alpha is a single precision scalar, and x and y are n element single
+     * precision vectors. A is a symmetric n x n matrix consisting of single
      * precision elements that is supplied in packed form.
      *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array A. If uplo == 'U' or 'u', then only the 
+     *        triangular part of array A. If uplo == 'U' or 'u', then only the
      *        upper triangular part of A may be referenced and the lower triangular
-     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower 
+     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower
      *        triangular part of A may be referenced and the upper triangular part
      *        of A is inferred.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
-     * alpha  single precision scalar multiplier applied to x * transpose(y) + 
+     * alpha  single precision scalar multiplier applied to x * transpose(y) +
      *        y * transpose(x).
      * x      single precision array of length at least (1 + (n - 1) * abs (incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * y      single precision array of length at least (1 + (n - 1) * abs (incy)).
      * incy   storage spacing between elements of y. incy must not be zero.
      * AP     single precision array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      *
      * Output
@@ -3334,30 +3337,30 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasSsymv (char uplo, int n, float alpha, const float *A, int lda, 
+     * void
+     * cublasSsymv (char uplo, int n, float alpha, const float *A, int lda,
      *              const float *x, int incx, float beta, float *y, int incy)
      *
      * performs the matrix-vector operation
      *
      *     y = alpha*A*x + beta*y
      *
-     * Alpha and beta are single precision scalars, and x and y are single 
-     * precision vectors, each with n elements. A is a symmetric n x n matrix 
-     * consisting of single precision elements that is stored in either upper or 
+     * Alpha and beta are single precision scalars, and x and y are single
+     * precision vectors, each with n elements. A is a symmetric n x n matrix
+     * consisting of single precision elements that is stored in either upper or
      * lower storage mode.
      *
      * Input
      * -----
-     * uplo   specifies whether the upper or lower triangular part of the array A 
-     *        is to be referenced. If uplo == 'U' or 'u', the symmetric matrix A 
+     * uplo   specifies whether the upper or lower triangular part of the array A
+     *        is to be referenced. If uplo == 'U' or 'u', the symmetric matrix A
      *        is stored in upper storage mode, i.e. only the upper triangular part
-     *        of A is to be referenced while the lower triangular part of A is to 
+     *        of A is to be referenced while the lower triangular part of A is to
      *        be inferred. If uplo == 'L' or 'l', the symmetric matrix A is stored
-     *        in lower storage mode, i.e. only the lower triangular part of A is 
-     *        to be referenced while the upper triangular part of A is to be 
+     *        in lower storage mode, i.e. only the lower triangular part of A is
+     *        to be referenced while the upper triangular part of A is to be
      *        inferred.
-     * n      specifies the number of rows and the number of columns of the 
+     * n      specifies the number of rows and the number of columns of the
      *        symmetric matrix A. n must be at least zero.
      * alpha  single precision scalar multiplier applied to A*x.
      * A      single precision array of dimensions (lda, n). If uplo == 'U' or 'u',
@@ -3366,13 +3369,13 @@ public class JCublas
      *        lower triangular part of A is not referenced. If uplo == 'L' or 'l',
      *        the leading n x n lower triangular part of the array A must contain
      *        the lower triangular part of the symmetric matrix and the strictly
-     *        upper triangular part of A is not referenced. 
+     *        upper triangular part of A is not referenced.
      * lda    leading dimension of A. It must be at least max (1, n).
      * x      single precision array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * beta   single precision scalar multiplier applied to vector y.
-     * y      single precision array of length at least (1 + (n - 1) * abs(incy)). 
-     *        If beta is zero, y is not read. 
+     * y      single precision array of length at least (1 + (n - 1) * abs(incy)).
+     *        If beta is zero, y is not read.
      * incy   storage spacing between elements of y. incy must not be zero.
      *
      * Output
@@ -3404,7 +3407,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasSsyr (char uplo, int n, float alpha, const float *x, int incx,
      *             float *A, int lda)
      *
@@ -3412,15 +3415,15 @@ public class JCublas
      *
      *    A = alpha * x * transpose(x) + A,
      *
-     * where alpha is a single precision scalar, x is an n element single 
-     * precision vector and A is an n x n symmetric matrix consisting of 
+     * where alpha is a single precision scalar, x is an n element single
+     * precision vector and A is an n x n symmetric matrix consisting of
      * single precision elements. Matrix A is stored in column major format,
-     * and lda is the leading dimension of the two-dimensional array 
+     * and lda is the leading dimension of the two-dimensional array
      * containing A.
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix data is stored in the upper or 
+     * uplo   specifies whether the matrix data is stored in the upper or
      *        the lower triangular part of array A. If uplo = 'U' or 'u',
      *        then only the upper triangular part of A may be referenced.
      *        If uplo = 'L' or 'l', then only the lower triangular part of
@@ -3429,13 +3432,13 @@ public class JCublas
      *        must be at least 0.
      * alpha  single precision scalar multiplier applied to x * transpose(x)
      * x      single precision array of length at least (1 + (n - 1) * abs(incx))
-     * incx   specifies the storage spacing between elements of x. incx must 
+     * incx   specifies the storage spacing between elements of x. incx must
      *        not be zero.
-     * A      single precision array of dimensions (lda, n). If uplo = 'U' or 
-     *        'u', then A must contain the upper triangular part of a symmetric 
-     *        matrix, and the strictly lower triangular part is not referenced. 
-     *        If uplo = 'L' or 'l', then A contains the lower triangular part 
-     *        of a symmetric matrix, and the strictly upper triangular part is 
+     * A      single precision array of dimensions (lda, n). If uplo = 'U' or
+     *        'u', then A must contain the upper triangular part of a symmetric
+     *        matrix, and the strictly lower triangular part is not referenced.
+     *        If uplo = 'L' or 'l', then A contains the lower triangular part
+     *        of a symmetric matrix, and the strictly upper triangular part is
      *        not referenced.
      * lda    leading dimension of the two-dimensional array containing A. lda
      *        must be at least max(1, n).
@@ -3469,29 +3472,29 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasSsyr2 (char uplo, int n, float alpha, const float *x, int incx, 
+     * void
+     * cublasSsyr2 (char uplo, int n, float alpha, const float *x, int incx,
      *              const float *y, int incy, float *A, int lda)
      *
      * performs the symmetric rank 2 operation
      *
      *    A = alpha*x*transpose(y) + alpha*y*transpose(x) + A,
      *
-     * where alpha is a single precision scalar, x and y are n element single 
-     * precision vector and A is an n by n symmetric matrix consisting of single 
+     * where alpha is a single precision scalar, x and y are n element single
+     * precision vector and A is an n by n symmetric matrix consisting of single
      * precision elements.
-     * 
+     *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array A. If uplo == 'U' or 'u', then only the 
+     *        triangular part of array A. If uplo == 'U' or 'u', then only the
      *        upper triangular part of A may be referenced and the lower triangular
-     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower 
+     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower
      *        triangular part of A may be referenced and the upper triangular part
      *        of A is inferred.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
-     * alpha  single precision scalar multiplier applied to x * transpose(y) + 
+     * alpha  single precision scalar multiplier applied to x * transpose(y) +
      *        y * transpose(x).
      * x      single precision array of length at least (1 + (n - 1) * abs (incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
@@ -3500,7 +3503,7 @@ public class JCublas
      * A      single precision array of dimensions (lda, n). If uplo == 'U' or 'u',
      *        then A must contains the upper triangular part of a symmetric matrix,
      *        and the strictly lower triangular parts is not referenced. If uplo ==
-     *        'L' or 'l', then A contains the lower triangular part of a symmetric 
+     *        'L' or 'l', then A contains the lower triangular part of a symmetric
      *        matrix, and the strictly upper triangular part is not referenced.
      * lda    leading dimension of A. It must be at least max(1, n).
      *
@@ -3511,7 +3514,7 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/ssyr2.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -3533,7 +3536,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasStbmv (char uplo, char trans, char diag, int n, int k, const float *A,
      *              int lda, float *x, int incx)
      *
@@ -3554,26 +3557,26 @@ public class JCublas
      *        is not assumed to be unit triangular.
      * n      specifies the number of rows and columns of the matrix A. n must be
      *        at least zero. In the current implementation n must not exceed 4070.
-     * k      specifies the number of super- or sub-diagonals. If uplo == 'U' or 
-     *        'u', k specifies the number of super-diagonals. If uplo == 'L' or 
-     *        'l', k specifies the number of sub-diagonals. k must at least be 
+     * k      specifies the number of super- or sub-diagonals. If uplo == 'U' or
+     *        'u', k specifies the number of super-diagonals. If uplo == 'L' or
+     *        'l', k specifies the number of sub-diagonals. k must at least be
      *        zero.
      * A      single precision array of dimension (lda, n). If uplo == 'U' or 'u',
-     *        the leading (k + 1) x n part of the array A must contain the upper 
+     *        the leading (k + 1) x n part of the array A must contain the upper
      *        triangular band matrix, supplied column by column, with the leading
-     *        diagonal of the matrix in row (k + 1) of the array, the first 
+     *        diagonal of the matrix in row (k + 1) of the array, the first
      *        super-diagonal starting at position 2 in row k, and so on. The top
      *        left k x k triangle of the array A is not referenced. If uplo == 'L'
      *        or 'l', the leading (k + 1) x n part of the array A must constain the
      *        lower triangular band matrix, supplied column by column, with the
-     *        leading diagonal of the matrix in row 1 of the array, the first 
+     *        leading diagonal of the matrix in row 1 of the array, the first
      *        sub-diagonal startingat position 1 in row 2, and so on. The bottom
      *        right k x k triangle of the array is not referenced.
      * lda    is the leading dimension of A. It must be at least (k + 1).
      * x      single precision array of length at least (1 + (n - 1) * abs(incx)).
      *        On entry, x contains the source vector. On exit, x is overwritten
      *        with the result vector.
-     * incx   specifies the storage spacing for elements of x. incx must not be 
+     * incx   specifies the storage spacing for elements of x. incx must not be
      *        zero.
      *
      * Output
@@ -3583,12 +3586,12 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/stbmv.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, k < 0, or incx == 0
-     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory 
+     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -3609,7 +3612,7 @@ public class JCublas
      * void cublasStbsv (char uplo, char trans, char diag, int n, int k,
      *                   const float *A, int lda, float *X, int incx)
      *
-     * solves one of the systems of equations op(A)*x = b, where op(A) is either 
+     * solves one of the systems of equations op(A)*x = b, where op(A) is either
      * op(A) = A or op(A) = transpose(A). b and x are n-element vectors, and A is
      * an n x n unit or non-unit, upper or lower triangular band matrix with k + 1
      * diagonals. No test for singularity or near-singularity is included in this
@@ -3617,7 +3620,7 @@ public class JCublas
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix is an upper or lower triangular band 
+     * uplo   specifies whether the matrix is an upper or lower triangular band
      *        matrix as follows: If uplo == 'U' or 'u', A is an upper triangular
      *        band matrix. If uplo == 'L' or 'l', A is a lower triangular band
      *        matrix.
@@ -3637,14 +3640,14 @@ public class JCublas
      *        the leading (k + 1) x n part of the array A must contain the upper
      *        triangular band matrix, supplied column by column, with the leading
      *        diagonal of the matrix in row (k + 1) of the array, the first super-
-     *        diagonal starting at position 2 in row k, and so on. The top left 
-     *        k x k triangle of the array A is not referenced. If uplo == 'L' or 
+     *        diagonal starting at position 2 in row k, and so on. The top left
+     *        k x k triangle of the array A is not referenced. If uplo == 'L' or
      *        'l', the leading (k + 1) x n part of the array A must constain the
      *        lower triangular band matrix, supplied column by column, with the
      *        leading diagonal of the matrix in row 1 of the array, the first
      *        sub-diagonal starting at position 1 in row 2, and so on. The bottom
      *        right k x k triangle of the array is not referenced.
-     * x      single precision array of length at least (1 + (n - 1) * abs(incx)). 
+     * x      single precision array of length at least (1 + (n - 1) * abs(incx)).
      *        On entry, x contains the n-element right-hand side vector b. On exit,
      *        it is overwritten with the solution vector x.
      * incx   storage spacing between elements of x. incx must not be zero.
@@ -3678,13 +3681,13 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasStpmv (char uplo, char trans, char diag, int n, const float *AP, 
+     * void
+     * cublasStpmv (char uplo, char trans, char diag, int n, const float *AP,
      *              float *x, int incx);
      *
      * performs one of the matrix-vector operations x = op(A) * x, where op(A) = A,
-     * or op(A) = transpose(A). x is an n element single precision vector, and A 
-     * is an n x n, unit or non-unit, upper or lower triangular matrix composed 
+     * or op(A) = transpose(A). x is an n element single precision vector, and A
+     * is an n x n, unit or non-unit, upper or lower triangular matrix composed
      * of single precision elements.
      *
      * Input
@@ -3695,21 +3698,21 @@ public class JCublas
      * trans  specifies op(A). If transa == 'N' or 'n', op(A) = A. If trans == 'T',
      *        't', 'C', or 'c', op(A) = transpose(A)
      * diag   specifies whether or not matrix A is unit triangular. If diag == 'U'
-     *        or 'u', A is assumed to be unit triangular. If diag == 'N' or 'n', A 
+     *        or 'u', A is assumed to be unit triangular. If diag == 'N' or 'n', A
      *        is not assumed to be unit triangular.
-     * n      specifies the number of rows and columns of the matrix A. n must be 
+     * n      specifies the number of rows and columns of the matrix A. n must be
      *        at least zero.
      * AP     single precision array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored in AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored in AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      * x      single precision array of length at least (1 + (n - 1) * abs(incx)).
-     *        On entry, x contains the source vector. On exit, x is overwritten 
+     *        On entry, x contains the source vector. On exit, x is overwritten
      *        with the result vector.
-     * incx   specifies the storage spacing for elements of x. incx must not be 
+     * incx   specifies the storage spacing for elements of x. incx must not be
      *        zero.
      *
      * Output
@@ -3724,7 +3727,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if incx == 0 or if n < 0
-     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory 
+     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -3742,14 +3745,14 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasStpsv (char uplo, char trans, char diag, int n, const float *AP,
      *              float *X, int incx)
      *
-     * solves one of the systems of equations op(A)*x = b, where op(A) is either 
+     * solves one of the systems of equations op(A)*x = b, where op(A) is either
      * op(A) = A or op(A) = transpose(A). b and x are n element vectors, and A is
      * an n x n unit or non-unit, upper or lower triangular matrix. No test for
-     * singularity or near-singularity is included in this function. Such tests 
+     * singularity or near-singularity is included in this function. Such tests
      * must be performed before calling this function.
      *
      * Input
@@ -3767,13 +3770,13 @@ public class JCublas
      *        at least zero. In the current implementation n must not exceed 4070.
      * AP     single precision array with at least ((n*(n+1))/2) elements. If uplo
      *        == 'U' or 'u', the array AP contains the upper triangular matrix A,
-     *        packed sequentially, column by column; that is, if i <= j, then 
-     *        A[i,j] is stored is AP[i+(j*(j+1)/2)]. If uplo == 'L' or 'L', the 
+     *        packed sequentially, column by column; that is, if i <= j, then
+     *        A[i,j] is stored is AP[i+(j*(j+1)/2)]. If uplo == 'L' or 'L', the
      *        array AP contains the lower triangular matrix A, packed sequentially,
-     *        column by column; that is, if i >= j, then A[i,j] is stored in 
+     *        column by column; that is, if i >= j, then A[i,j] is stored in
      *        AP[i+((2*n-j+1)*j)/2]. When diag = 'U' or 'u', the diagonal elements
      *        of A are not referenced and are assumed to be unity.
-     * x      single precision array of length at least (1 + (n - 1) * abs(incx)). 
+     * x      single precision array of length at least (1 + (n - 1) * abs(incx)).
      *        On entry, x contains the n-element right-hand side vector b. On exit,
      *        it is overwritten with the solution vector x.
      * incx   storage spacing between elements of x. It must not be zero.
@@ -3807,40 +3810,40 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasStrmv (char uplo, char trans, char diag, int n, const float *A,
      *              int lda, float *x, int incx);
      *
-     * performs one of the matrix-vector operations x = op(A) * x, where op(A) = 
-     = A, or op(A) = transpose(A). x is an n-element single precision vector, and 
-     * A is an n x n, unit or non-unit, upper or lower, triangular matrix composed 
+     * performs one of the matrix-vector operations x = op(A) * x, where op(A) =
+     = A, or op(A) = transpose(A). x is an n-element single precision vector, and
+     * A is an n x n, unit or non-unit, upper or lower, triangular matrix composed
      * of single precision elements.
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix A is an upper or lower triangular 
-     *        matrix. If uplo = 'U' or 'u', then A is an upper triangular matrix. 
+     * uplo   specifies whether the matrix A is an upper or lower triangular
+     *        matrix. If uplo = 'U' or 'u', then A is an upper triangular matrix.
      *        If uplo = 'L' or 'l', then A is a lower triangular matrix.
-     * trans  specifies op(A). If transa = 'N' or 'n', op(A) = A. If trans = 'T', 
+     * trans  specifies op(A). If transa = 'N' or 'n', op(A) = A. If trans = 'T',
      *        't', 'C', or 'c', op(A) = transpose(A)
-     * diag   specifies whether or not matrix A is unit triangular. If diag = 'U' 
-     *        or 'u', A is assumed to be unit triangular. If diag = 'N' or 'n', A 
+     * diag   specifies whether or not matrix A is unit triangular. If diag = 'U'
+     *        or 'u', A is assumed to be unit triangular. If diag = 'N' or 'n', A
      *        is not assumed to be unit triangular.
-     * n      specifies the number of rows and columns of the matrix A. n must be 
+     * n      specifies the number of rows and columns of the matrix A. n must be
      *        at least zero.
-     * A      single precision array of dimension (lda, n). If uplo = 'U' or 'u', 
-     *        the leading n x n upper triangular part of the array A must contain 
-     *        the upper triangular matrix and the strictly lower triangular part 
+     * A      single precision array of dimension (lda, n). If uplo = 'U' or 'u',
+     *        the leading n x n upper triangular part of the array A must contain
+     *        the upper triangular matrix and the strictly lower triangular part
      *        of A is not referenced. If uplo = 'L' or 'l', the leading n x n lower
-     *        triangular part of the array A must contain the lower triangular 
+     *        triangular part of the array A must contain the lower triangular
      *        matrix and the strictly upper triangular part of A is not referenced.
      *        When diag = 'U' or 'u', the diagonal elements of A are not referenced
      *        either, but are are assumed to be unity.
      * lda    is the leading dimension of A. It must be at least max (1, n).
      * x      single precision array of length at least (1 + (n - 1) * abs(incx) ).
-     *        On entry, x contains the source vector. On exit, x is overwritten 
+     *        On entry, x contains the source vector. On exit, x is overwritten
      *        with the result vector.
-     * incx   specifies the storage spacing for elements of x. incx must not be 
+     * incx   specifies the storage spacing for elements of x. incx must not be
      *        zero.
      *
      * Output
@@ -3872,45 +3875,45 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasStrsv (char uplo, char trans, char diag, int n, const float *A,
      *              int lda, float *x, int incx)
      *
-     * solves a system of equations op(A) * x = b, where op(A) is either A or 
+     * solves a system of equations op(A) * x = b, where op(A) is either A or
      * transpose(A). b and x are single precision vectors consisting of n
      * elements, and A is an n x n matrix composed of a unit or non-unit, upper
      * or lower triangular matrix. Matrix A is stored in column major format,
      * and lda is the leading dimension of the two-dimensional array containing
      * A.
      *
-     * No test for singularity or near-singularity is included in this function. 
+     * No test for singularity or near-singularity is included in this function.
      * Such tests must be performed before calling this function.
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix data is stored in the upper or the 
-     *        lower triangular part of array A. If uplo = 'U' or 'u', then only 
-     *        the upper triangular part of A may be referenced. If uplo = 'L' or 
+     * uplo   specifies whether the matrix data is stored in the upper or the
+     *        lower triangular part of array A. If uplo = 'U' or 'u', then only
+     *        the upper triangular part of A may be referenced. If uplo = 'L' or
      *        'l', then only the lower triangular part of A may be referenced.
      * trans  specifies op(A). If transa = 'n' or 'N', op(A) = A. If transa = 't',
      *        'T', 'c', or 'C', op(A) = transpose(A)
      * diag   specifies whether or not A is a unit triangular matrix like so:
-     *        if diag = 'U' or 'u', A is assumed to be unit triangular. If 
+     *        if diag = 'U' or 'u', A is assumed to be unit triangular. If
      *        diag = 'N' or 'n', then A is not assumed to be unit triangular.
      * n      specifies the number of rows and columns of the matrix A. It
-     *        must be at least 0. 
-     * A      is a single precision array of dimensions (lda, n). If uplo = 'U' 
+     *        must be at least 0.
+     * A      is a single precision array of dimensions (lda, n). If uplo = 'U'
      *        or 'u', then A must contains the upper triangular part of a symmetric
-     *        matrix, and the strictly lower triangular parts is not referenced. 
-     *        If uplo = 'L' or 'l', then A contains the lower triangular part of 
-     *        a symmetric matrix, and the strictly upper triangular part is not 
-     *        referenced. 
+     *        matrix, and the strictly lower triangular parts is not referenced.
+     *        If uplo = 'L' or 'l', then A contains the lower triangular part of
+     *        a symmetric matrix, and the strictly upper triangular part is not
+     *        referenced.
      * lda    is the leading dimension of the two-dimensional array containing A.
      *        lda must be at least max(1, n).
      * x      single precision array of length at least (1 + (n - 1) * abs(incx)).
      *        On entry, x contains the n element right-hand side vector b. On exit,
      *        it is overwritten with the solution vector x.
-     * incx   specifies the storage spacing between elements of x. incx must not 
+     * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
      *
      * Output
@@ -3942,42 +3945,42 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZtrmv (char uplo, char trans, char diag, int n, const cuDoubleComplex *A, 
+     * void
+     * cublasZtrmv (char uplo, char trans, char diag, int n, const cuDoubleComplex *A,
      *              int lda, cuDoubleComplex *x, int incx);
      *
-     * performs one of the matrix-vector operations x = op(A) * x, 
-     * where op(A) = A, or op(A) = transpose(A) or op(A) = conjugate(transpose(A)). 
-     * x is an n-element double precision complex vector, and 
-     * A is an n x n, unit or non-unit, upper or lower, triangular matrix composed 
+     * performs one of the matrix-vector operations x = op(A) * x,
+     * where op(A) = A, or op(A) = transpose(A) or op(A) = conjugate(transpose(A)).
+     * x is an n-element double precision complex vector, and
+     * A is an n x n, unit or non-unit, upper or lower, triangular matrix composed
      * of double precision complex elements.
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix A is an upper or lower triangular 
-     *        matrix. If uplo = 'U' or 'u', then A is an upper triangular matrix. 
+     * uplo   specifies whether the matrix A is an upper or lower triangular
+     *        matrix. If uplo = 'U' or 'u', then A is an upper triangular matrix.
      *        If uplo = 'L' or 'l', then A is a lower triangular matrix.
      * trans  specifies op(A). If trans = 'n' or 'N', op(A) = A. If trans = 't' or
      *        'T', op(A) = transpose(A).  If trans = 'c' or 'C', op(A) =
      *        conjugate(transpose(A)).
-     * diag   specifies whether or not matrix A is unit triangular. If diag = 'U' 
-     *        or 'u', A is assumed to be unit triangular. If diag = 'N' or 'n', A 
+     * diag   specifies whether or not matrix A is unit triangular. If diag = 'U'
+     *        or 'u', A is assumed to be unit triangular. If diag = 'N' or 'n', A
      *        is not assumed to be unit triangular.
-     * n      specifies the number of rows and columns of the matrix A. n must be 
+     * n      specifies the number of rows and columns of the matrix A. n must be
      *        at least zero.
-     * A      double precision array of dimension (lda, n). If uplo = 'U' or 'u', 
-     *        the leading n x n upper triangular part of the array A must contain 
-     *        the upper triangular matrix and the strictly lower triangular part 
+     * A      double precision array of dimension (lda, n). If uplo = 'U' or 'u',
+     *        the leading n x n upper triangular part of the array A must contain
+     *        the upper triangular matrix and the strictly lower triangular part
      *        of A is not referenced. If uplo = 'L' or 'l', the leading n x n lower
-     *        triangular part of the array A must contain the lower triangular 
+     *        triangular part of the array A must contain the lower triangular
      *        matrix and the strictly upper triangular part of A is not referenced.
      *        When diag = 'U' or 'u', the diagonal elements of A are not referenced
      *        either, but are are assumed to be unity.
      * lda    is the leading dimension of A. It must be at least max (1, n).
      * x      double precision array of length at least (1 + (n - 1) * abs(incx) ).
-     *        On entry, x contains the source vector. On exit, x is overwritten 
+     *        On entry, x contains the source vector. On exit, x is overwritten
      *        with the result vector.
-     * incx   specifies the storage spacing for elements of x. incx must not be 
+     * incx   specifies the storage spacing for elements of x. incx must not be
      *        zero.
      *
      * Output
@@ -4009,7 +4012,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasZgbmv (char trans, int m, int n, int kl, int ku, cuDoubleComplex alpha,
      *              const cuDoubleComplex *A, int lda, const cuDoubleComplex *x, int incx, cuDoubleComplex beta,
      *              cuDoubleComplex *y, int incy);
@@ -4024,36 +4027,36 @@ public class JCublas
      *
      * Input
      * -----
-     * trans  specifies op(A). If trans == 'N' or 'n', op(A) = A. If trans == 'T', 
+     * trans  specifies op(A). If trans == 'N' or 'n', op(A) = A. If trans == 'T',
      *        or 't', op(A) = transpose(A). If trans == 'C' or 'c',
      *        op(A) = conjugate(transpose(A)).
-     * m      specifies the number of rows of the matrix A. m must be at least 
+     * m      specifies the number of rows of the matrix A. m must be at least
      *        zero.
      * n      specifies the number of columns of the matrix A. n must be at least
      *        zero.
-     * kl     specifies the number of sub-diagonals of matrix A. It must be at 
+     * kl     specifies the number of sub-diagonals of matrix A. It must be at
      *        least zero.
      * ku     specifies the number of super-diagonals of matrix A. It must be at
      *        least zero.
      * alpha  double precision complex scalar multiplier applied to op(A).
      * A      double precision complex array of dimensions (lda, n). The leading
      *        (kl + ku + 1) x n part of the array A must contain the band matrix A,
-     *        supplied column by column, with the leading diagonal of the matrix 
-     *        in row (ku + 1) of the array, the first super-diagonal starting at 
+     *        supplied column by column, with the leading diagonal of the matrix
+     *        in row (ku + 1) of the array, the first super-diagonal starting at
      *        position 2 in row ku, the first sub-diagonal starting at position 1
-     *        in row (ku + 2), and so on. Elements in the array A that do not 
-     *        correspond to elements in the band matrix (such as the top left 
+     *        in row (ku + 2), and so on. Elements in the array A that do not
+     *        correspond to elements in the band matrix (such as the top left
      *        ku x ku triangle) are not referenced.
      * lda    leading dimension of A. lda must be at least (kl + ku + 1).
-     * x      double precision complex array of length at least (1+(n-1)*abs(incx)) when 
+     * x      double precision complex array of length at least (1+(n-1)*abs(incx)) when
      *        trans == 'N' or 'n' and at least (1+(m-1)*abs(incx)) otherwise.
      * incx   specifies the increment for the elements of x. incx must not be zero.
-     * beta   double precision complex scalar multiplier applied to vector y. If beta is 
+     * beta   double precision complex scalar multiplier applied to vector y. If beta is
      *        zero, y is not read.
-     * y      double precision complex array of length at least (1+(m-1)*abs(incy)) when 
-     *        trans == 'N' or 'n' and at least (1+(n-1)*abs(incy)) otherwise. If 
+     * y      double precision complex array of length at least (1+(m-1)*abs(incy)) when
+     *        trans == 'N' or 'n' and at least (1+(n-1)*abs(incy)) otherwise. If
      *        beta is zero, y is not read.
-     * incy   On entry, incy specifies the increment for the elements of y. incy 
+     * incy   On entry, incy specifies the increment for the elements of y. incy
      *        must not be zero.
      *
      * Output
@@ -4068,7 +4071,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, or if incx or incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support  
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -4086,13 +4089,13 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasZtbmv (char uplo, char trans, char diag, int n, int k, const cuDoubleComplex *A,
      *              int lda, cuDoubleComplex *x, int incx)
      *
      * performs one of the matrix-vector operations x = op(A) * x, where op(A) = A,
-     * op(A) = transpose(A) or op(A) = conjugate(transpose(A)). x is an n-element 
-     * double precision complex vector, and A is an n x n, unit or non-unit, upper 
+     * op(A) = transpose(A) or op(A) = conjugate(transpose(A)). x is an n-element
+     * double precision complex vector, and A is an n x n, unit or non-unit, upper
      * or lower triangular band matrix composed of double precision complex elements.
      *
      * Input
@@ -4108,26 +4111,26 @@ public class JCublas
      *        is not assumed to be unit triangular.
      * n      specifies the number of rows and columns of the matrix A. n must be
      *        at least zero.
-     * k      specifies the number of super- or sub-diagonals. If uplo == 'U' or 
-     *        'u', k specifies the number of super-diagonals. If uplo == 'L' or 
-     *        'l', k specifies the number of sub-diagonals. k must at least be 
+     * k      specifies the number of super- or sub-diagonals. If uplo == 'U' or
+     *        'u', k specifies the number of super-diagonals. If uplo == 'L' or
+     *        'l', k specifies the number of sub-diagonals. k must at least be
      *        zero.
      * A      double precision complex array of dimension (lda, n). If uplo == 'U' or 'u',
-     *        the leading (k + 1) x n part of the array A must contain the upper 
+     *        the leading (k + 1) x n part of the array A must contain the upper
      *        triangular band matrix, supplied column by column, with the leading
-     *        diagonal of the matrix in row (k + 1) of the array, the first 
+     *        diagonal of the matrix in row (k + 1) of the array, the first
      *        super-diagonal starting at position 2 in row k, and so on. The top
      *        left k x k triangle of the array A is not referenced. If uplo == 'L'
      *        or 'l', the leading (k + 1) x n part of the array A must constain the
      *        lower triangular band matrix, supplied column by column, with the
-     *        leading diagonal of the matrix in row 1 of the array, the first 
+     *        leading diagonal of the matrix in row 1 of the array, the first
      *        sub-diagonal startingat position 1 in row 2, and so on. The bottom
      *        right k x k triangle of the array is not referenced.
      * lda    is the leading dimension of A. It must be at least (k + 1).
      * x      double precision complex array of length at least (1 + (n - 1) * abs(incx)).
      *        On entry, x contains the source vector. On exit, x is overwritten
      *        with the result vector.
-     * incx   specifies the storage spacing for elements of x. incx must not be 
+     * incx   specifies the storage spacing for elements of x. incx must not be
      *        zero.
      *
      * Output
@@ -4142,7 +4145,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n or k < 0, or if incx == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support  
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -4163,7 +4166,7 @@ public class JCublas
      * void cublasZtbsv (char uplo, char trans, char diag, int n, int k,
      *                   const cuDoubleComplex *A, int lda, cuDoubleComplex *X, int incx)
      *
-     * solves one of the systems of equations op(A)*x = b, where op(A) is either 
+     * solves one of the systems of equations op(A)*x = b, where op(A) is either
      * op(A) = A , op(A) = transpose(A) or op(A) = conjugate(transpose(A)).
      * b and x are n element vectors, and A is an n x n unit or non-unit,
      * upper or lower triangular band matrix with k + 1 diagonals. No test
@@ -4172,13 +4175,13 @@ public class JCublas
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix is an upper or lower triangular band 
+     * uplo   specifies whether the matrix is an upper or lower triangular band
      *        matrix as follows: If uplo == 'U' or 'u', A is an upper triangular
      *        band matrix. If uplo == 'L' or 'l', A is a lower triangular band
      *        matrix.
      * trans  specifies op(A). If trans == 'N' or 'n', op(A) = A. If trans == 'T',
      *        't', op(A) = transpose(A). If trans == 'C' or 'c',
-     *        op(A) = conjugate(transpose(A)). 
+     *        op(A) = conjugate(transpose(A)).
      * diag   specifies whether A is unit triangular. If diag == 'U' or 'u', A is
      *        assumed to be unit triangular; thas is, diagonal elements are not
      *        read and are assumed to be unity. If diag == 'N' or 'n', A is not
@@ -4187,14 +4190,14 @@ public class JCublas
      *        at least zero.
      * k      specifies the number of super- or sub-diagonals. If uplo == 'U' or
      *        'u', k specifies the number of super-diagonals. If uplo == 'L' or
-     *        'l', k specifies the number of sub-diagonals. k must at least be 
+     *        'l', k specifies the number of sub-diagonals. k must at least be
      *        zero.
      * A      double precision complex array of dimension (lda, n). If uplo == 'U' or 'u',
      *        the leading (k + 1) x n part of the array A must contain the upper
      *        triangular band matrix, supplied column by column, with the leading
      *        diagonal of the matrix in row (k + 1) of the array, the first super-
-     *        diagonal starting at position 2 in row k, and so on. The top left 
-     *        k x k triangle of the array A is not referenced. If uplo == 'L' or 
+     *        diagonal starting at position 2 in row k, and so on. The top left
+     *        k x k triangle of the array A is not referenced. If uplo == 'L' or
      *        'l', the leading (k + 1) x n part of the array A must constain the
      *        lower triangular band matrix, supplied column by column, with the
      *        leading diagonal of the matrix in row 1 of the array, the first
@@ -4215,7 +4218,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if incx == 0, n < 0 or n > 1016
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support   
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -4233,30 +4236,30 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZhemv (char uplo, int n, cuDoubleComplex alpha, const cuDoubleComplex *A, int lda, 
+     * void
+     * cublasZhemv (char uplo, int n, cuDoubleComplex alpha, const cuDoubleComplex *A, int lda,
      *              const cuDoubleComplex *x, int incx, cuDoubleComplex beta, cuDoubleComplex *y, int incy)
      *
      * performs the matrix-vector operation
      *
      *     y = alpha*A*x + beta*y
      *
-     * Alpha and beta are double precision complex scalars, and x and y are double 
-     * precision complex vectors, each with n elements. A is a hermitian n x n matrix 
-     * consisting of double precision complex elements that is stored in either upper or 
+     * Alpha and beta are double precision complex scalars, and x and y are double
+     * precision complex vectors, each with n elements. A is a hermitian n x n matrix
+     * consisting of double precision complex elements that is stored in either upper or
      * lower storage mode.
      *
      * Input
      * -----
-     * uplo   specifies whether the upper or lower triangular part of the array A 
-     *        is to be referenced. If uplo == 'U' or 'u', the hermitian matrix A 
+     * uplo   specifies whether the upper or lower triangular part of the array A
+     *        is to be referenced. If uplo == 'U' or 'u', the hermitian matrix A
      *        is stored in upper storage mode, i.e. only the upper triangular part
-     *        of A is to be referenced while the lower triangular part of A is to 
+     *        of A is to be referenced while the lower triangular part of A is to
      *        be inferred. If uplo == 'L' or 'l', the hermitian matrix A is stored
-     *        in lower storage mode, i.e. only the lower triangular part of A is 
-     *        to be referenced while the upper triangular part of A is to be 
+     *        in lower storage mode, i.e. only the lower triangular part of A is
+     *        to be referenced while the upper triangular part of A is to be
      *        inferred.
-     * n      specifies the number of rows and the number of columns of the 
+     * n      specifies the number of rows and the number of columns of the
      *        hermitian matrix A. n must be at least zero.
      * alpha  double precision complex scalar multiplier applied to A*x.
      * A      double precision complex array of dimensions (lda, n). If uplo == 'U' or 'u',
@@ -4266,13 +4269,13 @@ public class JCublas
      *        the leading n x n lower triangular part of the array A must contain
      *        the lower triangular part of the hermitian matrix and the strictly
      *        upper triangular part of A is not referenced. The imaginary parts
-     *        of the diagonal elements need not be set, they are assumed to be zero. 
+     *        of the diagonal elements need not be set, they are assumed to be zero.
      * lda    leading dimension of A. It must be at least max (1, n).
      * x      double precision complex array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * beta   double precision complex scalar multiplier applied to vector y.
-     * y      double precision complex array of length at least (1 + (n - 1) * abs(incy)). 
-     *        If beta is zero, y is not read. 
+     * y      double precision complex array of length at least (1 + (n - 1) * abs(incy)).
+     *        If beta is zero, y is not read.
      * incy   storage spacing between elements of y. incy must not be zero.
      *
      * Output
@@ -4287,7 +4290,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, or if incx or incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support  
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -4305,41 +4308,41 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasZhpmv (char uplo, int n, cuDoubleComplex alpha, const cuDoubleComplex *AP, const cuDoubleComplex *x,
      *              int incx, cuDoubleComplex beta, cuDoubleComplex *y, int incy)
      *
      * performs the matrix-vector operation
-     * 
+     *
      *    y = alpha * A * x + beta * y
      *
-     * Alpha and beta are double precision complex scalars, and x and y are double 
-     * precision complex vectors with n elements. A is an hermitian n x n matrix 
+     * Alpha and beta are double precision complex scalars, and x and y are double
+     * precision complex vectors with n elements. A is an hermitian n x n matrix
      * consisting of double precision complex elements that is supplied in packed form.
      *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper 
-     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then 
+     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper
+     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then
      *        the lower triangular part of A is supplied in AP.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
      * alpha  double precision complex scalar multiplier applied to A*x.
      * AP     double precision complex array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the hermitian matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the hermitian matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the hermitian matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the hermitian matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      *        The imaginary parts of the diagonal elements need not be set, they
-     *        are assumed to be zero. 
+     *        are assumed to be zero.
      * x      double precision complex array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * beta   double precision complex scalar multiplier applied to vector y;
-     * y      double precision array of length at least (1 + (n - 1) * abs(incy)). 
-     *        If beta is zero, y is not read. 
+     * y      double precision array of length at least (1 + (n - 1) * abs(incy)).
+     *        If beta is zero, y is not read.
      * incy   storage spacing between elements of y. incy must not be zero.
      *
      * Output
@@ -4354,7 +4357,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, or if incx or incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support   
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -4383,7 +4386,7 @@ public class JCublas
      *
      *    op(A) = A   or   op(A) = transpose(A)
      *
-     * where alpha and beta are double precision scalars, x and y are double 
+     * where alpha and beta are double precision scalars, x and y are double
      * precision vectors, and A is an m x n matrix consisting of double precision
      * elements. Matrix A is stored in column major format, and lda is the leading
      * dimension of the two-dimensional array in which A is stored.
@@ -4392,24 +4395,24 @@ public class JCublas
      * -----
      * trans  specifies op(A). If transa = 'n' or 'N', op(A) = A. If trans =
      *        trans = 't', 'T', 'c', or 'C', op(A) = transpose(A)
-     * m      specifies the number of rows of the matrix A. m must be at least 
+     * m      specifies the number of rows of the matrix A. m must be at least
      *        zero.
-     * n      specifies the number of columns of the matrix A. n must be at least 
+     * n      specifies the number of columns of the matrix A. n must be at least
      *        zero.
      * alpha  double precision scalar multiplier applied to op(A).
-     * A      double precision array of dimensions (lda, n) if trans = 'n' or 
-     *        'N'), and of dimensions (lda, m) otherwise. lda must be at least 
+     * A      double precision array of dimensions (lda, n) if trans = 'n' or
+     *        'N'), and of dimensions (lda, m) otherwise. lda must be at least
      *        max(1, m) and at least max(1, n) otherwise.
      * lda    leading dimension of two-dimensional array used to store matrix A
      * x      double precision array of length at least (1 + (n - 1) * abs(incx))
-     *        when trans = 'N' or 'n' and at least (1 + (m - 1) * abs(incx)) 
+     *        when trans = 'N' or 'n' and at least (1 + (m - 1) * abs(incx))
      *        otherwise.
-     * incx   specifies the storage spacing between elements of x. incx must not 
+     * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
-     * beta   double precision scalar multiplier applied to vector y. If beta 
+     * beta   double precision scalar multiplier applied to vector y. If beta
      *        is zero, y is not read.
      * y      double precision array of length at least (1 + (m - 1) * abs(incy))
-     *        when trans = 'N' or 'n' and at least (1 + (n - 1) * abs(incy)) 
+     *        when trans = 'N' or 'n' and at least (1 + (n - 1) * abs(incy))
      *        otherwise.
      * incy   specifies the storage spacing between elements of x. incx must not
      *        be zero.
@@ -4443,12 +4446,12 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZtpmv (char uplo, char trans, char diag, int n, const cuDoubleComplex *AP, 
+     * void
+     * cublasZtpmv (char uplo, char trans, char diag, int n, const cuDoubleComplex *AP,
      *              cuDoubleComplex *x, int incx);
      *
      * performs one of the matrix-vector operations x = op(A) * x, where op(A) = A,
-     * op(A) = transpose(A) or op(A) = conjugate(transpose(A)) . x is an n element 
+     * op(A) = transpose(A) or op(A) = conjugate(transpose(A)) . x is an n element
      * double precision complex vector, and A is an n x n, unit or non-unit, upper
      * or lower triangular matrix composed of double precision complex elements.
      *
@@ -4458,25 +4461,25 @@ public class JCublas
      *        matrix. If uplo == 'U' or 'u', then A is an upper triangular matrix.
      *        If uplo == 'L' or 'l', then A is a lower triangular matrix.
      * trans  specifies op(A). If transa == 'N' or 'n', op(A) = A. If trans == 'T',
-     *        or 't', op(A) = transpose(A). If trans == 'C' or 'c', 
+     *        or 't', op(A) = transpose(A). If trans == 'C' or 'c',
      *        op(A) = conjugate(transpose(A)).
      *
      * diag   specifies whether or not matrix A is unit triangular. If diag == 'U'
-     *        or 'u', A is assumed to be unit triangular. If diag == 'N' or 'n', A 
+     *        or 'u', A is assumed to be unit triangular. If diag == 'N' or 'n', A
      *        is not assumed to be unit triangular.
-     * n      specifies the number of rows and columns of the matrix A. n must be 
+     * n      specifies the number of rows and columns of the matrix A. n must be
      *        at least zero. In the current implementation n must not exceed 4070.
      * AP     double precision complex array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored in AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored in AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      * x      double precision complex array of length at least (1 + (n - 1) * abs(incx)).
-     *        On entry, x contains the source vector. On exit, x is overwritten 
+     *        On entry, x contains the source vector. On exit, x is overwritten
      *        with the result vector.
-     * incx   specifies the storage spacing for elements of x. incx must not be 
+     * incx   specifies the storage spacing for elements of x. incx must not be
      *        zero.
      *
      * Output
@@ -4491,8 +4494,8 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if incx == 0 or n < 0
-     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory 
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -4510,11 +4513,11 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZtpsv (char uplo, char trans, char diag, int n, const cuDoubleComplex *AP, 
+     * void
+     * cublasZtpsv (char uplo, char trans, char diag, int n, const cuDoubleComplex *AP,
      *              cuDoubleComplex *X, int incx)
      *
-     * solves one of the systems of equations op(A)*x = b, where op(A) is either 
+     * solves one of the systems of equations op(A)*x = b, where op(A) is either
      * op(A) = A , op(A) = transpose(A) or op(A) = conjugate(transpose)). b and
      * x are n element complex vectors, and A is an n x n unit or non-unit,
      * upper or lower triangular matrix. No test for singularity or near-singularity
@@ -4526,7 +4529,7 @@ public class JCublas
      *        as follows: If uplo == 'U' or 'u', A is an upper triangluar matrix.
      *        If uplo == 'L' or 'l', A is a lower triangular matrix.
      * trans  specifies op(A). If trans == 'N' or 'n', op(A) = A. If trans == 'T'
-     *        or 't', op(A) = transpose(A). If trans == 'C' or 'c', op(A) = 
+     *        or 't', op(A) = transpose(A). If trans == 'C' or 'c', op(A) =
      *        conjugate(transpose(A)).
      * diag   specifies whether A is unit triangular. If diag == 'U' or 'u', A is
      *        assumed to be unit triangular; thas is, diagonal elements are not
@@ -4536,10 +4539,10 @@ public class JCublas
      *        at least zero.
      * AP     double precision complex array with at least ((n*(n+1))/2) elements.
      *        If uplo == 'U' or 'u', the array AP contains the upper triangular
-     *        matrix A, packed sequentially, column by column; that is, if i <= j, then 
-     *        A[i,j] is stored is AP[i+(j*(j+1)/2)]. If uplo == 'L' or 'L', the 
+     *        matrix A, packed sequentially, column by column; that is, if i <= j, then
+     *        A[i,j] is stored is AP[i+(j*(j+1)/2)]. If uplo == 'L' or 'L', the
      *        array AP contains the lower triangular matrix A, packed sequentially,
-     *        column by column; that is, if i >= j, then A[i,j] is stored in 
+     *        column by column; that is, if i >= j, then A[i,j] is stored in
      *        AP[i+((2*n-j+1)*j)/2]. When diag = 'U' or 'u', the diagonal elements
      *        of A are not referenced and are assumed to be unity.
      * x      double precision complex array of length at least (1+(n-1)*abs(incx)).
@@ -4557,7 +4560,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if incx == 0 or if n < 0 or n > 2035
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support    
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -4575,8 +4578,8 @@ public class JCublas
 
     /**
      * <pre>
-     * cublasCgemv (char trans, int m, int n, cuComplex alpha, const cuComplex *A, 
-     *              int lda, const cuComplex *x, int incx, cuComplex beta, cuComplex *y, 
+     * cublasCgemv (char trans, int m, int n, cuComplex alpha, const cuComplex *A,
+     *              int lda, const cuComplex *x, int incx, cuComplex beta, cuComplex *y,
      *              int incy)
      *
      * performs one of the matrix-vector operations
@@ -4587,7 +4590,7 @@ public class JCublas
      *
      *    op(A) = A   or   op(A) = transpose(A) or op(A) = conjugate(transpose(A))
      *
-     * where alpha and beta are single precision scalars, x and y are single 
+     * where alpha and beta are single precision scalars, x and y are single
      * precision vectors, and A is an m x n matrix consisting of single precision
      * elements. Matrix A is stored in column major format, and lda is the leading
      * dimension of the two-dimensional array in which A is stored.
@@ -4595,26 +4598,26 @@ public class JCublas
      * Input
      * -----
      * trans  specifies op(A). If transa = 'n' or 'N', op(A) = A. If trans =
-     *        trans = 't' or 'T', op(A) = transpose(A). If trans = 'c' or 'C', 
+     *        trans = 't' or 'T', op(A) = transpose(A). If trans = 'c' or 'C',
      *        op(A) = conjugate(transpose(A))
-     * m      specifies the number of rows of the matrix A. m must be at least 
+     * m      specifies the number of rows of the matrix A. m must be at least
      *        zero.
-     * n      specifies the number of columns of the matrix A. n must be at least 
+     * n      specifies the number of columns of the matrix A. n must be at least
      *        zero.
      * alpha  single precision scalar multiplier applied to op(A).
-     * A      single precision array of dimensions (lda, n) if trans = 'n' or 
-     *        'N'), and of dimensions (lda, m) otherwise. lda must be at least 
+     * A      single precision array of dimensions (lda, n) if trans = 'n' or
+     *        'N'), and of dimensions (lda, m) otherwise. lda must be at least
      *        max(1, m) and at least max(1, n) otherwise.
      * lda    leading dimension of two-dimensional array used to store matrix A
      * x      single precision array of length at least (1 + (n - 1) * abs(incx))
-     *        when trans = 'N' or 'n' and at least (1 + (m - 1) * abs(incx)) 
+     *        when trans = 'N' or 'n' and at least (1 + (m - 1) * abs(incx))
      *        otherwise.
-     * incx   specifies the storage spacing between elements of x. incx must not 
+     * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
-     * beta   single precision scalar multiplier applied to vector y. If beta 
+     * beta   single precision scalar multiplier applied to vector y. If beta
      *        is zero, y is not read.
      * y      single precision array of length at least (1 + (m - 1) * abs(incy))
-     *        when trans = 'N' or 'n' and at least (1 + (n - 1) * abs(incy)) 
+     *        when trans = 'N' or 'n' and at least (1 + (n - 1) * abs(incy))
      *        otherwise.
      * incy   specifies the storage spacing between elements of y. incy must not
      *        be zero.
@@ -4648,7 +4651,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasCgbmv (char trans, int m, int n, int kl, int ku, cuComplex alpha,
      *              const cuComplex *A, int lda, const cuComplex *x, int incx, cuComplex beta,
      *              cuComplex *y, int incy);
@@ -4663,36 +4666,36 @@ public class JCublas
      *
      * Input
      * -----
-     * trans  specifies op(A). If trans == 'N' or 'n', op(A) = A. If trans == 'T', 
+     * trans  specifies op(A). If trans == 'N' or 'n', op(A) = A. If trans == 'T',
      *        or 't', op(A) = transpose(A). If trans == 'C' or 'c',
      *        op(A) = conjugate(transpose(A)).
-     * m      specifies the number of rows of the matrix A. m must be at least 
+     * m      specifies the number of rows of the matrix A. m must be at least
      *        zero.
      * n      specifies the number of columns of the matrix A. n must be at least
      *        zero.
-     * kl     specifies the number of sub-diagonals of matrix A. It must be at 
+     * kl     specifies the number of sub-diagonals of matrix A. It must be at
      *        least zero.
      * ku     specifies the number of super-diagonals of matrix A. It must be at
      *        least zero.
      * alpha  single precision complex scalar multiplier applied to op(A).
      * A      single precision complex array of dimensions (lda, n). The leading
      *        (kl + ku + 1) x n part of the array A must contain the band matrix A,
-     *        supplied column by column, with the leading diagonal of the matrix 
-     *        in row (ku + 1) of the array, the first super-diagonal starting at 
+     *        supplied column by column, with the leading diagonal of the matrix
+     *        in row (ku + 1) of the array, the first super-diagonal starting at
      *        position 2 in row ku, the first sub-diagonal starting at position 1
-     *        in row (ku + 2), and so on. Elements in the array A that do not 
-     *        correspond to elements in the band matrix (such as the top left 
+     *        in row (ku + 2), and so on. Elements in the array A that do not
+     *        correspond to elements in the band matrix (such as the top left
      *        ku x ku triangle) are not referenced.
      * lda    leading dimension of A. lda must be at least (kl + ku + 1).
-     * x      single precision complex array of length at least (1+(n-1)*abs(incx)) when 
+     * x      single precision complex array of length at least (1+(n-1)*abs(incx)) when
      *        trans == 'N' or 'n' and at least (1+(m-1)*abs(incx)) otherwise.
      * incx   specifies the increment for the elements of x. incx must not be zero.
-     * beta   single precision complex scalar multiplier applied to vector y. If beta is 
+     * beta   single precision complex scalar multiplier applied to vector y. If beta is
      *        zero, y is not read.
-     * y      single precision complex array of length at least (1+(m-1)*abs(incy)) when 
-     *        trans == 'N' or 'n' and at least (1+(n-1)*abs(incy)) otherwise. If 
+     * y      single precision complex array of length at least (1+(m-1)*abs(incy)) when
+     *        trans == 'N' or 'n' and at least (1+(n-1)*abs(incy)) otherwise. If
      *        beta is zero, y is not read.
-     * incy   On entry, incy specifies the increment for the elements of y. incy 
+     * incy   On entry, incy specifies the increment for the elements of y. incy
      *        must not be zero.
      *
      * Output
@@ -4724,30 +4727,30 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasChemv (char uplo, int n, cuComplex alpha, const cuComplex *A, int lda, 
+     * void
+     * cublasChemv (char uplo, int n, cuComplex alpha, const cuComplex *A, int lda,
      *              const cuComplex *x, int incx, cuComplex beta, cuComplex *y, int incy)
      *
      * performs the matrix-vector operation
      *
      *     y = alpha*A*x + beta*y
      *
-     * Alpha and beta are single precision complex scalars, and x and y are single 
-     * precision complex vectors, each with n elements. A is a hermitian n x n matrix 
-     * consisting of single precision complex elements that is stored in either upper or 
+     * Alpha and beta are single precision complex scalars, and x and y are single
+     * precision complex vectors, each with n elements. A is a hermitian n x n matrix
+     * consisting of single precision complex elements that is stored in either upper or
      * lower storage mode.
      *
      * Input
      * -----
-     * uplo   specifies whether the upper or lower triangular part of the array A 
-     *        is to be referenced. If uplo == 'U' or 'u', the hermitian matrix A 
+     * uplo   specifies whether the upper or lower triangular part of the array A
+     *        is to be referenced. If uplo == 'U' or 'u', the hermitian matrix A
      *        is stored in upper storage mode, i.e. only the upper triangular part
-     *        of A is to be referenced while the lower triangular part of A is to 
+     *        of A is to be referenced while the lower triangular part of A is to
      *        be inferred. If uplo == 'L' or 'l', the hermitian matrix A is stored
-     *        in lower storage mode, i.e. only the lower triangular part of A is 
-     *        to be referenced while the upper triangular part of A is to be 
+     *        in lower storage mode, i.e. only the lower triangular part of A is
+     *        to be referenced while the upper triangular part of A is to be
      *        inferred.
-     * n      specifies the number of rows and the number of columns of the 
+     * n      specifies the number of rows and the number of columns of the
      *        hermitian matrix A. n must be at least zero.
      * alpha  single precision complex scalar multiplier applied to A*x.
      * A      single precision complex array of dimensions (lda, n). If uplo == 'U' or 'u',
@@ -4757,13 +4760,13 @@ public class JCublas
      *        the leading n x n lower triangular part of the array A must contain
      *        the lower triangular part of the hermitian matrix and the strictly
      *        upper triangular part of A is not referenced. The imaginary parts
-     *        of the diagonal elements need not be set, they are assumed to be zero. 
+     *        of the diagonal elements need not be set, they are assumed to be zero.
      * lda    leading dimension of A. It must be at least max (1, n).
      * x      single precision complex array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * beta   single precision complex scalar multiplier applied to vector y.
-     * y      single precision complex array of length at least (1 + (n - 1) * abs(incy)). 
-     *        If beta is zero, y is not read. 
+     * y      single precision complex array of length at least (1 + (n - 1) * abs(incy)).
+     *        If beta is zero, y is not read.
      * incy   storage spacing between elements of y. incy must not be zero.
      *
      * Output
@@ -4795,7 +4798,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasChbmv (char uplo, int n, int k, cuComplex alpha, const cuComplex *A, int lda,
      *              const cuComplex *x, int incx, cuComplex beta, cuComplex *y, int incy)
      *
@@ -4804,15 +4807,15 @@ public class JCublas
      *     y := alpha*A*x + beta*y
      *
      * alpha and beta are single precision complex scalars. x and y are single precision
-     * complex vectors with n elements. A is an n by n hermitian band matrix consisting 
+     * complex vectors with n elements. A is an n by n hermitian band matrix consisting
      * of single precision complex elements, with k super-diagonals and the same number
      * of subdiagonals.
      *
      * Input
      * -----
      * uplo   specifies whether the upper or lower triangular part of the hermitian
-     *        band matrix A is being supplied. If uplo == 'U' or 'u', the upper 
-     *        triangular part is being supplied. If uplo == 'L' or 'l', the lower 
+     *        band matrix A is being supplied. If uplo == 'U' or 'u', the upper
+     *        triangular part is being supplied. If uplo == 'L' or 'l', the lower
      *        triangular part is being supplied.
      * n      specifies the number of rows and the number of columns of the
      *        hermitian matrix A. n must be at least zero.
@@ -4820,25 +4823,25 @@ public class JCublas
      *        is hermitian, this is also the number of sub-diagonals. k must be at
      *        least zero.
      * alpha  single precision complex scalar multiplier applied to A*x.
-     * A      single precision complex array of dimensions (lda, n). When uplo == 'U' or 
+     * A      single precision complex array of dimensions (lda, n). When uplo == 'U' or
      *        'u', the leading (k + 1) x n part of array A must contain the upper
      *        triangular band of the hermitian matrix, supplied column by column,
      *        with the leading diagonal of the matrix in row (k+1) of the array,
      *        the first super-diagonal starting at position 2 in row k, and so on.
      *        The top left k x k triangle of the array A is not referenced. When
      *        uplo == 'L' or 'l', the leading (k + 1) x n part of the array A must
-     *        contain the lower triangular band part of the hermitian matrix, 
+     *        contain the lower triangular band part of the hermitian matrix,
      *        supplied column by column, with the leading diagonal of the matrix in
      *        row 1 of the array, the first sub-diagonal starting at position 1 in
      *        row 2, and so on. The bottom right k x k triangle of the array A is
-     *        not referenced. The imaginary parts of the diagonal elements need 
-     *        not be set, they are assumed to be zero. 
+     *        not referenced. The imaginary parts of the diagonal elements need
+     *        not be set, they are assumed to be zero.
      * lda    leading dimension of A. lda must be at least (k + 1).
      * x      single precision complex array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
-     * beta   single precision complex scalar multiplier applied to vector y. If beta is 
+     * beta   single precision complex scalar multiplier applied to vector y. If beta is
      *        zero, y is not read.
-     * y      single precision complex array of length at least (1 + (n - 1) * abs(incy)). 
+     * y      single precision complex array of length at least (1 + (n - 1) * abs(incy)).
      *        If beta is zero, y is not read.
      * incy   storage spacing between elements of y. incy must not be zero.
      *
@@ -4852,8 +4855,8 @@ public class JCublas
      *
      * Error Status
      * ------------
-     * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized 
-     * CUBLAS_STATUS_INVALID_VALUE    if k or n < 0, or if incx or incy == 0  
+     * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
+     * CUBLAS_STATUS_INVALID_VALUE    if k or n < 0, or if incx or incy == 0
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -4871,42 +4874,42 @@ public class JCublas
 
     /**
      * <pre>
-     * 
-     * cublasCtrmv (char uplo, char trans, char diag, int n, const cuComplex *A, 
+     *
+     * cublasCtrmv (char uplo, char trans, char diag, int n, const cuComplex *A,
      *              int lda, cuComplex *x, int incx);
      *
-     * performs one of the matrix-vector operations x = op(A) * x, 
-     * where op(A) = A, or op(A) = transpose(A) or op(A) = conjugate(transpose(A)). 
-     * x is an n-element signle precision complex vector, and 
-     * A is an n x n, unit or non-unit, upper or lower, triangular matrix composed 
+     * performs one of the matrix-vector operations x = op(A) * x,
+     * where op(A) = A, or op(A) = transpose(A) or op(A) = conjugate(transpose(A)).
+     * x is an n-element signle precision complex vector, and
+     * A is an n x n, unit or non-unit, upper or lower, triangular matrix composed
      * of single precision complex elements.
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix A is an upper or lower triangular 
-     *        matrix. If uplo = 'U' or 'u', then A is an upper triangular matrix. 
+     * uplo   specifies whether the matrix A is an upper or lower triangular
+     *        matrix. If uplo = 'U' or 'u', then A is an upper triangular matrix.
      *        If uplo = 'L' or 'l', then A is a lower triangular matrix.
      * trans  specifies op(A). If trans = 'n' or 'N', op(A) = A. If trans = 't' or
      *        'T', op(A) = transpose(A).  If trans = 'c' or 'C', op(A) =
      *        conjugate(transpose(A)).
-     * diag   specifies whether or not matrix A is unit triangular. If diag = 'U' 
-     *        or 'u', A is assumed to be unit triangular. If diag = 'N' or 'n', A 
+     * diag   specifies whether or not matrix A is unit triangular. If diag = 'U'
+     *        or 'u', A is assumed to be unit triangular. If diag = 'N' or 'n', A
      *        is not assumed to be unit triangular.
-     * n      specifies the number of rows and columns of the matrix A. n must be 
+     * n      specifies the number of rows and columns of the matrix A. n must be
      *        at least zero.
-     * A      single precision array of dimension (lda, n). If uplo = 'U' or 'u', 
-     *        the leading n x n upper triangular part of the array A must contain 
-     *        the upper triangular matrix and the strictly lower triangular part 
+     * A      single precision array of dimension (lda, n). If uplo = 'U' or 'u',
+     *        the leading n x n upper triangular part of the array A must contain
+     *        the upper triangular matrix and the strictly lower triangular part
      *        of A is not referenced. If uplo = 'L' or 'l', the leading n x n lower
-     *        triangular part of the array A must contain the lower triangular 
+     *        triangular part of the array A must contain the lower triangular
      *        matrix and the strictly upper triangular part of A is not referenced.
      *        When diag = 'U' or 'u', the diagonal elements of A are not referenced
      *        either, but are are assumed to be unity.
      * lda    is the leading dimension of A. It must be at least max (1, n).
      * x      single precision array of length at least (1 + (n - 1) * abs(incx) ).
-     *        On entry, x contains the source vector. On exit, x is overwritten 
+     *        On entry, x contains the source vector. On exit, x is overwritten
      *        with the result vector.
-     * incx   specifies the storage spacing for elements of x. incx must not be 
+     * incx   specifies the storage spacing for elements of x. incx must not be
      *        zero.
      *
      * Output
@@ -4938,13 +4941,13 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasCtbmv (char uplo, char trans, char diag, int n, int k, const cuComplex *A,
      *              int lda, cuComplex *x, int incx)
      *
      * performs one of the matrix-vector operations x = op(A) * x, where op(A) = A,
-     * op(A) = transpose(A) or op(A) = conjugate(transpose(A)). x is an n-element 
-     * single precision complex vector, and A is an n x n, unit or non-unit, upper 
+     * op(A) = transpose(A) or op(A) = conjugate(transpose(A)). x is an n-element
+     * single precision complex vector, and A is an n x n, unit or non-unit, upper
      * or lower triangular band matrix composed of single precision complex elements.
      *
      * Input
@@ -4960,26 +4963,26 @@ public class JCublas
      *        is not assumed to be unit triangular.
      * n      specifies the number of rows and columns of the matrix A. n must be
      *        at least zero.
-     * k      specifies the number of super- or sub-diagonals. If uplo == 'U' or 
-     *        'u', k specifies the number of super-diagonals. If uplo == 'L' or 
-     *        'l', k specifies the number of sub-diagonals. k must at least be 
+     * k      specifies the number of super- or sub-diagonals. If uplo == 'U' or
+     *        'u', k specifies the number of super-diagonals. If uplo == 'L' or
+     *        'l', k specifies the number of sub-diagonals. k must at least be
      *        zero.
      * A      single precision complex array of dimension (lda, n). If uplo == 'U' or 'u',
-     *        the leading (k + 1) x n part of the array A must contain the upper 
+     *        the leading (k + 1) x n part of the array A must contain the upper
      *        triangular band matrix, supplied column by column, with the leading
-     *        diagonal of the matrix in row (k + 1) of the array, the first 
+     *        diagonal of the matrix in row (k + 1) of the array, the first
      *        super-diagonal starting at position 2 in row k, and so on. The top
      *        left k x k triangle of the array A is not referenced. If uplo == 'L'
      *        or 'l', the leading (k + 1) x n part of the array A must constain the
      *        lower triangular band matrix, supplied column by column, with the
-     *        leading diagonal of the matrix in row 1 of the array, the first 
+     *        leading diagonal of the matrix in row 1 of the array, the first
      *        sub-diagonal startingat position 1 in row 2, and so on. The bottom
      *        right k x k triangle of the array is not referenced.
      * lda    is the leading dimension of A. It must be at least (k + 1).
      * x      single precision complex array of length at least (1 + (n - 1) * abs(incx)).
      *        On entry, x contains the source vector. On exit, x is overwritten
      *        with the result vector.
-     * incx   specifies the storage spacing for elements of x. incx must not be 
+     * incx   specifies the storage spacing for elements of x. incx must not be
      *        zero.
      *
      * Output
@@ -4994,7 +4997,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n or k < 0, or if incx == 0
-     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory 
+     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -5012,12 +5015,12 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasCtpmv (char uplo, char trans, char diag, int n, const cuComplex *AP, 
+     * void
+     * cublasCtpmv (char uplo, char trans, char diag, int n, const cuComplex *AP,
      *              cuComplex *x, int incx);
      *
      * performs one of the matrix-vector operations x = op(A) * x, where op(A) = A,
-     * op(A) = transpose(A) or op(A) = conjugate(transpose(A)) . x is an n element 
+     * op(A) = transpose(A) or op(A) = conjugate(transpose(A)) . x is an n element
      * single precision complex vector, and A is an n x n, unit or non-unit, upper
      * or lower triangular matrix composed of single precision complex elements.
      *
@@ -5027,25 +5030,25 @@ public class JCublas
      *        matrix. If uplo == 'U' or 'u', then A is an upper triangular matrix.
      *        If uplo == 'L' or 'l', then A is a lower triangular matrix.
      * trans  specifies op(A). If transa == 'N' or 'n', op(A) = A. If trans == 'T',
-     *        or 't', op(A) = transpose(A). If trans == 'C' or 'c', 
+     *        or 't', op(A) = transpose(A). If trans == 'C' or 'c',
      *        op(A) = conjugate(transpose(A)).
      *
      * diag   specifies whether or not matrix A is unit triangular. If diag == 'U'
-     *        or 'u', A is assumed to be unit triangular. If diag == 'N' or 'n', A 
+     *        or 'u', A is assumed to be unit triangular. If diag == 'N' or 'n', A
      *        is not assumed to be unit triangular.
-     * n      specifies the number of rows and columns of the matrix A. n must be 
+     * n      specifies the number of rows and columns of the matrix A. n must be
      *        at least zero. In the current implementation n must not exceed 4070.
      * AP     single precision complex array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored in AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored in AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      * x      single precision complex array of length at least (1 + (n - 1) * abs(incx)).
-     *        On entry, x contains the source vector. On exit, x is overwritten 
+     *        On entry, x contains the source vector. On exit, x is overwritten
      *        with the result vector.
-     * incx   specifies the storage spacing for elements of x. incx must not be 
+     * incx   specifies the storage spacing for elements of x. incx must not be
      *        zero.
      *
      * Output
@@ -5060,7 +5063,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if incx == 0 or n < 0
-     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory 
+     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -5078,45 +5081,45 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasCtrsv (char uplo, char trans, char diag, int n, const cuComplex *A, 
+     * void
+     * cublasCtrsv (char uplo, char trans, char diag, int n, const cuComplex *A,
      *              int lda, cuComplex *x, int incx)
      *
-     * solves a system of equations op(A) * x = b, where op(A) is either A,  
-     * transpose(A) or conjugate(transpose(A)). b and x are single precision 
-     * complex vectors consisting of n elements, and A is an n x n matrix 
+     * solves a system of equations op(A) * x = b, where op(A) is either A,
+     * transpose(A) or conjugate(transpose(A)). b and x are single precision
+     * complex vectors consisting of n elements, and A is an n x n matrix
      * composed of a unit or non-unit, upper or lower triangular matrix.
-     * Matrix A is stored in column major format, and lda is the leading 
+     * Matrix A is stored in column major format, and lda is the leading
      * dimension of the two-dimensional array containing A.
      *
-     * No test for singularity or near-singularity is included in this function. 
+     * No test for singularity or near-singularity is included in this function.
      * Such tests must be performed before calling this function.
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix data is stored in the upper or the 
-     *        lower triangular part of array A. If uplo = 'U' or 'u', then only 
-     *        the upper triangular part of A may be referenced. If uplo = 'L' or 
+     * uplo   specifies whether the matrix data is stored in the upper or the
+     *        lower triangular part of array A. If uplo = 'U' or 'u', then only
+     *        the upper triangular part of A may be referenced. If uplo = 'L' or
      *        'l', then only the lower triangular part of A may be referenced.
      * trans  specifies op(A). If transa = 'n' or 'N', op(A) = A. If transa = 't',
      *        'T', 'c', or 'C', op(A) = transpose(A)
      * diag   specifies whether or not A is a unit triangular matrix like so:
-     *        if diag = 'U' or 'u', A is assumed to be unit triangular. If 
+     *        if diag = 'U' or 'u', A is assumed to be unit triangular. If
      *        diag = 'N' or 'n', then A is not assumed to be unit triangular.
      * n      specifies the number of rows and columns of the matrix A. It
-     *        must be at least 0. 
-     * A      is a single precision complex array of dimensions (lda, n). If uplo = 'U' 
+     *        must be at least 0.
+     * A      is a single precision complex array of dimensions (lda, n). If uplo = 'U'
      *        or 'u', then A must contains the upper triangular part of a symmetric
-     *        matrix, and the strictly lower triangular parts is not referenced. 
-     *        If uplo = 'L' or 'l', then A contains the lower triangular part of 
-     *        a symmetric matrix, and the strictly upper triangular part is not 
-     *        referenced. 
+     *        matrix, and the strictly lower triangular parts is not referenced.
+     *        If uplo = 'L' or 'l', then A contains the lower triangular part of
+     *        a symmetric matrix, and the strictly upper triangular part is not
+     *        referenced.
      * lda    is the leading dimension of the two-dimensional array containing A.
      *        lda must be at least max(1, n).
      * x      single precision complex array of length at least (1 + (n - 1) * abs(incx)).
      *        On entry, x contains the n element right-hand side vector b. On exit,
      *        it is overwritten with the solution vector x.
-     * incx   specifies the storage spacing between elements of x. incx must not 
+     * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
      *
      * Output
@@ -5151,7 +5154,7 @@ public class JCublas
      * void cublasCtbsv (char uplo, char trans, char diag, int n, int k,
      *                   const cuComplex *A, int lda, cuComplex *X, int incx)
      *
-     * solves one of the systems of equations op(A)*x = b, where op(A) is either 
+     * solves one of the systems of equations op(A)*x = b, where op(A) is either
      * op(A) = A , op(A) = transpose(A) or op(A) = conjugate(transpose(A)).
      * b and x are n element vectors, and A is an n x n unit or non-unit,
      * upper or lower triangular band matrix with k + 1 diagonals. No test
@@ -5160,13 +5163,13 @@ public class JCublas
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix is an upper or lower triangular band 
+     * uplo   specifies whether the matrix is an upper or lower triangular band
      *        matrix as follows: If uplo == 'U' or 'u', A is an upper triangular
      *        band matrix. If uplo == 'L' or 'l', A is a lower triangular band
      *        matrix.
      * trans  specifies op(A). If trans == 'N' or 'n', op(A) = A. If trans == 'T',
      *        't', op(A) = transpose(A). If trans == 'C' or 'c',
-     *        op(A) = conjugate(transpose(A)). 
+     *        op(A) = conjugate(transpose(A)).
      * diag   specifies whether A is unit triangular. If diag == 'U' or 'u', A is
      *        assumed to be unit triangular; thas is, diagonal elements are not
      *        read and are assumed to be unity. If diag == 'N' or 'n', A is not
@@ -5175,14 +5178,14 @@ public class JCublas
      *        at least zero.
      * k      specifies the number of super- or sub-diagonals. If uplo == 'U' or
      *        'u', k specifies the number of super-diagonals. If uplo == 'L' or
-     *        'l', k specifies the number of sub-diagonals. k must at least be 
+     *        'l', k specifies the number of sub-diagonals. k must at least be
      *        zero.
      * A      single precision complex array of dimension (lda, n). If uplo == 'U' or 'u',
      *        the leading (k + 1) x n part of the array A must contain the upper
      *        triangular band matrix, supplied column by column, with the leading
      *        diagonal of the matrix in row (k + 1) of the array, the first super-
-     *        diagonal starting at position 2 in row k, and so on. The top left 
-     *        k x k triangle of the array A is not referenced. If uplo == 'L' or 
+     *        diagonal starting at position 2 in row k, and so on. The top left
+     *        k x k triangle of the array A is not referenced. If uplo == 'L' or
      *        'l', the leading (k + 1) x n part of the array A must constain the
      *        lower triangular band matrix, supplied column by column, with the
      *        leading diagonal of the matrix in row 1 of the array, the first
@@ -5220,11 +5223,11 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasCtpsv (char uplo, char trans, char diag, int n, const cuComplex *AP, 
+     * void
+     * cublasCtpsv (char uplo, char trans, char diag, int n, const cuComplex *AP,
      *              cuComplex *X, int incx)
      *
-     * solves one of the systems of equations op(A)*x = b, where op(A) is either 
+     * solves one of the systems of equations op(A)*x = b, where op(A) is either
      * op(A) = A , op(A) = transpose(A) or op(A) = conjugate(transpose)). b and
      * x are n element complex vectors, and A is an n x n unit or non-unit,
      * upper or lower triangular matrix. No test for singularity or near-singularity
@@ -5236,7 +5239,7 @@ public class JCublas
      *        as follows: If uplo == 'U' or 'u', A is an upper triangluar matrix.
      *        If uplo == 'L' or 'l', A is a lower triangular matrix.
      * trans  specifies op(A). If trans == 'N' or 'n', op(A) = A. If trans == 'T'
-     *        or 't', op(A) = transpose(A). If trans == 'C' or 'c', op(A) = 
+     *        or 't', op(A) = transpose(A). If trans == 'C' or 'c', op(A) =
      *        conjugate(transpose(A)).
      * diag   specifies whether A is unit triangular. If diag == 'U' or 'u', A is
      *        assumed to be unit triangular; thas is, diagonal elements are not
@@ -5246,10 +5249,10 @@ public class JCublas
      *        at least zero.
      * AP     single precision complex array with at least ((n*(n+1))/2) elements.
      *        If uplo == 'U' or 'u', the array AP contains the upper triangular
-     *        matrix A, packed sequentially, column by column; that is, if i <= j, then 
-     *        A[i,j] is stored is AP[i+(j*(j+1)/2)]. If uplo == 'L' or 'L', the 
+     *        matrix A, packed sequentially, column by column; that is, if i <= j, then
+     *        A[i,j] is stored is AP[i+(j*(j+1)/2)]. If uplo == 'L' or 'L', the
      *        array AP contains the lower triangular matrix A, packed sequentially,
-     *        column by column; that is, if i >= j, then A[i,j] is stored in 
+     *        column by column; that is, if i >= j, then A[i,j] is stored in
      *        AP[i+((2*n-j+1)*j)/2]. When diag = 'U' or 'u', the diagonal elements
      *        of A are not referenced and are assumed to be unity.
      * x      single precision complex array of length at least (1+(n-1)*abs(incx)).
@@ -5266,7 +5269,7 @@ public class JCublas
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
-     * CUBLAS_STATUS_INVALID_VALUE    if incx == 0 or if n < 0 or n > 2035 
+     * CUBLAS_STATUS_INVALID_VALUE    if incx == 0 or if n < 0 or n > 2035
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -5284,31 +5287,31 @@ public class JCublas
 
     /**
      * <pre>
-     * cublasCgeru (int m, int n, cuComplex alpha, const cuComplex *x, int incx, 
+     * cublasCgeru (int m, int n, cuComplex alpha, const cuComplex *x, int incx,
      *             const cuComplex *y, int incy, cuComplex *A, int lda)
      *
      * performs the symmetric rank 1 operation
      *
      *    A = alpha * x * transpose(y) + A,
      *
-     * where alpha is a single precision complex scalar, x is an m element single 
-     * precision complex vector, y is an n element single precision complex vector, and A 
+     * where alpha is a single precision complex scalar, x is an m element single
+     * precision complex vector, y is an n element single precision complex vector, and A
      * is an m by n matrix consisting of single precision complex elements. Matrix A
      * is stored in column major format, and lda is the leading dimension of
      * the two-dimensional array used to store A.
-     * 
+     *
      * Input
      * -----
-     * m      specifies the number of rows of the matrix A. It must be at least 
+     * m      specifies the number of rows of the matrix A. It must be at least
      *        zero.
-     * n      specifies the number of columns of the matrix A. It must be at 
+     * n      specifies the number of columns of the matrix A. It must be at
      *        least zero.
      * alpha  single precision complex scalar multiplier applied to x * transpose(y)
      * x      single precision complex array of length at least (1 + (m - 1) * abs(incx))
      * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
      * y      single precision complex array of length at least (1 + (n - 1) * abs(incy))
-     * incy   specifies the storage spacing between elements of y. incy must not 
+     * incy   specifies the storage spacing between elements of y. incy must not
      *        be zero.
      * A      single precision complex array of dimensions (lda, n).
      * lda    leading dimension of two-dimensional array used to store matrix A
@@ -5320,7 +5323,7 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/cgeru.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -5342,31 +5345,31 @@ public class JCublas
 
     /**
      * <pre>
-     * cublasCgerc (int m, int n, cuComplex alpha, const cuComplex *x, int incx, 
+     * cublasCgerc (int m, int n, cuComplex alpha, const cuComplex *x, int incx,
      *             const cuComplex *y, int incy, cuComplex *A, int lda)
      *
      * performs the symmetric rank 1 operation
      *
      *    A = alpha * x * conjugate(transpose(y)) + A,
      *
-     * where alpha is a single precision complex scalar, x is an m element single 
-     * precision complex vector, y is an n element single precision complex vector, and A 
+     * where alpha is a single precision complex scalar, x is an m element single
+     * precision complex vector, y is an n element single precision complex vector, and A
      * is an m by n matrix consisting of single precision complex elements. Matrix A
      * is stored in column major format, and lda is the leading dimension of
      * the two-dimensional array used to store A.
-     * 
+     *
      * Input
      * -----
-     * m      specifies the number of rows of the matrix A. It must be at least 
+     * m      specifies the number of rows of the matrix A. It must be at least
      *        zero.
-     * n      specifies the number of columns of the matrix A. It must be at 
+     * n      specifies the number of columns of the matrix A. It must be at
      *        least zero.
      * alpha  single precision complex scalar multiplier applied to x * transpose(y)
      * x      single precision complex array of length at least (1 + (m - 1) * abs(incx))
      * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
      * y      single precision complex array of length at least (1 + (n - 1) * abs(incy))
-     * incy   specifies the storage spacing between elements of y. incy must not 
+     * incy   specifies the storage spacing between elements of y. incy must not
      *        be zero.
      * A      single precision complex array of dimensions (lda, n).
      * lda    leading dimension of two-dimensional array used to store matrix A
@@ -5378,7 +5381,7 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/cgerc.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -5400,42 +5403,42 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasCher (char uplo, int n, float alpha, const cuComplex *x, int incx, 
+     * void
+     * cublasCher (char uplo, int n, float alpha, const cuComplex *x, int incx,
      *             cuComplex *A, int lda)
      *
      * performs the hermitian rank 1 operation
      *
      *    A = alpha * x * conjugate(transpose(x)) + A,
      *
-     * where alpha is a single precision real scalar, x is an n element single 
-     * precision complex vector and A is an n x n hermitian matrix consisting of 
+     * where alpha is a single precision real scalar, x is an n element single
+     * precision complex vector and A is an n x n hermitian matrix consisting of
      * single precision complex elements. Matrix A is stored in column major format,
-     * and lda is the leading dimension of the two-dimensional array 
+     * and lda is the leading dimension of the two-dimensional array
      * containing A.
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix data is stored in the upper or 
+     * uplo   specifies whether the matrix data is stored in the upper or
      *        the lower triangular part of array A. If uplo = 'U' or 'u',
      *        then only the upper triangular part of A may be referenced.
      *        If uplo = 'L' or 'l', then only the lower triangular part of
      *        A may be referenced.
      * n      specifies the number of rows and columns of the matrix A. It
      *        must be at least 0.
-     * alpha  single precision real scalar multiplier applied to 
+     * alpha  single precision real scalar multiplier applied to
      *        x * conjugate(transpose(x))
      * x      single precision complex array of length at least (1 + (n - 1) * abs(incx))
-     * incx   specifies the storage spacing between elements of x. incx must 
+     * incx   specifies the storage spacing between elements of x. incx must
      *        not be zero.
-     * A      single precision complex array of dimensions (lda, n). If uplo = 'U' or 
-     *        'u', then A must contain the upper triangular part of a hermitian 
-     *        matrix, and the strictly lower triangular part is not referenced. 
-     *        If uplo = 'L' or 'l', then A contains the lower triangular part 
-     *        of a hermitian matrix, and the strictly upper triangular part is 
+     * A      single precision complex array of dimensions (lda, n). If uplo = 'U' or
+     *        'u', then A must contain the upper triangular part of a hermitian
+     *        matrix, and the strictly lower triangular part is not referenced.
+     *        If uplo = 'L' or 'l', then A contains the lower triangular part
+     *        of a hermitian matrix, and the strictly upper triangular part is
      *        not referenced. The imaginary parts of the diagonal elements need
      *        not be set, they are assumed to be zero, and on exit they
-     *        are set to zero. 
+     *        are set to zero.
      * lda    leading dimension of the two-dimensional array containing A. lda
      *        must be at least max(1, n).
      *
@@ -5468,23 +5471,23 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasChpr (char uplo, int n, float alpha, const cuComplex *x, int incx, 
+     * void
+     * cublasChpr (char uplo, int n, float alpha, const cuComplex *x, int incx,
      *             cuComplex *AP)
      *
      * performs the hermitian rank 1 operation
-     * 
+     *
      *    A = alpha * x * conjugate(transpose(x)) + A,
-     * 
-     * where alpha is a single precision real scalar and x is an n element single 
-     * precision complex vector. A is a hermitian n x n matrix consisting of single 
+     *
+     * where alpha is a single precision real scalar and x is an n element single
+     * precision complex vector. A is a hermitian n x n matrix consisting of single
      * precision complex elements that is supplied in packed form.
      *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper 
-     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then 
+     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper
+     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then
      *        the lower triangular part of A is supplied in AP.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
@@ -5492,14 +5495,14 @@ public class JCublas
      * x      single precision array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * AP     single precision complex array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the hermitian matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the hermitian matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the hermitian matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the hermitian matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      *        The imaginary parts of the diagonal elements need not be set, they
-     *        are assumed to be zero, and on exit they are set to zero. 
+     *        are assumed to be zero, and on exit they are set to zero.
      *
      * Output
      * ------
@@ -5529,44 +5532,44 @@ public class JCublas
 
 
     /**
-     * <pre> 
-     * void 
-     * cublasChpr2 (char uplo, int n, cuComplex alpha, const cuComplex *x, int incx, 
+     * <pre>
+     * void
+     * cublasChpr2 (char uplo, int n, cuComplex alpha, const cuComplex *x, int incx,
      *              const cuComplex *y, int incy, cuComplex *AP)
      *
      * performs the hermitian rank 2 operation
      *
      *    A = alpha*x*conjugate(transpose(y)) + conjugate(alpha)*y*conjugate(transpose(x)) + A,
      *
-     * where alpha is a single precision complex scalar, and x and y are n element single 
-     * precision complex vectors. A is a hermitian n x n matrix consisting of single 
+     * where alpha is a single precision complex scalar, and x and y are n element single
+     * precision complex vectors. A is a hermitian n x n matrix consisting of single
      * precision complex elements that is supplied in packed form.
      *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array A. If uplo == 'U' or 'u', then only the 
+     *        triangular part of array A. If uplo == 'U' or 'u', then only the
      *        upper triangular part of A may be referenced and the lower triangular
-     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower 
+     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower
      *        triangular part of A may be referenced and the upper triangular part
      *        of A is inferred.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
-     * alpha  single precision complex scalar multiplier applied to x * conjugate(transpose(y)) + 
+     * alpha  single precision complex scalar multiplier applied to x * conjugate(transpose(y)) +
      *        y * conjugate(transpose(x)).
      * x      single precision complex array of length at least (1 + (n - 1) * abs (incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * y      single precision complex array of length at least (1 + (n - 1) * abs (incy)).
      * incy   storage spacing between elements of y. incy must not be zero.
      * AP     single precision complex array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the hermitian matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the hermitian matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the hermitian matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the hermitian matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      *        The imaginary parts of the diagonal elements need not be set, they
-     *        are assumed to be zero, and on exit they are set to zero.  
+     *        are assumed to be zero, and on exit they are set to zero.
      *
      * Output
      * ------
@@ -5581,7 +5584,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, incx == 0, incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -5599,28 +5602,28 @@ public class JCublas
 
     /**
      * <pre>
-     * void cublasCher2 (char uplo, int n, cuComplex alpha, const cuComplex *x, int incx, 
+     * void cublasCher2 (char uplo, int n, cuComplex alpha, const cuComplex *x, int incx,
      *                   const cuComplex *y, int incy, cuComplex *A, int lda)
      *
      * performs the hermitian rank 2 operation
      *
      *    A = alpha*x*conjugate(transpose(y)) + conjugate(alpha)*y*conjugate(transpose(x)) + A,
      *
-     * where alpha is a single precision complex scalar, x and y are n element single 
-     * precision complex vector and A is an n by n hermitian matrix consisting of single 
+     * where alpha is a single precision complex scalar, x and y are n element single
+     * precision complex vector and A is an n by n hermitian matrix consisting of single
      * precision complex elements.
-     * 
+     *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array A. If uplo == 'U' or 'u', then only the 
+     *        triangular part of array A. If uplo == 'U' or 'u', then only the
      *        upper triangular part of A may be referenced and the lower triangular
-     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower 
+     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower
      *        triangular part of A may be referenced and the upper triangular part
      *        of A is inferred.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
-     * alpha  single precision complex scalar multiplier applied to x * conjugate(transpose(y)) + 
+     * alpha  single precision complex scalar multiplier applied to x * conjugate(transpose(y)) +
      *        y * conjugate(transpose(x)).
      * x      single precision array of length at least (1 + (n - 1) * abs (incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
@@ -5629,10 +5632,10 @@ public class JCublas
      * A      single precision complex array of dimensions (lda, n). If uplo == 'U' or 'u',
      *        then A must contains the upper triangular part of a hermitian matrix,
      *        and the strictly lower triangular parts is not referenced. If uplo ==
-     *        'L' or 'l', then A contains the lower triangular part of a hermitian 
+     *        'L' or 'l', then A contains the lower triangular part of a hermitian
      *        matrix, and the strictly upper triangular part is not referenced.
-     *        The imaginary parts of the diagonal elements need not be set, 
-     *        they are assumed to be zero, and on exit they are set to zero. 
+     *        The imaginary parts of the diagonal elements need not be set,
+     *        they are assumed to be zero, and on exit they are set to zero.
      *
      * lda    leading dimension of A. It must be at least max(1, n).
      *
@@ -5644,7 +5647,7 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/cher2.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -5666,12 +5669,12 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasSgemm (char transa, char transb, int m, int n, int k, float alpha, 
-     *              const float *A, int lda, const float *B, int ldb, float beta, 
+     * void
+     * cublasSgemm (char transa, char transb, int m, int n, int k, float alpha,
+     *              const float *A, int lda, const float *B, int ldb, float beta,
      *              float *C, int ldc)
      *
-     * computes the product of matrix A and matrix B, multiplies the result 
+     * computes the product of matrix A and matrix B, multiplies the result
      * by a scalar alpha, and adds the sum to the product of matrix C and
      * scalar beta. sgemm() performs one of the matrix-matrix operations:
      *
@@ -5681,24 +5684,24 @@ public class JCublas
      *
      *     op(X) = X   or   op(X) = transpose(X)
      *
-     * alpha and beta are single precision scalars, and A, B and C are 
-     * matrices consisting of single precision elements, with op(A) an m x k 
-     * matrix, op(B) a k x n matrix, and C an m x n matrix. Matrices A, B, 
+     * alpha and beta are single precision scalars, and A, B and C are
+     * matrices consisting of single precision elements, with op(A) an m x k
+     * matrix, op(B) a k x n matrix, and C an m x n matrix. Matrices A, B,
      * and C are stored in column major format, and lda, ldb, and ldc are
-     * the leading dimensions of the two-dimensional arrays containing A, 
+     * the leading dimensions of the two-dimensional arrays containing A,
      * B, and C.
      *
      * Input
      * -----
-     * transa specifies op(A). If transa = 'n' or 'N', op(A) = A. If 
+     * transa specifies op(A). If transa = 'n' or 'N', op(A) = A. If
      *        transa = 't', 'T', 'c', or 'C', op(A) = transpose(A)
-     * transb specifies op(B). If transb = 'n' or 'N', op(B) = B. If 
+     * transb specifies op(B). If transb = 'n' or 'N', op(B) = B. If
      *        transb = 't', 'T', 'c', or 'C', op(B) = transpose(B)
      * m      number of rows of matrix op(A) and rows of matrix C
      * n      number of columns of matrix op(B) and number of columns of C
-     * k      number of columns of matrix op(A) and number of rows of op(B) 
+     * k      number of columns of matrix op(A) and number of rows of op(B)
      * alpha  single precision scalar multiplier applied to op(A)op(B)
-     * A      single precision array of dimensions (lda, k) if transa = 
+     * A      single precision array of dimensions (lda, k) if transa =
      *        'n' or 'N'), and of dimensions (lda, m) otherwise. When transa =
      *        'N' or 'n' then lda must be at least  max( 1, m ), otherwise lda
      *        must be at least max(1, k).
@@ -5710,7 +5713,7 @@ public class JCublas
      * ldb    leading dimension of two-dimensional array used to store matrix B
      * beta   single precision scalar multiplier applied to C. If 0, C does
      *        not have to be a valid input
-     * C      single precision array of dimensions (ldc, n). ldc must be at 
+     * C      single precision array of dimensions (ldc, n). ldc must be at
      *        least max (1, m).
      * ldc    leading dimension of two-dimensional array used to store matrix C
      *
@@ -5743,70 +5746,70 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasSsymm (char side, char uplo, int m, int n, float alpha, 
-     *              const float *A, int lda, const float *B, int ldb, 
+     * void
+     * cublasSsymm (char side, char uplo, int m, int n, float alpha,
+     *              const float *A, int lda, const float *B, int ldb,
      *              float beta, float *C, int ldc);
      *
      * performs one of the matrix-matrix operations
-     * 
-     *   C = alpha * A * B + beta * C, or 
+     *
+     *   C = alpha * A * B + beta * C, or
      *   C = alpha * B * A + beta * C,
      *
      * where alpha and beta are single precision scalars, A is a symmetric matrix
-     * consisting of single precision elements and stored in either lower or upper 
+     * consisting of single precision elements and stored in either lower or upper
      * storage mode, and B and C are m x n matrices consisting of single precision
      * elements.
      *
      * Input
      * -----
-     * side   specifies whether the symmetric matrix A appears on the left side 
-     *        hand side or right hand side of matrix B, as follows. If side == 'L' 
-     *        or 'l', then C = alpha * A * B + beta * C. If side = 'R' or 'r', 
+     * side   specifies whether the symmetric matrix A appears on the left side
+     *        hand side or right hand side of matrix B, as follows. If side == 'L'
+     *        or 'l', then C = alpha * A * B + beta * C. If side = 'R' or 'r',
      *        then C = alpha * B * A + beta * C.
-     * uplo   specifies whether the symmetric matrix A is stored in upper or lower 
-     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper 
-     *        triangular part of the symmetric matrix is to be referenced, and the 
+     * uplo   specifies whether the symmetric matrix A is stored in upper or lower
+     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper
+     *        triangular part of the symmetric matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the symmetric matrix is to be referenced, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the symmetric matrix is to be referenced,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
      * m      specifies the number of rows of the matrix C, and the number of rows
-     *        of matrix B. It also specifies the dimensions of symmetric matrix A 
+     *        of matrix B. It also specifies the dimensions of symmetric matrix A
      *        when side == 'L' or 'l'. m must be at least zero.
-     * n      specifies the number of columns of the matrix C, and the number of 
-     *        columns of matrix B. It also specifies the dimensions of symmetric 
+     * n      specifies the number of columns of the matrix C, and the number of
+     *        columns of matrix B. It also specifies the dimensions of symmetric
      *        matrix A when side == 'R' or 'r'. n must be at least zero.
      * alpha  single precision scalar multiplier applied to A * B, or B * A
-     * A      single precision array of dimensions (lda, ka), where ka is m when 
-     *        side == 'L' or 'l' and is n otherwise. If side == 'L' or 'l' the 
-     *        leading m x m part of array A must contain the symmetric matrix, 
-     *        such that when uplo == 'U' or 'u', the leading m x m part stores the 
+     * A      single precision array of dimensions (lda, ka), where ka is m when
+     *        side == 'L' or 'l' and is n otherwise. If side == 'L' or 'l' the
+     *        leading m x m part of array A must contain the symmetric matrix,
+     *        such that when uplo == 'U' or 'u', the leading m x m part stores the
      *        upper triangular part of the symmetric matrix, and the strictly lower
-     *        triangular part of A is not referenced, and when uplo == 'U' or 'u', 
-     *        the leading m x m part stores the lower triangular part of the 
-     *        symmetric matrix and the strictly upper triangular part is not 
-     *        referenced. If side == 'R' or 'r' the leading n x n part of array A 
+     *        triangular part of A is not referenced, and when uplo == 'U' or 'u',
+     *        the leading m x m part stores the lower triangular part of the
+     *        symmetric matrix and the strictly upper triangular part is not
+     *        referenced. If side == 'R' or 'r' the leading n x n part of array A
      *        must contain the symmetric matrix, such that when uplo == 'U' or 'u',
-     *        the leading n x n part stores the upper triangular part of the 
-     *        symmetric matrix and the strictly lower triangular part of A is not 
-     *        referenced, and when uplo == 'U' or 'u', the leading n x n part 
-     *        stores the lower triangular part of the symmetric matrix and the 
+     *        the leading n x n part stores the upper triangular part of the
+     *        symmetric matrix and the strictly lower triangular part of A is not
+     *        referenced, and when uplo == 'U' or 'u', the leading n x n part
+     *        stores the lower triangular part of the symmetric matrix and the
      *        strictly upper triangular part is not referenced.
-     * lda    leading dimension of A. When side == 'L' or 'l', it must be at least 
+     * lda    leading dimension of A. When side == 'L' or 'l', it must be at least
      *        max(1, m) and at least max(1, n) otherwise.
      * B      single precision array of dimensions (ldb, n). On entry, the leading
      *        m x n part of the array contains the matrix B.
      * ldb    leading dimension of B. It must be at least max (1, m).
-     * beta   single precision scalar multiplier applied to C. If beta is zero, C 
+     * beta   single precision scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input
      * C      single precision array of dimensions (ldc, n)
      * ldc    leading dimension of C. Must be at least max(1, m)
      *
      * Output
      * ------
-     * C      updated according to C = alpha * A * B + beta * C, or C = alpha * 
+     * C      updated according to C = alpha * A * B + beta * C, or C = alpha *
      *        B * A + beta * C
      *
      * Reference: http://www.netlib.org/blas/ssymm.f
@@ -5834,66 +5837,66 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasSsyrk (char uplo, char trans, int n, int k, float alpha, 
+     * void
+     * cublasSsyrk (char uplo, char trans, int n, int k, float alpha,
      *              const float *A, int lda, float beta, float *C, int ldc)
      *
      * performs one of the symmetric rank k operations
-     * 
-     *   C = alpha * A * transpose(A) + beta * C, or 
+     *
+     *   C = alpha * A * transpose(A) + beta * C, or
      *   C = alpha * transpose(A) * A + beta * C.
      *
-     * Alpha and beta are single precision scalars. C is an n x n symmetric matrix 
-     * consisting of single precision elements and stored in either lower or 
+     * Alpha and beta are single precision scalars. C is an n x n symmetric matrix
+     * consisting of single precision elements and stored in either lower or
      * upper storage mode. A is a matrix consisting of single precision elements
      * with dimension of n x k in the first case, and k x n in the second case.
      *
      * Input
      * -----
-     * uplo   specifies whether the symmetric matrix C is stored in upper or lower 
-     *        storage mode as follows. If uplo == 'U' or 'u', only the upper 
-     *        triangular part of the symmetric matrix is to be referenced, and the 
+     * uplo   specifies whether the symmetric matrix C is stored in upper or lower
+     *        storage mode as follows. If uplo == 'U' or 'u', only the upper
+     *        triangular part of the symmetric matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the symmetric matrix is to be referenced, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the symmetric matrix is to be referenced,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
-     * trans  specifies the operation to be performed. If trans == 'N' or 'n', C = 
-     *        alpha * transpose(A) + beta * C. If trans == 'T', 't', 'C', or 'c', 
+     * trans  specifies the operation to be performed. If trans == 'N' or 'n', C =
+     *        alpha * transpose(A) + beta * C. If trans == 'T', 't', 'C', or 'c',
      *        C = transpose(A) * A + beta * C.
-     * n      specifies the number of rows and the number columns of matrix C. If 
-     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If 
-     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A. 
+     * n      specifies the number of rows and the number columns of matrix C. If
+     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If
+     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A.
      *        n must be at least zero.
-     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A. 
-     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of 
+     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A.
+     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of
      *        matrix A. k must be at least zero.
-     * alpha  single precision scalar multiplier applied to A * transpose(A) or 
+     * alpha  single precision scalar multiplier applied to A * transpose(A) or
      *        transpose(A) * A.
-     * A      single precision array of dimensions (lda, ka), where ka is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array A must contain the matrix A, 
-     *        otherwise the leading k x n part of the array must contains the 
+     * A      single precision array of dimensions (lda, ka), where ka is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array A must contain the matrix A,
+     *        otherwise the leading k x n part of the array must contains the
      *        matrix A.
      * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at
      *        least max(1, n). Otherwise lda must be at least max(1, k).
      * beta   single precision scalar multiplier applied to C. If beta izs zero, C
      *        does not have to be a valid input
      * C      single precision array of dimensions (ldc, n). If uplo == 'U' or 'u',
-     *        the leading n x n triangular part of the array C must contain the 
-     *        upper triangular part of the symmetric matrix C and the strictly 
-     *        lower triangular part of C is not referenced. On exit, the upper 
-     *        triangular part of C is overwritten by the upper triangular part of 
-     *        the updated matrix. If uplo == 'L' or 'l', the leading n x n 
+     *        the leading n x n triangular part of the array C must contain the
+     *        upper triangular part of the symmetric matrix C and the strictly
+     *        lower triangular part of C is not referenced. On exit, the upper
+     *        triangular part of C is overwritten by the upper triangular part of
+     *        the updated matrix. If uplo == 'L' or 'l', the leading n x n
      *        triangular part of the array C must contain the lower triangular part
      *        of the symmetric matrix C and the strictly upper triangular part of C
-     *        is not referenced. On exit, the lower triangular part of C is 
+     *        is not referenced. On exit, the lower triangular part of C is
      *        overwritten by the lower triangular part of the updated matrix.
      * ldc    leading dimension of C. It must be at least max(1, n).
      *
      * Output
      * ------
-     * C      updated according to C = alpha * A * transpose(A) + beta * C, or C = 
+     * C      updated according to C = alpha * A * transpose(A) + beta * C, or C =
      *        alpha * transpose(A) * A + beta * C
      *
      * Reference: http://www.netlib.org/blas/ssyrk.f
@@ -5921,74 +5924,74 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasSsyr2k (char uplo, char trans, int n, int k, float alpha, 
-     *               const float *A, int lda, const float *B, int ldb, 
+     * void
+     * cublasSsyr2k (char uplo, char trans, int n, int k, float alpha,
+     *               const float *A, int lda, const float *B, int ldb,
      *               float beta, float *C, int ldc)
      *
      * performs one of the symmetric rank 2k operations
-     * 
-     *    C = alpha * A * transpose(B) + alpha * B * transpose(A) + beta * C, or 
+     *
+     *    C = alpha * A * transpose(B) + alpha * B * transpose(A) + beta * C, or
      *    C = alpha * transpose(A) * B + alpha * transpose(B) * A + beta * C.
      *
      * Alpha and beta are single precision scalars. C is an n x n symmetric matrix
-     * consisting of single precision elements and stored in either lower or upper 
-     * storage mode. A and B are matrices consisting of single precision elements 
+     * consisting of single precision elements and stored in either lower or upper
+     * storage mode. A and B are matrices consisting of single precision elements
      * with dimension of n x k in the first case, and k x n in the second case.
      *
      * Input
      * -----
      * uplo   specifies whether the symmetric matrix C is stored in upper or lower
-     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper 
+     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper
      *        triangular part of the symmetric matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the symmetric matrix is to be references, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the symmetric matrix is to be references,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
-     * trans  specifies the operation to be performed. If trans == 'N' or 'n', 
-     *        C = alpha * A * transpose(B) + alpha * B * transpose(A) + beta * C, 
-     *        If trans == 'T', 't', 'C', or 'c', C = alpha * transpose(A) * B + 
+     * trans  specifies the operation to be performed. If trans == 'N' or 'n',
+     *        C = alpha * A * transpose(B) + alpha * B * transpose(A) + beta * C,
+     *        If trans == 'T', 't', 'C', or 'c', C = alpha * transpose(A) * B +
      *        alpha * transpose(B) * A + beta * C.
-     * n      specifies the number of rows and the number columns of matrix C. If 
-     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If 
-     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A. 
+     * n      specifies the number of rows and the number columns of matrix C. If
+     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If
+     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A.
      *        n must be at least zero.
-     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A. 
-     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of 
+     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A.
+     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of
      *        matrix A. k must be at least zero.
      * alpha  single precision scalar multiplier.
-     * A      single precision array of dimensions (lda, ka), where ka is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array A must contain the matrix A, 
+     * A      single precision array of dimensions (lda, ka), where ka is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array A must contain the matrix A,
      *        otherwise the leading k x n part of the array must contain the matrix
      *        A.
-     * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at 
+     * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at
      *        least max(1, n). Otherwise lda must be at least max(1,k).
-     * B      single precision array of dimensions (lda, kb), where kb is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array B must contain the matrix B, 
+     * B      single precision array of dimensions (lda, kb), where kb is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array B must contain the matrix B,
      *        otherwise the leading k x n part of the array must contain the matrix
      *        B.
      * ldb    leading dimension of N. When trans == 'N' or 'n' then ldb must be at
      *        least max(1, n). Otherwise ldb must be at least max(1, k).
-     * beta   single precision scalar multiplier applied to C. If beta is zero, C 
+     * beta   single precision scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input.
      * C      single precision array of dimensions (ldc, n). If uplo == 'U' or 'u',
-     *        the leading n x n triangular part of the array C must contain the 
-     *        upper triangular part of the symmetric matrix C and the strictly 
-     *        lower triangular part of C is not referenced. On exit, the upper 
-     *        triangular part of C is overwritten by the upper triangular part of 
-     *        the updated matrix. If uplo == 'L' or 'l', the leading n x n 
+     *        the leading n x n triangular part of the array C must contain the
+     *        upper triangular part of the symmetric matrix C and the strictly
+     *        lower triangular part of C is not referenced. On exit, the upper
+     *        triangular part of C is overwritten by the upper triangular part of
+     *        the updated matrix. If uplo == 'L' or 'l', the leading n x n
      *        triangular part of the array C must contain the lower triangular part
      *        of the symmetric matrix C and the strictly upper triangular part of C
-     *        is not referenced. On exit, the lower triangular part of C is 
+     *        is not referenced. On exit, the lower triangular part of C is
      *        overwritten by the lower triangular part of the updated matrix.
      * ldc    leading dimension of C. Must be at least max(1, n).
      *
      * Output
      * ------
-     * C      updated according to alpha*A*transpose(B) + alpha*B*transpose(A) + 
+     * C      updated according to alpha*A*transpose(B) + alpha*B*transpose(A) +
      *        beta*C or alpha*transpose(A)*B + alpha*transpose(B)*A + beta*C
      *
      * Reference:   http://www.netlib.org/blas/ssyr2k.f
@@ -6016,8 +6019,8 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasStrmm (char side, char uplo, char transa, char diag, int m, int n, 
+     * void
+     * cublasStrmm (char side, char uplo, char transa, char diag, int m, int n,
      *              float alpha, const float *A, int lda, const float *B, int ldb)
      *
      * performs one of the matrix-matrix operations
@@ -6025,13 +6028,13 @@ public class JCublas
      *   B = alpha * op(A) * B,  or  B = alpha * B * op(A)
      *
      * where alpha is a single-precision scalar, B is an m x n matrix composed
-     * of single precision elements, and A is a unit or non-unit, upper or lower, 
+     * of single precision elements, and A is a unit or non-unit, upper or lower,
      * triangular matrix composed of single precision elements. op(A) is one of
      *
      *   op(A) = A  or  op(A) = transpose(A)
      *
-     * Matrices A and B are stored in column major format, and lda and ldb are 
-     * the leading dimensions of the two-dimensonials arrays that contain A and 
+     * Matrices A and B are stored in column major format, and lda and ldb are
+     * the leading dimensions of the two-dimensonials arrays that contain A and
      * B, respectively.
      *
      * Input
@@ -6042,7 +6045,7 @@ public class JCublas
      * uplo   specifies whether the matrix A is an upper or lower triangular
      *        matrix. If uplo = 'U' or 'u', A is an upper triangular matrix.
      *        If uplo = 'L' or 'l', A is a lower triangular matrix.
-     * transa specifies the form of op(A) to be used in the matrix 
+     * transa specifies the form of op(A) to be used in the matrix
      *        multiplication. If transa = 'N' or 'n', then op(A) = A. If
      *        transa = 'T', 't', 'C', or 'c', then op(A) = transpose(A).
      * diag   specifies whether or not A is unit triangular. If diag = 'U'
@@ -6065,7 +6068,7 @@ public class JCublas
      *        to be unity.
      * lda    leading dimension of A. When side = 'L' or 'l', it must be at
      *        least max(1,m) and at least max(1,n) otherwise
-     * B      single precision array of dimensions (ldb, n). On entry, the 
+     * B      single precision array of dimensions (ldb, n). On entry, the
      *        leading m x n part of the array contains the matrix B. It is
      *        overwritten with the transformed matrix on exit.
      * ldb    leading dimension of B. It must be at least max (1, m).
@@ -6099,21 +6102,21 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasStrsm (char side, char uplo, char transa, char diag, int m, int n, 
+     * void
+     * cublasStrsm (char side, char uplo, char transa, char diag, int m, int n,
      *              float alpha, const float *A, int lda, float *B, int ldb)
      *
      * solves one of the matrix equations
      *
      *    op(A) * X = alpha * B,   or   X * op(A) = alpha * B,
      *
-     * where alpha is a single precision scalar, and X and B are m x n matrices 
+     * where alpha is a single precision scalar, and X and B are m x n matrices
      * that are composed of single precision elements. A is a unit or non-unit,
-     * upper or lower triangular matrix, and op(A) is one of 
+     * upper or lower triangular matrix, and op(A) is one of
      *
      *    op(A) = A  or  op(A) = transpose(A)
      *
-     * The result matrix X overwrites input matrix B; that is, on exit the result 
+     * The result matrix X overwrites input matrix B; that is, on exit the result
      * is stored in B. Matrices A and B are stored in column major format, and
      * lda and ldb are the leading dimensions of the two-dimensonials arrays that
      * contain A and B, respectively.
@@ -6131,11 +6134,11 @@ public class JCublas
      *        as follows: If transa = 'N' or 'N', then op(A) = A. If transa =
      *        'T', 't', 'C', or 'c', then op(A) = transpose(A).
      * diag   specifies whether or not A is a unit triangular matrix like so:
-     *        if diag = 'U' or 'u', A is assumed to be unit triangular. If 
+     *        if diag = 'U' or 'u', A is assumed to be unit triangular. If
      *        diag = 'N' or 'n', then A is not assumed to be unit triangular.
      * m      specifies the number of rows of B. m must be at least zero.
      * n      specifies the number of columns of B. n must be at least zero.
-     * alpha  is a single precision scalar to be multiplied with B. When alpha is 
+     * alpha  is a single precision scalar to be multiplied with B. When alpha is
      *        zero, then A is not referenced and B need not be set before entry.
      * A      is a single precision array of dimensions (lda, k), where k is
      *        m when side = 'L' or 'l', and is n when side = 'R' or 'r'. If
@@ -6143,23 +6146,23 @@ public class JCublas
      *        the array A must contain the upper triangular matrix and the
      *        strictly lower triangular matrix of A is not referenced. When
      *        uplo = 'L' or 'l', the leading k x k lower triangular part of
-     *        the array A must contain the lower triangular matrix and the 
+     *        the array A must contain the lower triangular matrix and the
      *        strictly upper triangular part of A is not referenced. Note that
      *        when diag = 'U' or 'u', the diagonal elements of A are not
      *        referenced, and are assumed to be unity.
      * lda    is the leading dimension of the two dimensional array containing A.
-     *        When side = 'L' or 'l' then lda must be at least max(1, m), when 
+     *        When side = 'L' or 'l' then lda must be at least max(1, m), when
      *        side = 'R' or 'r' then lda must be at least max(1, n).
      * B      is a single precision array of dimensions (ldb, n). ldb must be
-     *        at least max (1,m). The leading m x n part of the array B must 
-     *        contain the right-hand side matrix B. On exit B is overwritten 
+     *        at least max (1,m). The leading m x n part of the array B must
+     *        contain the right-hand side matrix B. On exit B is overwritten
      *        by the solution matrix X.
      * ldb    is the leading dimension of the two dimensional array containing B.
      *        ldb must be at least max(1, m).
      *
      * Output
      * ------
-     * B      contains the solution matrix X satisfying op(A) * X = alpha * B, 
+     * B      contains the solution matrix X satisfying op(A) * X = alpha * B,
      *        or X * op(A) = alpha * B
      *
      * Reference: http://www.netlib.org/blas/strsm.f
@@ -6187,9 +6190,9 @@ public class JCublas
 
     /**
      * <pre>
-     * void cublasCgemm (char transa, char transb, int m, int n, int k, 
-     *                   cuComplex alpha, const cuComplex *A, int lda, 
-     *                   const cuComplex *B, int ldb, cuComplex beta, 
+     * void cublasCgemm (char transa, char transb, int m, int n, int k,
+     *                   cuComplex alpha, const cuComplex *A, int lda,
+     *                   const cuComplex *B, int ldb, cuComplex beta,
      *                   cuComplex *C, int ldc)
      *
      * performs one of the matrix-matrix operations
@@ -6206,28 +6209,28 @@ public class JCublas
      *
      * Input
      * -----
-     * transa specifies op(A). If transa == 'N' or 'n', op(A) = A. If transa == 
-     *        'T' or 't', op(A) = transpose(A). If transa == 'C' or 'c', op(A) = 
+     * transa specifies op(A). If transa == 'N' or 'n', op(A) = A. If transa ==
+     *        'T' or 't', op(A) = transpose(A). If transa == 'C' or 'c', op(A) =
      *        conjg(transpose(A)).
-     * transb specifies op(B). If transa == 'N' or 'n', op(B) = B. If transb == 
-     *        'T' or 't', op(B) = transpose(B). If transb == 'C' or 'c', op(B) = 
+     * transb specifies op(B). If transa == 'N' or 'n', op(B) = B. If transb ==
+     *        'T' or 't', op(B) = transpose(B). If transb == 'C' or 'c', op(B) =
      *        conjg(transpose(B)).
      * m      number of rows of matrix op(A) and rows of matrix C. It must be at
      *        least zero.
-     * n      number of columns of matrix op(B) and number of columns of C. It 
+     * n      number of columns of matrix op(B) and number of columns of C. It
      *        must be at least zero.
-     * k      number of columns of matrix op(A) and number of rows of op(B). It 
+     * k      number of columns of matrix op(A) and number of rows of op(B). It
      *        must be at least zero.
      * alpha  single-complex scalar multiplier applied to op(A)op(B)
-     * A      single-complex array of dimensions (lda, k) if transa ==  'N' or 
+     * A      single-complex array of dimensions (lda, k) if transa ==  'N' or
      *        'n'), and of dimensions (lda, m) otherwise.
-     * lda    leading dimension of A. When transa == 'N' or 'n', it must be at 
+     * lda    leading dimension of A. When transa == 'N' or 'n', it must be at
      *        least max(1, m) and at least max(1, k) otherwise.
-     * B      single-complex array of dimensions (ldb, n) if transb == 'N' or 'n', 
+     * B      single-complex array of dimensions (ldb, n) if transb == 'N' or 'n',
      *        and of dimensions (ldb, k) otherwise
-     * ldb    leading dimension of B. When transb == 'N' or 'n', it must be at 
+     * ldb    leading dimension of B. When transb == 'N' or 'n', it must be at
      *        least max(1, k) and at least max(1, n) otherwise.
-     * beta   single-complex scalar multiplier applied to C. If beta is zero, C 
+     * beta   single-complex scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input.
      * C      single precision array of dimensions (ldc, n)
      * ldc    leading dimension of C. Must be at least max(1, m).
@@ -6261,70 +6264,70 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasCsymm (char side, char uplo, int m, int n, cuComplex alpha, 
-     *              const cuComplex *A, int lda, const cuComplex *B, int ldb, 
+     * void
+     * cublasCsymm (char side, char uplo, int m, int n, cuComplex alpha,
+     *              const cuComplex *A, int lda, const cuComplex *B, int ldb,
      *              cuComplex beta, cuComplex *C, int ldc);
      *
      * performs one of the matrix-matrix operations
-     * 
-     *   C = alpha * A * B + beta * C, or 
+     *
+     *   C = alpha * A * B + beta * C, or
      *   C = alpha * B * A + beta * C,
      *
      * where alpha and beta are single precision complex scalars, A is a symmetric matrix
-     * consisting of single precision complex elements and stored in either lower or upper 
+     * consisting of single precision complex elements and stored in either lower or upper
      * storage mode, and B and C are m x n matrices consisting of single precision
      * complex elements.
      *
      * Input
      * -----
-     * side   specifies whether the symmetric matrix A appears on the left side 
-     *        hand side or right hand side of matrix B, as follows. If side == 'L' 
-     *        or 'l', then C = alpha * A * B + beta * C. If side = 'R' or 'r', 
+     * side   specifies whether the symmetric matrix A appears on the left side
+     *        hand side or right hand side of matrix B, as follows. If side == 'L'
+     *        or 'l', then C = alpha * A * B + beta * C. If side = 'R' or 'r',
      *        then C = alpha * B * A + beta * C.
-     * uplo   specifies whether the symmetric matrix A is stored in upper or lower 
-     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper 
-     *        triangular part of the symmetric matrix is to be referenced, and the 
+     * uplo   specifies whether the symmetric matrix A is stored in upper or lower
+     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper
+     *        triangular part of the symmetric matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the symmetric matrix is to be referenced, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the symmetric matrix is to be referenced,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
      * m      specifies the number of rows of the matrix C, and the number of rows
-     *        of matrix B. It also specifies the dimensions of symmetric matrix A 
+     *        of matrix B. It also specifies the dimensions of symmetric matrix A
      *        when side == 'L' or 'l'. m must be at least zero.
-     * n      specifies the number of columns of the matrix C, and the number of 
-     *        columns of matrix B. It also specifies the dimensions of symmetric 
+     * n      specifies the number of columns of the matrix C, and the number of
+     *        columns of matrix B. It also specifies the dimensions of symmetric
      *        matrix A when side == 'R' or 'r'. n must be at least zero.
      * alpha  single precision scalar multiplier applied to A * B, or B * A
-     * A      single precision array of dimensions (lda, ka), where ka is m when 
-     *        side == 'L' or 'l' and is n otherwise. If side == 'L' or 'l' the 
-     *        leading m x m part of array A must contain the symmetric matrix, 
-     *        such that when uplo == 'U' or 'u', the leading m x m part stores the 
+     * A      single precision array of dimensions (lda, ka), where ka is m when
+     *        side == 'L' or 'l' and is n otherwise. If side == 'L' or 'l' the
+     *        leading m x m part of array A must contain the symmetric matrix,
+     *        such that when uplo == 'U' or 'u', the leading m x m part stores the
      *        upper triangular part of the symmetric matrix, and the strictly lower
-     *        triangular part of A is not referenced, and when uplo == 'U' or 'u', 
-     *        the leading m x m part stores the lower triangular part of the 
-     *        symmetric matrix and the strictly upper triangular part is not 
-     *        referenced. If side == 'R' or 'r' the leading n x n part of array A 
+     *        triangular part of A is not referenced, and when uplo == 'U' or 'u',
+     *        the leading m x m part stores the lower triangular part of the
+     *        symmetric matrix and the strictly upper triangular part is not
+     *        referenced. If side == 'R' or 'r' the leading n x n part of array A
      *        must contain the symmetric matrix, such that when uplo == 'U' or 'u',
-     *        the leading n x n part stores the upper triangular part of the 
-     *        symmetric matrix and the strictly lower triangular part of A is not 
-     *        referenced, and when uplo == 'U' or 'u', the leading n x n part 
-     *        stores the lower triangular part of the symmetric matrix and the 
+     *        the leading n x n part stores the upper triangular part of the
+     *        symmetric matrix and the strictly lower triangular part of A is not
+     *        referenced, and when uplo == 'U' or 'u', the leading n x n part
+     *        stores the lower triangular part of the symmetric matrix and the
      *        strictly upper triangular part is not referenced.
-     * lda    leading dimension of A. When side == 'L' or 'l', it must be at least 
+     * lda    leading dimension of A. When side == 'L' or 'l', it must be at least
      *        max(1, m) and at least max(1, n) otherwise.
      * B      single precision array of dimensions (ldb, n). On entry, the leading
      *        m x n part of the array contains the matrix B.
      * ldb    leading dimension of B. It must be at least max (1, m).
-     * beta   single precision scalar multiplier applied to C. If beta is zero, C 
+     * beta   single precision scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input
      * C      single precision array of dimensions (ldc, n)
      * ldc    leading dimension of C. Must be at least max(1, m)
      *
      * Output
      * ------
-     * C      updated according to C = alpha * A * B + beta * C, or C = alpha * 
+     * C      updated according to C = alpha * A * B + beta * C, or C = alpha *
      *        B * A + beta * C
      *
      * Reference: http://www.netlib.org/blas/csymm.f
@@ -6352,71 +6355,71 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasChemm (char side, char uplo, int m, int n, cuComplex alpha, 
-     *              const cuComplex *A, int lda, const cuComplex *B, int ldb, 
+     * void
+     * cublasChemm (char side, char uplo, int m, int n, cuComplex alpha,
+     *              const cuComplex *A, int lda, const cuComplex *B, int ldb,
      *              cuComplex beta, cuComplex *C, int ldc);
      *
      * performs one of the matrix-matrix operations
-     * 
-     *   C = alpha * A * B + beta * C, or 
+     *
+     *   C = alpha * A * B + beta * C, or
      *   C = alpha * B * A + beta * C,
      *
      * where alpha and beta are single precision complex scalars, A is a hermitian matrix
-     * consisting of single precision complex elements and stored in either lower or upper 
+     * consisting of single precision complex elements and stored in either lower or upper
      * storage mode, and B and C are m x n matrices consisting of single precision
      * complex elements.
      *
      * Input
      * -----
-     * side   specifies whether the hermitian matrix A appears on the left side 
-     *        hand side or right hand side of matrix B, as follows. If side == 'L' 
-     *        or 'l', then C = alpha * A * B + beta * C. If side = 'R' or 'r', 
+     * side   specifies whether the hermitian matrix A appears on the left side
+     *        hand side or right hand side of matrix B, as follows. If side == 'L'
+     *        or 'l', then C = alpha * A * B + beta * C. If side = 'R' or 'r',
      *        then C = alpha * B * A + beta * C.
-     * uplo   specifies whether the hermitian matrix A is stored in upper or lower 
-     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper 
-     *        triangular part of the hermitian matrix is to be referenced, and the 
+     * uplo   specifies whether the hermitian matrix A is stored in upper or lower
+     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper
+     *        triangular part of the hermitian matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the hermitian matrix is to be referenced, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the hermitian matrix is to be referenced,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
      * m      specifies the number of rows of the matrix C, and the number of rows
-     *        of matrix B. It also specifies the dimensions of hermitian matrix A 
+     *        of matrix B. It also specifies the dimensions of hermitian matrix A
      *        when side == 'L' or 'l'. m must be at least zero.
-     * n      specifies the number of columns of the matrix C, and the number of 
-     *        columns of matrix B. It also specifies the dimensions of hermitian 
+     * n      specifies the number of columns of the matrix C, and the number of
+     *        columns of matrix B. It also specifies the dimensions of hermitian
      *        matrix A when side == 'R' or 'r'. n must be at least zero.
      * alpha  single precision complex scalar multiplier applied to A * B, or B * A
-     * A      single precision complex array of dimensions (lda, ka), where ka is m when 
-     *        side == 'L' or 'l' and is n otherwise. If side == 'L' or 'l' the 
-     *        leading m x m part of array A must contain the hermitian matrix, 
-     *        such that when uplo == 'U' or 'u', the leading m x m part stores the 
+     * A      single precision complex array of dimensions (lda, ka), where ka is m when
+     *        side == 'L' or 'l' and is n otherwise. If side == 'L' or 'l' the
+     *        leading m x m part of array A must contain the hermitian matrix,
+     *        such that when uplo == 'U' or 'u', the leading m x m part stores the
      *        upper triangular part of the hermitian matrix, and the strictly lower
-     *        triangular part of A is not referenced, and when uplo == 'U' or 'u', 
-     *        the leading m x m part stores the lower triangular part of the 
-     *        hermitian matrix and the strictly upper triangular part is not 
-     *        referenced. If side == 'R' or 'r' the leading n x n part of array A 
+     *        triangular part of A is not referenced, and when uplo == 'U' or 'u',
+     *        the leading m x m part stores the lower triangular part of the
+     *        hermitian matrix and the strictly upper triangular part is not
+     *        referenced. If side == 'R' or 'r' the leading n x n part of array A
      *        must contain the hermitian matrix, such that when uplo == 'U' or 'u',
-     *        the leading n x n part stores the upper triangular part of the 
-     *        hermitian matrix and the strictly lower triangular part of A is not 
-     *        referenced, and when uplo == 'U' or 'u', the leading n x n part 
-     *        stores the lower triangular part of the hermitian matrix and the 
+     *        the leading n x n part stores the upper triangular part of the
+     *        hermitian matrix and the strictly lower triangular part of A is not
+     *        referenced, and when uplo == 'U' or 'u', the leading n x n part
+     *        stores the lower triangular part of the hermitian matrix and the
      *        strictly upper triangular part is not referenced. The imaginary parts
      *        of the diagonal elements need not be set, they are assumed to be zero.
-     * lda    leading dimension of A. When side == 'L' or 'l', it must be at least 
+     * lda    leading dimension of A. When side == 'L' or 'l', it must be at least
      *        max(1, m) and at least max(1, n) otherwise.
      * B      single precision complex array of dimensions (ldb, n). On entry, the leading
      *        m x n part of the array contains the matrix B.
      * ldb    leading dimension of B. It must be at least max (1, m).
-     * beta   single precision complex scalar multiplier applied to C. If beta is zero, C 
+     * beta   single precision complex scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input
      * C      single precision complex array of dimensions (ldc, n)
      * ldc    leading dimension of C. Must be at least max(1, m)
      *
      * Output
      * ------
-     * C      updated according to C = alpha * A * B + beta * C, or C = alpha * 
+     * C      updated according to C = alpha * A * B + beta * C, or C = alpha *
      *        B * A + beta * C
      *
      * Reference: http://www.netlib.org/blas/chemm.f
@@ -6444,66 +6447,66 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasCsyrk (char uplo, char trans, int n, int k, cuComplex alpha, 
+     * void
+     * cublasCsyrk (char uplo, char trans, int n, int k, cuComplex alpha,
      *              const cuComplex *A, int lda, cuComplex beta, cuComplex *C, int ldc)
      *
      * performs one of the symmetric rank k operations
-     * 
-     *   C = alpha * A * transpose(A) + beta * C, or 
+     *
+     *   C = alpha * A * transpose(A) + beta * C, or
      *   C = alpha * transpose(A) * A + beta * C.
      *
-     * Alpha and beta are single precision complex scalars. C is an n x n symmetric matrix 
-     * consisting of single precision complex elements and stored in either lower or 
+     * Alpha and beta are single precision complex scalars. C is an n x n symmetric matrix
+     * consisting of single precision complex elements and stored in either lower or
      * upper storage mode. A is a matrix consisting of single precision complex elements
      * with dimension of n x k in the first case, and k x n in the second case.
      *
      * Input
      * -----
-     * uplo   specifies whether the symmetric matrix C is stored in upper or lower 
-     *        storage mode as follows. If uplo == 'U' or 'u', only the upper 
-     *        triangular part of the symmetric matrix is to be referenced, and the 
+     * uplo   specifies whether the symmetric matrix C is stored in upper or lower
+     *        storage mode as follows. If uplo == 'U' or 'u', only the upper
+     *        triangular part of the symmetric matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the symmetric matrix is to be referenced, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the symmetric matrix is to be referenced,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
-     * trans  specifies the operation to be performed. If trans == 'N' or 'n', C = 
-     *        alpha * transpose(A) + beta * C. If trans == 'T', 't', 'C', or 'c', 
+     * trans  specifies the operation to be performed. If trans == 'N' or 'n', C =
+     *        alpha * transpose(A) + beta * C. If trans == 'T', 't', 'C', or 'c',
      *        C = transpose(A) * A + beta * C.
-     * n      specifies the number of rows and the number columns of matrix C. If 
-     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If 
-     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A. 
+     * n      specifies the number of rows and the number columns of matrix C. If
+     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If
+     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A.
      *        n must be at least zero.
-     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A. 
-     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of 
+     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A.
+     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of
      *        matrix A. k must be at least zero.
-     * alpha  single precision complex scalar multiplier applied to A * transpose(A) or 
+     * alpha  single precision complex scalar multiplier applied to A * transpose(A) or
      *        transpose(A) * A.
-     * A      single precision complex array of dimensions (lda, ka), where ka is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array A must contain the matrix A, 
-     *        otherwise the leading k x n part of the array must contains the 
+     * A      single precision complex array of dimensions (lda, ka), where ka is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array A must contain the matrix A,
+     *        otherwise the leading k x n part of the array must contains the
      *        matrix A.
      * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at
      *        least max(1, n). Otherwise lda must be at least max(1, k).
      * beta   single precision complex scalar multiplier applied to C. If beta izs zero, C
      *        does not have to be a valid input
      * C      single precision complex array of dimensions (ldc, n). If uplo = 'U' or 'u',
-     *        the leading n x n triangular part of the array C must contain the 
-     *        upper triangular part of the symmetric matrix C and the strictly 
-     *        lower triangular part of C is not referenced. On exit, the upper 
-     *        triangular part of C is overwritten by the upper triangular part of 
-     *        the updated matrix. If uplo = 'L' or 'l', the leading n x n 
+     *        the leading n x n triangular part of the array C must contain the
+     *        upper triangular part of the symmetric matrix C and the strictly
+     *        lower triangular part of C is not referenced. On exit, the upper
+     *        triangular part of C is overwritten by the upper triangular part of
+     *        the updated matrix. If uplo = 'L' or 'l', the leading n x n
      *        triangular part of the array C must contain the lower triangular part
      *        of the symmetric matrix C and the strictly upper triangular part of C
-     *        is not referenced. On exit, the lower triangular part of C is 
+     *        is not referenced. On exit, the lower triangular part of C is
      *        overwritten by the lower triangular part of the updated matrix.
      * ldc    leading dimension of C. It must be at least max(1, n).
      *
      * Output
      * ------
-     * C      updated according to C = alpha * A * transpose(A) + beta * C, or C = 
+     * C      updated according to C = alpha * A * transpose(A) + beta * C, or C =
      *        alpha * transpose(A) * A + beta * C
      *
      * Reference: http://www.netlib.org/blas/csyrk.f
@@ -6531,60 +6534,60 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasCherk (char uplo, char trans, int n, int k, float alpha, 
+     * void
+     * cublasCherk (char uplo, char trans, int n, int k, float alpha,
      *              const cuComplex *A, int lda, float beta, cuComplex *C, int ldc)
      *
      * performs one of the hermitian rank k operations
-     * 
-     *   C = alpha * A * conjugate(transpose(A)) + beta * C, or 
+     *
+     *   C = alpha * A * conjugate(transpose(A)) + beta * C, or
      *   C = alpha * conjugate(transpose(A)) * A + beta * C.
      *
-     * Alpha and beta are single precision real scalars. C is an n x n hermitian matrix 
-     * consisting of single precision complex elements and stored in either lower or 
+     * Alpha and beta are single precision real scalars. C is an n x n hermitian matrix
+     * consisting of single precision complex elements and stored in either lower or
      * upper storage mode. A is a matrix consisting of single precision complex elements
      * with dimension of n x k in the first case, and k x n in the second case.
      *
      * Input
      * -----
-     * uplo   specifies whether the hermitian matrix C is stored in upper or lower 
-     *        storage mode as follows. If uplo == 'U' or 'u', only the upper 
-     *        triangular part of the hermitian matrix is to be referenced, and the 
+     * uplo   specifies whether the hermitian matrix C is stored in upper or lower
+     *        storage mode as follows. If uplo == 'U' or 'u', only the upper
+     *        triangular part of the hermitian matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the hermitian matrix is to be referenced, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the hermitian matrix is to be referenced,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
-     * trans  specifies the operation to be performed. If trans == 'N' or 'n', C = 
-     *        alpha * A * conjugate(transpose(A)) + beta * C. If trans == 'T', 't', 'C', or 'c', 
+     * trans  specifies the operation to be performed. If trans == 'N' or 'n', C =
+     *        alpha * A * conjugate(transpose(A)) + beta * C. If trans == 'T', 't', 'C', or 'c',
      *        C = alpha * conjugate(transpose(A)) * A + beta * C.
-     * n      specifies the number of rows and the number columns of matrix C. If 
-     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If 
-     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A. 
+     * n      specifies the number of rows and the number columns of matrix C. If
+     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If
+     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A.
      *        n must be at least zero.
-     * k      If trans == 'N' or 'n', k specifies the number of columns of matrix A. 
-     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of 
+     * k      If trans == 'N' or 'n', k specifies the number of columns of matrix A.
+     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of
      *        matrix A. k must be at least zero.
-     * alpha  single precision scalar multiplier applied to A * conjugate(transpose(A)) or 
+     * alpha  single precision scalar multiplier applied to A * conjugate(transpose(A)) or
      *        conjugate(transpose(A)) * A.
-     * A      single precision complex array of dimensions (lda, ka), where ka is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array A must contain the matrix A, 
-     *        otherwise the leading k x n part of the array must contains the 
+     * A      single precision complex array of dimensions (lda, ka), where ka is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array A must contain the matrix A,
+     *        otherwise the leading k x n part of the array must contains the
      *        matrix A.
      * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at
      *        least max(1, n). Otherwise lda must be at least max(1, k).
      * beta   single precision scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input.
      * C      single precision complex array of dimensions (ldc, n). If uplo = 'U' or 'u',
-     *        the leading n x n triangular part of the array C must contain the 
-     *        upper triangular part of the hermitian matrix C and the strictly 
-     *        lower triangular part of C is not referenced. On exit, the upper 
-     *        triangular part of C is overwritten by the upper triangular part of 
-     *        the updated matrix. If uplo = 'L' or 'l', the leading n x n 
+     *        the leading n x n triangular part of the array C must contain the
+     *        upper triangular part of the hermitian matrix C and the strictly
+     *        lower triangular part of C is not referenced. On exit, the upper
+     *        triangular part of C is overwritten by the upper triangular part of
+     *        the updated matrix. If uplo = 'L' or 'l', the leading n x n
      *        triangular part of the array C must contain the lower triangular part
      *        of the hermitian matrix C and the strictly upper triangular part of C
-     *        is not referenced. On exit, the lower triangular part of C is 
+     *        is not referenced. On exit, the lower triangular part of C is
      *        overwritten by the lower triangular part of the updated matrix.
      *        The imaginary parts of the diagonal elements need
      *        not be set,  they are assumed to be zero,  and on exit they
@@ -6593,7 +6596,7 @@ public class JCublas
      *
      * Output
      * ------
-     * C      updated according to C = alpha * A * conjugate(transpose(A)) + beta * C, or C = 
+     * C      updated according to C = alpha * A * conjugate(transpose(A)) + beta * C, or C =
      *        alpha * conjugate(transpose(A)) * A + beta * C
      *
      * Reference: http://www.netlib.org/blas/cherk.f
@@ -6621,74 +6624,74 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasCsyr2k (char uplo, char trans, int n, int k, cuComplex alpha, 
-     *               const cuComplex *A, int lda, const cuComplex *B, int ldb, 
+     * void
+     * cublasCsyr2k (char uplo, char trans, int n, int k, cuComplex alpha,
+     *               const cuComplex *A, int lda, const cuComplex *B, int ldb,
      *               cuComplex beta, cuComplex *C, int ldc)
      *
      * performs one of the symmetric rank 2k operations
-     * 
-     *    C = alpha * A * transpose(B) + alpha * B * transpose(A) + beta * C, or 
+     *
+     *    C = alpha * A * transpose(B) + alpha * B * transpose(A) + beta * C, or
      *    C = alpha * transpose(A) * B + alpha * transpose(B) * A + beta * C.
      *
      * Alpha and beta are single precision complex scalars. C is an n x n symmetric matrix
-     * consisting of single precision complex elements and stored in either lower or upper 
-     * storage mode. A and B are matrices consisting of single precision complex elements 
+     * consisting of single precision complex elements and stored in either lower or upper
+     * storage mode. A and B are matrices consisting of single precision complex elements
      * with dimension of n x k in the first case, and k x n in the second case.
      *
      * Input
      * -----
      * uplo   specifies whether the symmetric matrix C is stored in upper or lower
-     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper 
+     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper
      *        triangular part of the symmetric matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the symmetric matrix is to be references, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the symmetric matrix is to be references,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
-     * trans  specifies the operation to be performed. If trans == 'N' or 'n', 
-     *        C = alpha * A * transpose(B) + alpha * B * transpose(A) + beta * C, 
-     *        If trans == 'T', 't', 'C', or 'c', C = alpha * transpose(A) * B + 
+     * trans  specifies the operation to be performed. If trans == 'N' or 'n',
+     *        C = alpha * A * transpose(B) + alpha * B * transpose(A) + beta * C,
+     *        If trans == 'T', 't', 'C', or 'c', C = alpha * transpose(A) * B +
      *        alpha * transpose(B) * A + beta * C.
-     * n      specifies the number of rows and the number columns of matrix C. If 
-     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If 
-     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A. 
+     * n      specifies the number of rows and the number columns of matrix C. If
+     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If
+     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A.
      *        n must be at least zero.
-     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A. 
-     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of 
+     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A.
+     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of
      *        matrix A. k must be at least zero.
      * alpha  single precision complex scalar multiplier.
-     * A      single precision complex array of dimensions (lda, ka), where ka is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array A must contain the matrix A, 
+     * A      single precision complex array of dimensions (lda, ka), where ka is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array A must contain the matrix A,
      *        otherwise the leading k x n part of the array must contain the matrix
      *        A.
-     * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at 
+     * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at
      *        least max(1, n). Otherwise lda must be at least max(1,k).
-     * B      single precision complex array of dimensions (lda, kb), where kb is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array B must contain the matrix B, 
+     * B      single precision complex array of dimensions (lda, kb), where kb is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array B must contain the matrix B,
      *        otherwise the leading k x n part of the array must contain the matrix
      *        B.
      * ldb    leading dimension of N. When trans == 'N' or 'n' then ldb must be at
      *        least max(1, n). Otherwise ldb must be at least max(1, k).
-     * beta   single precision complex scalar multiplier applied to C. If beta is zero, C 
+     * beta   single precision complex scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input.
      * C      single precision complex array of dimensions (ldc, n). If uplo == 'U' or 'u',
-     *        the leading n x n triangular part of the array C must contain the 
-     *        upper triangular part of the symmetric matrix C and the strictly 
-     *        lower triangular part of C is not referenced. On exit, the upper 
-     *        triangular part of C is overwritten by the upper triangular part of 
-     *        the updated matrix. If uplo == 'L' or 'l', the leading n x n 
+     *        the leading n x n triangular part of the array C must contain the
+     *        upper triangular part of the symmetric matrix C and the strictly
+     *        lower triangular part of C is not referenced. On exit, the upper
+     *        triangular part of C is overwritten by the upper triangular part of
+     *        the updated matrix. If uplo == 'L' or 'l', the leading n x n
      *        triangular part of the array C must contain the lower triangular part
      *        of the symmetric matrix C and the strictly upper triangular part of C
-     *        is not referenced. On exit, the lower triangular part of C is 
+     *        is not referenced. On exit, the lower triangular part of C is
      *        overwritten by the lower triangular part of the updated matrix.
      * ldc    leading dimension of C. Must be at least max(1, n).
      *
      * Output
      * ------
-     * C      updated according to alpha*A*transpose(B) + alpha*B*transpose(A) + 
+     * C      updated according to alpha*A*transpose(B) + alpha*B*transpose(A) +
      *        beta*C or alpha*transpose(A)*B + alpha*transpose(B)*A + beta*C
      *
      * Reference:   http://www.netlib.org/blas/csyr2k.f
@@ -6716,23 +6719,23 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasCher2k (char uplo, char trans, int n, int k, cuComplex alpha, 
-     *               const cuComplex *A, int lda, const cuComplex *B, int ldb, 
+     * void
+     * cublasCher2k (char uplo, char trans, int n, int k, cuComplex alpha,
+     *               const cuComplex *A, int lda, const cuComplex *B, int ldb,
      *               float beta, cuComplex *C, int ldc)
      *
      * performs one of the hermitian rank 2k operations
-     * 
-     *    C =   alpha * A * conjugate(transpose(B)) 
-     *        + conjugate(alpha) * B * conjugate(transpose(A))  
-     *        + beta * C , 
-     *    or 
-     *    C =  alpha * conjugate(transpose(A)) * B 
-     *       + conjugate(alpha) * conjugate(transpose(B)) * A 
+     *
+     *    C =   alpha * A * conjugate(transpose(B))
+     *        + conjugate(alpha) * B * conjugate(transpose(A))
+     *        + beta * C ,
+     *    or
+     *    C =  alpha * conjugate(transpose(A)) * B
+     *       + conjugate(alpha) * conjugate(transpose(B)) * A
      *       + beta * C.
      *
-     * Alpha is single precision complex scalar whereas Beta is a single preocision real scalar. 
-     * C is an n x n hermitian matrix consisting of single precision complex elements 
+     * Alpha is single precision complex scalar whereas Beta is a single preocision real scalar.
+     * C is an n x n hermitian matrix consisting of single precision complex elements
      * and stored in either lower or upper storage mode. A and B are matrices consisting
      * of single precision complex elements with dimension of n x k in the first case,
      * and k x n in the second case.
@@ -6740,54 +6743,54 @@ public class JCublas
      * Input
      * -----
      * uplo   specifies whether the hermitian matrix C is stored in upper or lower
-     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper 
+     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper
      *        triangular part of the hermitian matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the hermitian matrix is to be references, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the hermitian matrix is to be references,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
-     * trans  specifies the operation to be performed. If trans == 'N' or 'n', 
-     *        C =   alpha * A * conjugate(transpose(B)) 
-     *            + conjugate(alpha) * B * conjugate(transpose(A))  
+     * trans  specifies the operation to be performed. If trans == 'N' or 'n',
+     *        C =   alpha * A * conjugate(transpose(B))
+     *            + conjugate(alpha) * B * conjugate(transpose(A))
      *            + beta * C .
      *        If trans == 'T', 't', 'C', or 'c',
-     *        C =  alpha * conjugate(transpose(A)) * B 
-     *          + conjugate(alpha) * conjugate(transpose(B)) * A 
+     *        C =  alpha * conjugate(transpose(A)) * B
+     *          + conjugate(alpha) * conjugate(transpose(B)) * A
      *          + beta * C.
-     * n      specifies the number of rows and the number columns of matrix C. If 
-     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If 
-     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A. 
+     * n      specifies the number of rows and the number columns of matrix C. If
+     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If
+     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A.
      *        n must be at least zero.
-     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A. 
-     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of 
+     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A.
+     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of
      *        matrix A. k must be at least zero.
      * alpha  single precision complex scalar multiplier.
-     * A      single precision complex array of dimensions (lda, ka), where ka is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array A must contain the matrix A, 
+     * A      single precision complex array of dimensions (lda, ka), where ka is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array A must contain the matrix A,
      *        otherwise the leading k x n part of the array must contain the matrix
      *        A.
-     * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at 
+     * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at
      *        least max(1, n). Otherwise lda must be at least max(1,k).
-     * B      single precision complex array of dimensions (lda, kb), where kb is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array B must contain the matrix B, 
+     * B      single precision complex array of dimensions (lda, kb), where kb is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array B must contain the matrix B,
      *        otherwise the leading k x n part of the array must contain the matrix
      *        B.
      * ldb    leading dimension of N. When trans == 'N' or 'n' then ldb must be at
      *        least max(1, n). Otherwise ldb must be at least max(1, k).
-     * beta   single precision scalar multiplier applied to C. If beta is zero, C 
+     * beta   single precision scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input.
      * C      single precision complex array of dimensions (ldc, n). If uplo == 'U' or 'u',
-     *        the leading n x n triangular part of the array C must contain the 
-     *        upper triangular part of the hermitian matrix C and the strictly 
-     *        lower triangular part of C is not referenced. On exit, the upper 
-     *        triangular part of C is overwritten by the upper triangular part of 
-     *        the updated matrix. If uplo == 'L' or 'l', the leading n x n 
+     *        the leading n x n triangular part of the array C must contain the
+     *        upper triangular part of the hermitian matrix C and the strictly
+     *        lower triangular part of C is not referenced. On exit, the upper
+     *        triangular part of C is overwritten by the upper triangular part of
+     *        the updated matrix. If uplo == 'L' or 'l', the leading n x n
      *        triangular part of the array C must contain the lower triangular part
      *        of the hermitian matrix C and the strictly upper triangular part of C
-     *        is not referenced. On exit, the lower triangular part of C is 
+     *        is not referenced. On exit, the lower triangular part of C is
      *        overwritten by the lower triangular part of the updated matrix.
      *        The imaginary parts of the diagonal elements need
      *        not be set,  they are assumed to be zero,  and on exit they
@@ -6796,7 +6799,7 @@ public class JCublas
      *
      * Output
      * ------
-     * C      updated according to alpha*A*conjugate(transpose(B)) + 
+     * C      updated according to alpha*A*conjugate(transpose(B)) +
      *        + conjugate(alpha)*B*conjugate(transpose(A)) + beta*C or
      *        alpha*conjugate(transpose(A))*B + conjugate(alpha)*conjugate(transpose(B))*A
      *        + beta*C.
@@ -6826,9 +6829,9 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasCtrmm (char side, char uplo, char transa, char diag, int m, int n, 
-     *              cuComplex alpha, const cuComplex *A, int lda, const cuComplex *B, 
+     * void
+     * cublasCtrmm (char side, char uplo, char transa, char diag, int m, int n,
+     *              cuComplex alpha, const cuComplex *A, int lda, const cuComplex *B,
      *              int ldb)
      *
      * performs one of the matrix-matrix operations
@@ -6836,13 +6839,13 @@ public class JCublas
      *   B = alpha * op(A) * B,  or  B = alpha * B * op(A)
      *
      * where alpha is a single-precision complex scalar, B is an m x n matrix composed
-     * of single precision complex elements, and A is a unit or non-unit, upper or lower, 
+     * of single precision complex elements, and A is a unit or non-unit, upper or lower,
      * triangular matrix composed of single precision complex elements. op(A) is one of
      *
      *   op(A) = A  , op(A) = transpose(A) or op(A) = conjugate(transpose(A))
      *
-     * Matrices A and B are stored in column major format, and lda and ldb are 
-     * the leading dimensions of the two-dimensonials arrays that contain A and 
+     * Matrices A and B are stored in column major format, and lda and ldb are
+     * the leading dimensions of the two-dimensonials arrays that contain A and
      * B, respectively.
      *
      * Input
@@ -6853,7 +6856,7 @@ public class JCublas
      * uplo   specifies whether the matrix A is an upper or lower triangular
      *        matrix. If uplo = 'U' or 'u', A is an upper triangular matrix.
      *        If uplo = 'L' or 'l', A is a lower triangular matrix.
-     * transa specifies the form of op(A) to be used in the matrix 
+     * transa specifies the form of op(A) to be used in the matrix
      *        multiplication. If transa = 'N' or 'n', then op(A) = A. If
      *        transa = 'T' or 't', then op(A) = transpose(A).
      *        If transa = 'C' or 'c', then op(A) = conjugate(transpose(A)).
@@ -6877,7 +6880,7 @@ public class JCublas
      *        to be unity.
      * lda    leading dimension of A. When side = 'L' or 'l', it must be at
      *        least max(1,m) and at least max(1,n) otherwise
-     * B      single precision complex array of dimensions (ldb, n). On entry, the 
+     * B      single precision complex array of dimensions (ldb, n). On entry, the
      *        leading m x n part of the array contains the matrix B. It is
      *        overwritten with the transformed matrix on exit.
      * ldb    leading dimension of B. It must be at least max (1, m).
@@ -7000,13 +7003,13 @@ public class JCublas
 
     /**
      * <pre>
-     * double 
+     * double
      * cublasDasum (int n, const double *x, int incx)
      *
-     * computes the sum of the absolute values of the elements of double 
-     * precision vector x; that is, the result is the sum from i = 0 to n - 1 of 
+     * computes the sum of the absolute values of the elements of double
+     * precision vector x; that is, the result is the sum from i = 0 to n - 1 of
      * abs(x[1 + i * incx]).
-     * 
+     *
      * Input
      * -----
      * n      number of elements in input vector
@@ -7020,7 +7023,7 @@ public class JCublas
      *
      * Reference: http://www.netlib.org/blas/dasum.f
      *
-     * Error status for this function can be retrieved via cublasGetError(). 
+     * Error status for this function can be retrieved via cublasGetError().
      *
      * Error Status
      * ------------
@@ -7045,14 +7048,14 @@ public class JCublas
     /**
      * <pre>
      * void
-     * cublasDaxpy (int n, double alpha, const double *x, int incx, double *y, 
+     * cublasDaxpy (int n, double alpha, const double *x, int incx, double *y,
      *              int incy)
      *
-     * multiplies double-precision vector x by double-precision scalar alpha 
-     * and adds the result to double-precision vector y; that is, it overwrites 
+     * multiplies double-precision vector x by double-precision scalar alpha
+     * and adds the result to double-precision vector y; that is, it overwrites
      * double-precision y with double-precision alpha * x + y. For i = 0 to n-1,
      * it replaces y[ly + i * incy] with alpha * x[lx + i * incx] + y[ly + i*incy],
-     * where lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx; ly is defined in a 
+     * where lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx; ly is defined in a
      * similar way using incy.
      *
      * Input
@@ -7093,12 +7096,12 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasDcopy (int n, const double *x, int incx, double *y, int incy)
      *
-     * copies the double-precision vector x to the double-precision vector y. For 
-     * i = 0 to n-1, copies x[lx + i * incx] to y[ly + i * incy], where lx = 1 if 
-     * incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a similar 
+     * copies the double-precision vector x to the double-precision vector y. For
+     * i = 0 to n-1, copies x[lx + i * incx] to y[ly + i * incy], where lx = 1 if
+     * incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a similar
      * way using incy.
      *
      * Input
@@ -7115,7 +7118,7 @@ public class JCublas
      *
      * Reference: http://www.netlib.org/blas/dcopy.f
      *
-     * Error status for this function can be retrieved via cublasGetError(). 
+     * Error status for this function can be retrieved via cublasGetError().
      *
      * Error Status
      * ------------
@@ -7138,12 +7141,12 @@ public class JCublas
 
     /**
      * <pre>
-     * double 
+     * double
      * cublasDdot (int n, const double *x, int incx, const double *y, int incy)
      *
-     * computes the dot product of two double-precision vectors. It returns the 
+     * computes the dot product of two double-precision vectors. It returns the
      * dot product of the double precision vectors x and y if successful, and
-     * 0.0f otherwise. It computes the sum for i = 0 to n - 1 of x[lx + i * 
+     * 0.0f otherwise. It computes the sum for i = 0 to n - 1 of x[lx + i *
      * incx] * y[ly + i * incy], where lx = 1 if incx >= 0, else lx = 1 + (1 - n)
      * *incx, and ly is defined in a similar way using incy.
      *
@@ -7185,11 +7188,11 @@ public class JCublas
 
     /**
      * <pre>
-     * double 
+     * double
      * dnrm2 (int n, const double *x, int incx)
      *
      * computes the Euclidean norm of the double-precision n-vector x (with
-     * storage increment incx). This code uses a multiphase model of 
+     * storage increment incx). This code uses a multiphase model of
      * accumulation to avoid intermediate underflow and overflow.
      *
      * Input
@@ -7206,7 +7209,7 @@ public class JCublas
      * Reference: http://www.netlib.org/slatec/lin/dnrm2.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -7229,15 +7232,15 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasDrot (int n, double *x, int incx, double *y, int incy, double sc, 
+     * void
+     * cublasDrot (int n, double *x, int incx, double *y, int incy, double sc,
      *             double ss)
      *
      * multiplies a 2x2 matrix ( sc ss) with the 2xn matrix ( transpose(x) )
      *                         (-ss sc)                     ( transpose(y) )
      *
-     * The elements of x are in x[lx + i * incx], i = 0 ... n - 1, where lx = 1 if 
-     * incx >= 0, else lx = 1 + (1 - n) * incx, and similarly for y using ly and 
+     * The elements of x are in x[lx + i * incx], i = 0 ... n - 1, where lx = 1 if
+     * incx >= 0, else lx = 1 + (1 - n) * incx, and similarly for y using ly and
      * incy.
      *
      * Input
@@ -7280,7 +7283,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasDrotg (double *host_sa, double *host_sb, double *host_sc, double *host_ss)
      *
      * constructs the Givens tranformation
@@ -7291,8 +7294,8 @@ public class JCublas
      *
      * which zeros the second entry of the 2-vector transpose(sa, sb).
      *
-     * The quantity r = (+/-) sqrt (sa^2 + sb^2) overwrites sa in storage. The 
-     * value of sb is overwritten by a value z which allows sc and ss to be 
+     * The quantity r = (+/-) sqrt (sa^2 + sb^2) overwrites sa in storage. The
+     * value of sb is overwritten by a value z which allows sc and ss to be
      * recovered by the following algorithm:
      *
      *    if z=1          set sc = 0.0 and ss = 1.0
@@ -7301,7 +7304,7 @@ public class JCublas
      *
      * The function drot (n, x, incx, y, incy, sc, ss) normally is called next
      * to apply the transformation to a 2 x n matrix.
-     * Note that is function is provided for completeness and run exclusively 
+     * Note that is function is provided for completeness and run exclusively
      * on the Host.
      *
      * Input
@@ -7338,7 +7341,7 @@ public class JCublas
      * void
      * cublasDscal (int n, double alpha, double *x, int incx)
      *
-     * replaces double-precision vector x with double-precision alpha * x. For 
+     * replaces double-precision vector x with double-precision alpha * x. For
      * i = 0 to n-1, it replaces x[lx + i * incx] with alpha * x[lx + i * incx],
      * where lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx.
      *
@@ -7381,25 +7384,28 @@ public class JCublas
      * void
      * cublasDswap (int n, double *x, int incx, double *y, int incy)
      *
-     * replaces double-precision vector x with double-precision alpha * x. For i 
-     * = 0 to n - 1, it replaces x[ix + i * incx] with alpha * x[ix + i * incx], 
-     * where ix = 1 if incx >= 0, else ix = 1 + (1 - n) * incx.
+     * interchanges the double-precision vector x with the double-precision vector y.
+     * For i = 0 to n-1, interchanges x[lx + i * incx] with y[ly + i * incy], where
+     * lx = 1 if incx >= 0, else lx = 1 + (1 - n) * incx, and ly is defined in a
+     * similar way using incy.
      *
      * Input
      * -----
      * n      number of elements in input vectors
-     * alpha  double-precision scalar multiplier
-     * x      double-precision vector with n elements
+     * x      double precision vector with n elements
      * incx   storage spacing between elements of x
+     * y      double precision vector with n elements
+     * incy   storage spacing between elements of y
      *
      * Output
      * ------
-     * x      double precision result (unchanged if n <= 0 or incx <= 0)
+     * x      contains double precision vector y
+     * y      contains double precision vector x
      *
      * Reference: http://www.netlib.org/blas/dswap.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
@@ -7421,13 +7427,13 @@ public class JCublas
 
     /**
      * <pre>
-     * int 
+     * int
      * idamax (int n, const double *x, int incx)
      *
      * finds the smallest index of the maximum magnitude element of double-
-     * precision vector x; that is, the result is the first i, i = 0 to n - 1, 
+     * precision vector x; that is, the result is the first i, i = 0 to n - 1,
      * that maximizes abs(x[1 + i * incx])).
-     * 
+     *
      * Input
      * -----
      * n      number of elements in input vector
@@ -7464,13 +7470,13 @@ public class JCublas
 
     /**
      * <pre>
-     * int 
+     * int
      * idamin (int n, const double *x, int incx)
      *
      * finds the smallest index of the minimum magnitude element of double-
-     * precision vector x; that is, the result is the first i, i = 0 to n - 1, 
+     * precision vector x; that is, the result is the first i, i = 0 to n - 1,
      * that minimizes abs(x[1 + i * incx])).
-     * 
+     *
      * Input
      * -----
      * n      number of elements in input vector
@@ -7507,8 +7513,8 @@ public class JCublas
 
     /**
      * <pre>
-     * cublasDgemv (char trans, int m, int n, double alpha, const double *A, 
-     *              int lda, const double *x, int incx, double beta, double *y, 
+     * cublasDgemv (char trans, int m, int n, double alpha, const double *A,
+     *              int lda, const double *x, int incx, double beta, double *y,
      *              int incy)
      *
      * performs one of the matrix-vector operations
@@ -7519,7 +7525,7 @@ public class JCublas
      *
      *    op(A) = A   or   op(A) = transpose(A)
      *
-     * where alpha and beta are double precision scalars, x and y are double 
+     * where alpha and beta are double precision scalars, x and y are double
      * precision vectors, and A is an m x n matrix consisting of double precision
      * elements. Matrix A is stored in column major format, and lda is the leading
      * dimension of the two-dimensional array in which A is stored.
@@ -7528,24 +7534,24 @@ public class JCublas
      * -----
      * trans  specifies op(A). If transa = 'n' or 'N', op(A) = A. If trans =
      *        trans = 't', 'T', 'c', or 'C', op(A) = transpose(A)
-     * m      specifies the number of rows of the matrix A. m must be at least 
+     * m      specifies the number of rows of the matrix A. m must be at least
      *        zero.
-     * n      specifies the number of columns of the matrix A. n must be at least 
+     * n      specifies the number of columns of the matrix A. n must be at least
      *        zero.
      * alpha  double precision scalar multiplier applied to op(A).
-     * A      double precision array of dimensions (lda, n) if trans = 'n' or 
-     *        'N'), and of dimensions (lda, m) otherwise. lda must be at least 
+     * A      double precision array of dimensions (lda, n) if trans = 'n' or
+     *        'N'), and of dimensions (lda, m) otherwise. lda must be at least
      *        max(1, m) and at least max(1, n) otherwise.
      * lda    leading dimension of two-dimensional array used to store matrix A
      * x      double precision array of length at least (1 + (n - 1) * abs(incx))
-     *        when trans = 'N' or 'n' and at least (1 + (m - 1) * abs(incx)) 
+     *        when trans = 'N' or 'n' and at least (1 + (m - 1) * abs(incx))
      *        otherwise.
-     * incx   specifies the storage spacing between elements of x. incx must not 
+     * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
-     * beta   double precision scalar multiplier applied to vector y. If beta 
+     * beta   double precision scalar multiplier applied to vector y. If beta
      *        is zero, y is not read.
      * y      double precision array of length at least (1 + (m - 1) * abs(incy))
-     *        when trans = 'N' or 'n' and at least (1 + (n - 1) * abs(incy)) 
+     *        when trans = 'N' or 'n' and at least (1 + (n - 1) * abs(incy))
      *        otherwise.
      * incy   specifies the storage spacing between elements of x. incx must not
      *        be zero.
@@ -7639,23 +7645,23 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasDsyr (char uplo, int n, double alpha, const double *x, int incx, 
+     * void
+     * cublasDsyr (char uplo, int n, double alpha, const double *x, int incx,
      *             double *A, int lda)
      *
      * performs the symmetric rank 1 operation
      *
      *    A = alpha * x * transpose(x) + A,
      *
-     * where alpha is a double precision scalar, x is an n element double 
-     * precision vector and A is an n x n symmetric matrix consisting of 
+     * where alpha is a double precision scalar, x is an n element double
+     * precision vector and A is an n x n symmetric matrix consisting of
      * double precision elements. Matrix A is stored in column major format,
-     * and lda is the leading dimension of the two-dimensional array 
+     * and lda is the leading dimension of the two-dimensional array
      * containing A.
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix data is stored in the upper or 
+     * uplo   specifies whether the matrix data is stored in the upper or
      *        the lower triangular part of array A. If uplo = 'U' or 'u',
      *        then only the upper triangular part of A may be referenced.
      *        If uplo = 'L' or 'l', then only the lower triangular part of
@@ -7664,13 +7670,13 @@ public class JCublas
      *        must be at least 0.
      * alpha  double precision scalar multiplier applied to x * transpose(x)
      * x      double precision array of length at least (1 + (n - 1) * abs(incx))
-     * incx   specifies the storage spacing between elements of x. incx must 
+     * incx   specifies the storage spacing between elements of x. incx must
      *        not be zero.
-     * A      double precision array of dimensions (lda, n). If uplo = 'U' or 
-     *        'u', then A must contain the upper triangular part of a symmetric 
-     *        matrix, and the strictly lower triangular part is not referenced. 
-     *        If uplo = 'L' or 'l', then A contains the lower triangular part 
-     *        of a symmetric matrix, and the strictly upper triangular part is 
+     * A      double precision array of dimensions (lda, n). If uplo = 'U' or
+     *        'u', then A must contain the upper triangular part of a symmetric
+     *        matrix, and the strictly lower triangular part is not referenced.
+     *        If uplo = 'L' or 'l', then A contains the lower triangular part
+     *        of a symmetric matrix, and the strictly upper triangular part is
      *        not referenced.
      * lda    leading dimension of the two-dimensional array containing A. lda
      *        must be at least max(1, n).
@@ -7705,28 +7711,28 @@ public class JCublas
 
     /**
      * <pre>
-     * void cublasDsyr2 (char uplo, int n, double alpha, const double *x, int incx, 
+     * void cublasDsyr2 (char uplo, int n, double alpha, const double *x, int incx,
      *                   const double *y, int incy, double *A, int lda)
      *
      * performs the symmetric rank 2 operation
      *
      *    A = alpha*x*transpose(y) + alpha*y*transpose(x) + A,
      *
-     * where alpha is a double precision scalar, x and y are n element double 
-     * precision vector and A is an n by n symmetric matrix consisting of double 
+     * where alpha is a double precision scalar, x and y are n element double
+     * precision vector and A is an n by n symmetric matrix consisting of double
      * precision elements.
-     * 
+     *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array A. If uplo == 'U' or 'u', then only the 
+     *        triangular part of array A. If uplo == 'U' or 'u', then only the
      *        upper triangular part of A may be referenced and the lower triangular
-     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower 
+     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower
      *        triangular part of A may be referenced and the upper triangular part
      *        of A is inferred.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
-     * alpha  double precision scalar multiplier applied to x * transpose(y) + 
+     * alpha  double precision scalar multiplier applied to x * transpose(y) +
      *        y * transpose(x).
      * x      double precision array of length at least (1 + (n - 1) * abs (incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
@@ -7735,7 +7741,7 @@ public class JCublas
      * A      double precision array of dimensions (lda, n). If uplo == 'U' or 'u',
      *        then A must contains the upper triangular part of a symmetric matrix,
      *        and the strictly lower triangular parts is not referenced. If uplo ==
-     *        'L' or 'l', then A contains the lower triangular part of a symmetric 
+     *        'L' or 'l', then A contains the lower triangular part of a symmetric
      *        matrix, and the strictly upper triangular part is not referenced.
      * lda    leading dimension of A. It must be at least max(1, n).
      *
@@ -7746,12 +7752,12 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/dsyr2.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, incx == 0, incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support  
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -7769,23 +7775,23 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasDspr (char uplo, int n, double alpha, const double *x, int incx, 
+     * void
+     * cublasDspr (char uplo, int n, double alpha, const double *x, int incx,
      *             double *AP)
      *
      * performs the symmetric rank 1 operation
-     * 
+     *
      *    A = alpha * x * transpose(x) + A,
-     * 
-     * where alpha is a double precision scalar and x is an n element double 
-     * precision vector. A is a symmetric n x n matrix consisting of double 
+     *
+     * where alpha is a double precision scalar and x is an n element double
+     * precision vector. A is a symmetric n x n matrix consisting of double
      * precision elements that is supplied in packed form.
      *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper 
-     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then 
+     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper
+     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then
      *        the lower triangular part of A is supplied in AP.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
@@ -7793,11 +7799,11 @@ public class JCublas
      * x      double precision array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * AP     double precision array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      *
      * Output
@@ -7812,7 +7818,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, or incx == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -7829,41 +7835,41 @@ public class JCublas
 
 
     /**
-     * <pre> 
-     * void 
-     * cublasDspr2 (char uplo, int n, double alpha, const double *x, int incx, 
+     * <pre>
+     * void
+     * cublasDspr2 (char uplo, int n, double alpha, const double *x, int incx,
      *              const double *y, int incy, double *AP)
      *
      * performs the symmetric rank 2 operation
      *
      *    A = alpha*x*transpose(y) + alpha*y*transpose(x) + A,
      *
-     * where alpha is a double precision scalar, and x and y are n element double 
-     * precision vectors. A is a symmetric n x n matrix consisting of double 
+     * where alpha is a double precision scalar, and x and y are n element double
+     * precision vectors. A is a symmetric n x n matrix consisting of double
      * precision elements that is supplied in packed form.
      *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array A. If uplo == 'U' or 'u', then only the 
+     *        triangular part of array A. If uplo == 'U' or 'u', then only the
      *        upper triangular part of A may be referenced and the lower triangular
-     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower 
+     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower
      *        triangular part of A may be referenced and the upper triangular part
      *        of A is inferred.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
-     * alpha  double precision scalar multiplier applied to x * transpose(y) + 
+     * alpha  double precision scalar multiplier applied to x * transpose(y) +
      *        y * transpose(x).
      * x      double precision array of length at least (1 + (n - 1) * abs (incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * y      double precision array of length at least (1 + (n - 1) * abs (incy)).
      * incy   storage spacing between elements of y. incy must not be zero.
      * AP     double precision array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      *
      * Output
@@ -7878,7 +7884,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, incx == 0, incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -7896,45 +7902,45 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasDtrsv (char uplo, char trans, char diag, int n, const double *A, 
+     * void
+     * cublasDtrsv (char uplo, char trans, char diag, int n, const double *A,
      *              int lda, double *x, int incx)
      *
-     * solves a system of equations op(A) * x = b, where op(A) is either A or 
+     * solves a system of equations op(A) * x = b, where op(A) is either A or
      * transpose(A). b and x are double precision vectors consisting of n
      * elements, and A is an n x n matrix composed of a unit or non-unit, upper
      * or lower triangular matrix. Matrix A is stored in column major format,
      * and lda is the leading dimension of the two-dimensional array containing
      * A.
      *
-     * No test for singularity or near-singularity is included in this function. 
+     * No test for singularity or near-singularity is included in this function.
      * Such tests must be performed before calling this function.
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix data is stored in the upper or the 
-     *        lower triangular part of array A. If uplo = 'U' or 'u', then only 
-     *        the upper triangular part of A may be referenced. If uplo = 'L' or 
+     * uplo   specifies whether the matrix data is stored in the upper or the
+     *        lower triangular part of array A. If uplo = 'U' or 'u', then only
+     *        the upper triangular part of A may be referenced. If uplo = 'L' or
      *        'l', then only the lower triangular part of A may be referenced.
      * trans  specifies op(A). If transa = 'n' or 'N', op(A) = A. If transa = 't',
      *        'T', 'c', or 'C', op(A) = transpose(A)
      * diag   specifies whether or not A is a unit triangular matrix like so:
-     *        if diag = 'U' or 'u', A is assumed to be unit triangular. If 
+     *        if diag = 'U' or 'u', A is assumed to be unit triangular. If
      *        diag = 'N' or 'n', then A is not assumed to be unit triangular.
      * n      specifies the number of rows and columns of the matrix A. It
-     *        must be at least 0. 
-     * A      is a double precision array of dimensions (lda, n). If uplo = 'U' 
+     *        must be at least 0.
+     * A      is a double precision array of dimensions (lda, n). If uplo = 'U'
      *        or 'u', then A must contains the upper triangular part of a symmetric
-     *        matrix, and the strictly lower triangular parts is not referenced. 
-     *        If uplo = 'L' or 'l', then A contains the lower triangular part of 
-     *        a symmetric matrix, and the strictly upper triangular part is not 
-     *        referenced. 
+     *        matrix, and the strictly lower triangular parts is not referenced.
+     *        If uplo = 'L' or 'l', then A contains the lower triangular part of
+     *        a symmetric matrix, and the strictly upper triangular part is not
+     *        referenced.
      * lda    is the leading dimension of the two-dimensional array containing A.
      *        lda must be at least max(1, n).
      * x      double precision array of length at least (1 + (n - 1) * abs(incx)).
      *        On entry, x contains the n element right-hand side vector b. On exit,
      *        it is overwritten with the solution vector x.
-     * incx   specifies the storage spacing between elements of x. incx must not 
+     * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
      *
      * Output
@@ -7949,7 +7955,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if incx == 0 or if n < 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -7967,40 +7973,40 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasDtrmv (char uplo, char trans, char diag, int n, const double *A,
      *              int lda, double *x, int incx);
      *
-     * performs one of the matrix-vector operations x = op(A) * x, where op(A) = 
-     = A, or op(A) = transpose(A). x is an n-element single precision vector, and 
-     * A is an n x n, unit or non-unit, upper or lower, triangular matrix composed 
+     * performs one of the matrix-vector operations x = op(A) * x, where op(A) =
+     = A, or op(A) = transpose(A). x is an n-element single precision vector, and
+     * A is an n x n, unit or non-unit, upper or lower, triangular matrix composed
      * of single precision elements.
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix A is an upper or lower triangular 
-     *        matrix. If uplo = 'U' or 'u', then A is an upper triangular matrix. 
+     * uplo   specifies whether the matrix A is an upper or lower triangular
+     *        matrix. If uplo = 'U' or 'u', then A is an upper triangular matrix.
      *        If uplo = 'L' or 'l', then A is a lower triangular matrix.
-     * trans  specifies op(A). If transa = 'N' or 'n', op(A) = A. If trans = 'T', 
+     * trans  specifies op(A). If transa = 'N' or 'n', op(A) = A. If trans = 'T',
      *        't', 'C', or 'c', op(A) = transpose(A)
-     * diag   specifies whether or not matrix A is unit triangular. If diag = 'U' 
-     *        or 'u', A is assumed to be unit triangular. If diag = 'N' or 'n', A 
+     * diag   specifies whether or not matrix A is unit triangular. If diag = 'U'
+     *        or 'u', A is assumed to be unit triangular. If diag = 'N' or 'n', A
      *        is not assumed to be unit triangular.
-     * n      specifies the number of rows and columns of the matrix A. n must be 
+     * n      specifies the number of rows and columns of the matrix A. n must be
      *        at least zero.
-     * A      single precision array of dimension (lda, n). If uplo = 'U' or 'u', 
-     *        the leading n x n upper triangular part of the array A must contain 
-     *        the upper triangular matrix and the strictly lower triangular part 
+     * A      single precision array of dimension (lda, n). If uplo = 'U' or 'u',
+     *        the leading n x n upper triangular part of the array A must contain
+     *        the upper triangular matrix and the strictly lower triangular part
      *        of A is not referenced. If uplo = 'L' or 'l', the leading n x n lower
-     *        triangular part of the array A must contain the lower triangular 
+     *        triangular part of the array A must contain the lower triangular
      *        matrix and the strictly upper triangular part of A is not referenced.
      *        When diag = 'U' or 'u', the diagonal elements of A are not referenced
      *        either, but are are assumed to be unity.
      * lda    is the leading dimension of A. It must be at least max (1, n).
      * x      single precision array of length at least (1 + (n - 1) * abs(incx) ).
-     *        On entry, x contains the source vector. On exit, x is overwritten 
+     *        On entry, x contains the source vector. On exit, x is overwritten
      *        with the result vector.
-     * incx   specifies the storage spacing for elements of x. incx must not be 
+     * incx   specifies the storage spacing for elements of x. incx must not be
      *        zero.
      *
      * Output
@@ -8032,7 +8038,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasDgbmv (char trans, int m, int n, int kl, int ku, double alpha,
      *              const double *A, int lda, const double *x, int incx, double beta,
      *              double *y, int incy);
@@ -8047,35 +8053,35 @@ public class JCublas
      *
      * Input
      * -----
-     * trans  specifies op(A). If trans == 'N' or 'n', op(A) = A. If trans == 'T', 
+     * trans  specifies op(A). If trans == 'N' or 'n', op(A) = A. If trans == 'T',
      *        't', 'C', or 'c', op(A) = transpose(A)
-     * m      specifies the number of rows of the matrix A. m must be at least 
+     * m      specifies the number of rows of the matrix A. m must be at least
      *        zero.
      * n      specifies the number of columns of the matrix A. n must be at least
      *        zero.
-     * kl     specifies the number of sub-diagonals of matrix A. It must be at 
+     * kl     specifies the number of sub-diagonals of matrix A. It must be at
      *        least zero.
      * ku     specifies the number of super-diagonals of matrix A. It must be at
      *        least zero.
      * alpha  double precision scalar multiplier applied to op(A).
      * A      double precision array of dimensions (lda, n). The leading
      *        (kl + ku + 1) x n part of the array A must contain the band matrix A,
-     *        supplied column by column, with the leading diagonal of the matrix 
-     *        in row (ku + 1) of the array, the first super-diagonal starting at 
+     *        supplied column by column, with the leading diagonal of the matrix
+     *        in row (ku + 1) of the array, the first super-diagonal starting at
      *        position 2 in row ku, the first sub-diagonal starting at position 1
-     *        in row (ku + 2), and so on. Elements in the array A that do not 
-     *        correspond to elements in the band matrix (such as the top left 
+     *        in row (ku + 2), and so on. Elements in the array A that do not
+     *        correspond to elements in the band matrix (such as the top left
      *        ku x ku triangle) are not referenced.
      * lda    leading dimension of A. lda must be at least (kl + ku + 1).
-     * x      double precision array of length at least (1+(n-1)*abs(incx)) when 
+     * x      double precision array of length at least (1+(n-1)*abs(incx)) when
      *        trans == 'N' or 'n' and at least (1+(m-1)*abs(incx)) otherwise.
      * incx   specifies the increment for the elements of x. incx must not be zero.
-     * beta   double precision scalar multiplier applied to vector y. If beta is 
+     * beta   double precision scalar multiplier applied to vector y. If beta is
      *        zero, y is not read.
-     * y      double precision array of length at least (1+(m-1)*abs(incy)) when 
-     *        trans == 'N' or 'n' and at least (1+(n-1)*abs(incy)) otherwise. If 
+     * y      double precision array of length at least (1+(m-1)*abs(incy)) when
+     *        trans == 'N' or 'n' and at least (1+(n-1)*abs(incy)) otherwise. If
      *        beta is zero, y is not read.
-     * incy   On entry, incy specifies the increment for the elements of y. incy 
+     * incy   On entry, incy specifies the increment for the elements of y. incy
      *        must not be zero.
      *
      * Output
@@ -8090,7 +8096,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, or if incx or incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -8108,7 +8114,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasDtbmv (char uplo, char trans, char diag, int n, int k, const double *A,
      *              int lda, double *x, int incx)
      *
@@ -8129,26 +8135,26 @@ public class JCublas
      *        is not assumed to be unit triangular.
      * n      specifies the number of rows and columns of the matrix A. n must be
      *        at least zero.
-     * k      specifies the number of super- or sub-diagonals. If uplo == 'U' or 
-     *        'u', k specifies the number of super-diagonals. If uplo == 'L' or 
-     *        'l', k specifies the number of sub-diagonals. k must at least be 
+     * k      specifies the number of super- or sub-diagonals. If uplo == 'U' or
+     *        'u', k specifies the number of super-diagonals. If uplo == 'L' or
+     *        'l', k specifies the number of sub-diagonals. k must at least be
      *        zero.
      * A      double precision array of dimension (lda, n). If uplo == 'U' or 'u',
-     *        the leading (k + 1) x n part of the array A must contain the upper 
+     *        the leading (k + 1) x n part of the array A must contain the upper
      *        triangular band matrix, supplied column by column, with the leading
-     *        diagonal of the matrix in row (k + 1) of the array, the first 
+     *        diagonal of the matrix in row (k + 1) of the array, the first
      *        super-diagonal starting at position 2 in row k, and so on. The top
      *        left k x k triangle of the array A is not referenced. If uplo == 'L'
      *        or 'l', the leading (k + 1) x n part of the array A must constain the
      *        lower triangular band matrix, supplied column by column, with the
-     *        leading diagonal of the matrix in row 1 of the array, the first 
+     *        leading diagonal of the matrix in row 1 of the array, the first
      *        sub-diagonal startingat position 1 in row 2, and so on. The bottom
      *        right k x k triangle of the array is not referenced.
      * lda    is the leading dimension of A. It must be at least (k + 1).
      * x      double precision array of length at least (1 + (n - 1) * abs(incx)).
      *        On entry, x contains the source vector. On exit, x is overwritten
      *        with the result vector.
-     * incx   specifies the storage spacing for elements of x. incx must not be 
+     * incx   specifies the storage spacing for elements of x. incx must not be
      *        zero.
      *
      * Output
@@ -8163,8 +8169,8 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n or k < 0, or if incx == 0
-     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory 
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support  
+     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -8182,13 +8188,13 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasDtpmv (char uplo, char trans, char diag, int n, const double *AP, 
+     * void
+     * cublasDtpmv (char uplo, char trans, char diag, int n, const double *AP,
      *              double *x, int incx);
      *
      * performs one of the matrix-vector operations x = op(A) * x, where op(A) = A,
-     * or op(A) = transpose(A). x is an n element double precision vector, and A 
-     * is an n x n, unit or non-unit, upper or lower triangular matrix composed 
+     * or op(A) = transpose(A). x is an n element double precision vector, and A
+     * is an n x n, unit or non-unit, upper or lower triangular matrix composed
      * of double precision elements.
      *
      * Input
@@ -8199,21 +8205,21 @@ public class JCublas
      * trans  specifies op(A). If transa == 'N' or 'n', op(A) = A. If trans == 'T',
      *        't', 'C', or 'c', op(A) = transpose(A)
      * diag   specifies whether or not matrix A is unit triangular. If diag == 'U'
-     *        or 'u', A is assumed to be unit triangular. If diag == 'N' or 'n', A 
+     *        or 'u', A is assumed to be unit triangular. If diag == 'N' or 'n', A
      *        is not assumed to be unit triangular.
-     * n      specifies the number of rows and columns of the matrix A. n must be 
+     * n      specifies the number of rows and columns of the matrix A. n must be
      *        at least zero. In the current implementation n must not exceed 4070.
      * AP     double precision array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored in AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored in AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      * x      double precision array of length at least (1 + (n - 1) * abs(incx)).
-     *        On entry, x contains the source vector. On exit, x is overwritten 
+     *        On entry, x contains the source vector. On exit, x is overwritten
      *        with the result vector.
-     * incx   specifies the storage spacing for elements of x. incx must not be 
+     * incx   specifies the storage spacing for elements of x. incx must not be
      *        zero.
      *
      * Output
@@ -8228,7 +8234,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if incx == 0 or n < 0
-     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory 
+     * CUBLAS_STATUS_ALLOC_FAILED     if function cannot allocate enough internal scratch vector memory
      * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
@@ -8247,14 +8253,14 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasDtpsv (char uplo, char trans, char diag, int n, const double *AP, 
+     * void
+     * cublasDtpsv (char uplo, char trans, char diag, int n, const double *AP,
      *              double *X, int incx)
      *
-     * solves one of the systems of equations op(A)*x = b, where op(A) is either 
+     * solves one of the systems of equations op(A)*x = b, where op(A) is either
      * op(A) = A or op(A) = transpose(A). b and x are n element vectors, and A is
      * an n x n unit or non-unit, upper or lower triangular matrix. No test for
-     * singularity or near-singularity is included in this routine. Such tests 
+     * singularity or near-singularity is included in this routine. Such tests
      * must be performed before calling this routine.
      *
      * Input
@@ -8272,10 +8278,10 @@ public class JCublas
      *        at least zero.
      * AP     double precision array with at least ((n*(n+1))/2) elements. If uplo
      *        == 'U' or 'u', the array AP contains the upper triangular matrix A,
-     *        packed sequentially, column by column; that is, if i <= j, then 
-     *        A[i,j] is stored is AP[i+(j*(j+1)/2)]. If uplo == 'L' or 'L', the 
+     *        packed sequentially, column by column; that is, if i <= j, then
+     *        A[i,j] is stored is AP[i+(j*(j+1)/2)]. If uplo == 'L' or 'L', the
      *        array AP contains the lower triangular matrix A, packed sequentially,
-     *        column by column; that is, if i >= j, then A[i,j] is stored in 
+     *        column by column; that is, if i >= j, then A[i,j] is stored in
      *        AP[i+((2*n-j+1)*j)/2]. When diag = 'U' or 'u', the diagonal elements
      *        of A are not referenced and are assumed to be unity.
      * x      double precision array of length at least (1+(n-1)*abs(incx)).
@@ -8293,7 +8299,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if incx == 0 or if n < 0 or n > 2035
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support    
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -8314,7 +8320,7 @@ public class JCublas
      * void cublasDtbsv (char uplo, char trans, char diag, int n, int k,
      *                   const double *A, int lda, double *X, int incx)
      *
-     * solves one of the systems of equations op(A)*x = b, where op(A) is either 
+     * solves one of the systems of equations op(A)*x = b, where op(A) is either
      * op(A) = A or op(A) = transpose(A). b and x are n element vectors, and A is
      * an n x n unit or non-unit, upper or lower triangular band matrix with k + 1
      * diagonals. No test for singularity or near-singularity is included in this
@@ -8322,7 +8328,7 @@ public class JCublas
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix is an upper or lower triangular band 
+     * uplo   specifies whether the matrix is an upper or lower triangular band
      *        matrix as follows: If uplo == 'U' or 'u', A is an upper triangular
      *        band matrix. If uplo == 'L' or 'l', A is a lower triangular band
      *        matrix.
@@ -8336,14 +8342,14 @@ public class JCublas
      *        at least zero.
      * k      specifies the number of super- or sub-diagonals. If uplo == 'U' or
      *        'u', k specifies the number of super-diagonals. If uplo == 'L' or
-     *        'l', k specifies the number of sub-diagonals. k must at least be 
+     *        'l', k specifies the number of sub-diagonals. k must at least be
      *        zero.
      * A      double precision array of dimension (lda, n). If uplo == 'U' or 'u',
      *        the leading (k + 1) x n part of the array A must contain the upper
      *        triangular band matrix, supplied column by column, with the leading
      *        diagonal of the matrix in row (k + 1) of the array, the first super-
-     *        diagonal starting at position 2 in row k, and so on. The top left 
-     *        k x k triangle of the array A is not referenced. If uplo == 'L' or 
+     *        diagonal starting at position 2 in row k, and so on. The top left
+     *        k x k triangle of the array A is not referenced. If uplo == 'L' or
      *        'l', the leading (k + 1) x n part of the array A must constain the
      *        lower triangular band matrix, supplied column by column, with the
      *        leading diagonal of the matrix in row 1 of the array, the first
@@ -8364,7 +8370,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if incx == 0, n < 0 or n > 2035
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support   
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -8382,30 +8388,30 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasDsymv (char uplo, int n, double alpha, const double *A, int lda, 
+     * void
+     * cublasDsymv (char uplo, int n, double alpha, const double *A, int lda,
      *              const double *x, int incx, double beta, double *y, int incy)
      *
      * performs the matrix-vector operation
      *
      *     y = alpha*A*x + beta*y
      *
-     * Alpha and beta are double precision scalars, and x and y are double 
-     * precision vectors, each with n elements. A is a symmetric n x n matrix 
-     * consisting of double precision elements that is stored in either upper or 
+     * Alpha and beta are double precision scalars, and x and y are double
+     * precision vectors, each with n elements. A is a symmetric n x n matrix
+     * consisting of double precision elements that is stored in either upper or
      * lower storage mode.
      *
      * Input
      * -----
-     * uplo   specifies whether the upper or lower triangular part of the array A 
-     *        is to be referenced. If uplo == 'U' or 'u', the symmetric matrix A 
+     * uplo   specifies whether the upper or lower triangular part of the array A
+     *        is to be referenced. If uplo == 'U' or 'u', the symmetric matrix A
      *        is stored in upper storage mode, i.e. only the upper triangular part
-     *        of A is to be referenced while the lower triangular part of A is to 
+     *        of A is to be referenced while the lower triangular part of A is to
      *        be inferred. If uplo == 'L' or 'l', the symmetric matrix A is stored
-     *        in lower storage mode, i.e. only the lower triangular part of A is 
-     *        to be referenced while the upper triangular part of A is to be 
+     *        in lower storage mode, i.e. only the lower triangular part of A is
+     *        to be referenced while the upper triangular part of A is to be
      *        inferred.
-     * n      specifies the number of rows and the number of columns of the 
+     * n      specifies the number of rows and the number of columns of the
      *        symmetric matrix A. n must be at least zero.
      * alpha  double precision scalar multiplier applied to A*x.
      * A      double precision array of dimensions (lda, n). If uplo == 'U' or 'u',
@@ -8414,13 +8420,13 @@ public class JCublas
      *        lower triangular part of A is not referenced. If uplo == 'L' or 'l',
      *        the leading n x n lower triangular part of the array A must contain
      *        the lower triangular part of the symmetric matrix and the strictly
-     *        upper triangular part of A is not referenced. 
+     *        upper triangular part of A is not referenced.
      * lda    leading dimension of A. It must be at least max (1, n).
      * x      double precision array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * beta   double precision scalar multiplier applied to vector y.
-     * y      double precision array of length at least (1 + (n - 1) * abs(incy)). 
-     *        If beta is zero, y is not read. 
+     * y      double precision array of length at least (1 + (n - 1) * abs(incy)).
+     *        If beta is zero, y is not read.
      * incy   storage spacing between elements of y. incy must not be zero.
      *
      * Output
@@ -8435,7 +8441,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, or if incx or incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support  
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -8453,7 +8459,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasDsbmv (char uplo, int n, int k, double alpha, const double *A, int lda,
      *              const double *x, int incx, double beta, double *y, int incy)
      *
@@ -8462,15 +8468,15 @@ public class JCublas
      *     y := alpha*A*x + beta*y
      *
      * alpha and beta are double precision scalars. x and y are double precision
-     * vectors with n elements. A is an n by n symmetric band matrix consisting 
+     * vectors with n elements. A is an n by n symmetric band matrix consisting
      * of double precision elements, with k super-diagonals and the same number
      * of subdiagonals.
      *
      * Input
      * -----
      * uplo   specifies whether the upper or lower triangular part of the symmetric
-     *        band matrix A is being supplied. If uplo == 'U' or 'u', the upper 
-     *        triangular part is being supplied. If uplo == 'L' or 'l', the lower 
+     *        band matrix A is being supplied. If uplo == 'U' or 'u', the upper
+     *        triangular part is being supplied. If uplo == 'L' or 'l', the lower
      *        triangular part is being supplied.
      * n      specifies the number of rows and the number of columns of the
      *        symmetric matrix A. n must be at least zero.
@@ -8478,14 +8484,14 @@ public class JCublas
      *        is symmetric, this is also the number of sub-diagonals. k must be at
      *        least zero.
      * alpha  double precision scalar multiplier applied to A*x.
-     * A      double precision array of dimensions (lda, n). When uplo == 'U' or 
+     * A      double precision array of dimensions (lda, n). When uplo == 'U' or
      *        'u', the leading (k + 1) x n part of array A must contain the upper
      *        triangular band of the symmetric matrix, supplied column by column,
      *        with the leading diagonal of the matrix in row (k+1) of the array,
      *        the first super-diagonal starting at position 2 in row k, and so on.
      *        The top left k x k triangle of the array A is not referenced. When
      *        uplo == 'L' or 'l', the leading (k + 1) x n part of the array A must
-     *        contain the lower triangular band part of the symmetric matrix, 
+     *        contain the lower triangular band part of the symmetric matrix,
      *        supplied column by column, with the leading diagonal of the matrix in
      *        row 1 of the array, the first sub-diagonal starting at position 1 in
      *        row 2, and so on. The bottom right k x k triangle of the array A is
@@ -8493,9 +8499,9 @@ public class JCublas
      * lda    leading dimension of A. lda must be at least (k + 1).
      * x      double precision array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
-     * beta   double precision scalar multiplier applied to vector y. If beta is 
+     * beta   double precision scalar multiplier applied to vector y. If beta is
      *        zero, y is not read.
-     * y      double precision array of length at least (1 + (n - 1) * abs(incy)). 
+     * y      double precision array of length at least (1 + (n - 1) * abs(incy)).
      *        If beta is zero, y is not read.
      * incy   storage spacing between elements of y. incy must not be zero.
      *
@@ -8509,9 +8515,9 @@ public class JCublas
      *
      * Error Status
      * ------------
-     * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized 
+     * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if k or n < 0, or if incx or incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support   
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -8529,39 +8535,39 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasDspmv (char uplo, int n, double alpha, const double *AP, const double *x,
      *              int incx, double beta, double *y, int incy)
      *
      * performs the matrix-vector operation
-     * 
+     *
      *    y = alpha * A * x + beta * y
      *
-     * Alpha and beta are double precision scalars, and x and y are double 
-     * precision vectors with n elements. A is a symmetric n x n matrix 
+     * Alpha and beta are double precision scalars, and x and y are double
+     * precision vectors with n elements. A is a symmetric n x n matrix
      * consisting of double precision elements that is supplied in packed form.
      *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper 
-     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then 
+     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper
+     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then
      *        the lower triangular part of A is supplied in AP.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
      * alpha  double precision scalar multiplier applied to A*x.
      * AP     double precision array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the symmetric matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the symmetric matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      * x      double precision array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * beta   double precision scalar multiplier applied to vector y;
-     * y      double precision array of length at least (1 + (n - 1) * abs(incy)). 
-     *        If beta is zero, y is not read. 
+     * y      double precision array of length at least (1 + (n - 1) * abs(incy)).
+     *        If beta is zero, y is not read.
      * incy   storage spacing between elements of y. incy must not be zero.
      *
      * Output
@@ -8576,7 +8582,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, or if incx or incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support    
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -8594,53 +8600,53 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasDgemm (char transa, char transb, int m, int n, int k, double alpha,
-     *              const double *A, int lda, const double *B, int ldb, 
+     *              const double *A, int lda, const double *B, int ldb,
      *              double beta, double *C, int ldc)
      *
-     * computes the product of matrix A and matrix B, multiplies the result 
+     * computes the product of matrix A and matrix B, multiplies the result
      * by scalar alpha, and adds the sum to the product of matrix C and
      * scalar beta. It performs one of the matrix-matrix operations:
      *
-     * C = alpha * op(A) * op(B) + beta * C,  
+     * C = alpha * op(A) * op(B) + beta * C,
      * where op(X) = X or op(X) = transpose(X),
      *
      * and alpha and beta are double-precision scalars. A, B and C are matrices
-     * consisting of double-precision elements, with op(A) an m x k matrix, 
-     * op(B) a k x n matrix, and C an m x n matrix. Matrices A, B, and C are 
-     * stored in column-major format, and lda, ldb, and ldc are the leading 
+     * consisting of double-precision elements, with op(A) an m x k matrix,
+     * op(B) a k x n matrix, and C an m x n matrix. Matrices A, B, and C are
+     * stored in column-major format, and lda, ldb, and ldc are the leading
      * dimensions of the two-dimensional arrays containing A, B, and C.
      *
      * Input
      * -----
-     * transa specifies op(A). If transa == 'N' or 'n', op(A) = A. 
+     * transa specifies op(A). If transa == 'N' or 'n', op(A) = A.
      *        If transa == 'T', 't', 'C', or 'c', op(A) = transpose(A).
-     * transb specifies op(B). If transb == 'N' or 'n', op(B) = B. 
+     * transb specifies op(B). If transb == 'N' or 'n', op(B) = B.
      *        If transb == 'T', 't', 'C', or 'c', op(B) = transpose(B).
      * m      number of rows of matrix op(A) and rows of matrix C; m must be at
      *        least zero.
-     * n      number of columns of matrix op(B) and number of columns of C; 
+     * n      number of columns of matrix op(B) and number of columns of C;
      *        n must be at least zero.
      * k      number of columns of matrix op(A) and number of rows of op(B);
      *        k must be at least zero.
      * alpha  double-precision scalar multiplier applied to op(A) * op(B).
-     * A      double-precision array of dimensions (lda, k) if transa == 'N' or 
-     *        'n', and of dimensions (lda, m) otherwise. If transa == 'N' or 
+     * A      double-precision array of dimensions (lda, k) if transa == 'N' or
+     *        'n', and of dimensions (lda, m) otherwise. If transa == 'N' or
      *        'n' lda must be at least max(1, m), otherwise lda must be at
      *        least max(1, k).
      * lda    leading dimension of two-dimensional array used to store matrix A.
      * B      double-precision array of dimensions (ldb, n) if transb == 'N' or
-     *        'n', and of dimensions (ldb, k) otherwise. If transb == 'N' or 
+     *        'n', and of dimensions (ldb, k) otherwise. If transb == 'N' or
      *        'n' ldb must be at least max (1, k), otherwise ldb must be at
      *        least max(1, n).
      * ldb    leading dimension of two-dimensional array used to store matrix B.
-     * beta   double-precision scalar multiplier applied to C. If zero, C does not 
+     * beta   double-precision scalar multiplier applied to C. If zero, C does not
      *        have to be a valid input
      * C      double-precision array of dimensions (ldc, n); ldc must be at least
      *        max(1, m).
      * ldc    leading dimension of two-dimensional array used to store matrix C.
-     * 
+     *
      * Output
      * ------
      * C      updated based on C = alpha * op(A)*op(B) + beta * C.
@@ -8648,7 +8654,7 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/sgemm.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS was not initialized
@@ -8850,8 +8856,8 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasDtrmm (char side, char uplo, char transa, char diag, int m, int n, 
+     * void
+     * cublasDtrmm (char side, char uplo, char transa, char diag, int m, int n,
      *              double alpha, const double *A, int lda, const double *B, int ldb)
      *
      * performs one of the matrix-matrix operations
@@ -8859,13 +8865,13 @@ public class JCublas
      *   B = alpha * op(A) * B,  or  B = alpha * B * op(A)
      *
      * where alpha is a double-precision scalar, B is an m x n matrix composed
-     * of double precision elements, and A is a unit or non-unit, upper or lower, 
+     * of double precision elements, and A is a unit or non-unit, upper or lower,
      * triangular matrix composed of double precision elements. op(A) is one of
      *
      *   op(A) = A  or  op(A) = transpose(A)
      *
-     * Matrices A and B are stored in column major format, and lda and ldb are 
-     * the leading dimensions of the two-dimensonials arrays that contain A and 
+     * Matrices A and B are stored in column major format, and lda and ldb are
+     * the leading dimensions of the two-dimensonials arrays that contain A and
      * B, respectively.
      *
      * Input
@@ -8876,7 +8882,7 @@ public class JCublas
      * uplo   specifies whether the matrix A is an upper or lower triangular
      *        matrix. If uplo = 'U' or 'u', A is an upper triangular matrix.
      *        If uplo = 'L' or 'l', A is a lower triangular matrix.
-     * transa specifies the form of op(A) to be used in the matrix 
+     * transa specifies the form of op(A) to be used in the matrix
      *        multiplication. If transa = 'N' or 'n', then op(A) = A. If
      *        transa = 'T', 't', 'C', or 'c', then op(A) = transpose(A).
      * diag   specifies whether or not A is unit triangular. If diag = 'U'
@@ -8899,7 +8905,7 @@ public class JCublas
      *        to be unity.
      * lda    leading dimension of A. When side = 'L' or 'l', it must be at
      *        least max(1,m) and at least max(1,n) otherwise
-     * B      double precision array of dimensions (ldb, n). On entry, the 
+     * B      double precision array of dimensions (ldb, n). On entry, the
      *        leading m x n part of the array contains the matrix B. It is
      *        overwritten with the transformed matrix on exit.
      * ldb    leading dimension of B. It must be at least max (1, m).
@@ -9026,70 +9032,70 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZsymm (char side, char uplo, int m, int n, cuDoubleComplex alpha, 
-     *              const cuDoubleComplex *A, int lda, const cuDoubleComplex *B, int ldb, 
+     * void
+     * cublasZsymm (char side, char uplo, int m, int n, cuDoubleComplex alpha,
+     *              const cuDoubleComplex *A, int lda, const cuDoubleComplex *B, int ldb,
      *              cuDoubleComplex beta, cuDoubleComplex *C, int ldc);
      *
      * performs one of the matrix-matrix operations
-     * 
-     *   C = alpha * A * B + beta * C, or 
+     *
+     *   C = alpha * A * B + beta * C, or
      *   C = alpha * B * A + beta * C,
      *
      * where alpha and beta are double precision complex scalars, A is a symmetric matrix
-     * consisting of double precision complex elements and stored in either lower or upper 
+     * consisting of double precision complex elements and stored in either lower or upper
      * storage mode, and B and C are m x n matrices consisting of double precision
      * complex elements.
      *
      * Input
      * -----
-     * side   specifies whether the symmetric matrix A appears on the left side 
-     *        hand side or right hand side of matrix B, as follows. If side == 'L' 
-     *        or 'l', then C = alpha * A * B + beta * C. If side = 'R' or 'r', 
+     * side   specifies whether the symmetric matrix A appears on the left side
+     *        hand side or right hand side of matrix B, as follows. If side == 'L'
+     *        or 'l', then C = alpha * A * B + beta * C. If side = 'R' or 'r',
      *        then C = alpha * B * A + beta * C.
-     * uplo   specifies whether the symmetric matrix A is stored in upper or lower 
-     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper 
-     *        triangular part of the symmetric matrix is to be referenced, and the 
+     * uplo   specifies whether the symmetric matrix A is stored in upper or lower
+     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper
+     *        triangular part of the symmetric matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the symmetric matrix is to be referenced, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the symmetric matrix is to be referenced,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
      * m      specifies the number of rows of the matrix C, and the number of rows
-     *        of matrix B. It also specifies the dimensions of symmetric matrix A 
+     *        of matrix B. It also specifies the dimensions of symmetric matrix A
      *        when side == 'L' or 'l'. m must be at least zero.
-     * n      specifies the number of columns of the matrix C, and the number of 
-     *        columns of matrix B. It also specifies the dimensions of symmetric 
+     * n      specifies the number of columns of the matrix C, and the number of
+     *        columns of matrix B. It also specifies the dimensions of symmetric
      *        matrix A when side == 'R' or 'r'. n must be at least zero.
      * alpha  double precision scalar multiplier applied to A * B, or B * A
-     * A      double precision array of dimensions (lda, ka), where ka is m when 
-     *        side == 'L' or 'l' and is n otherwise. If side == 'L' or 'l' the 
-     *        leading m x m part of array A must contain the symmetric matrix, 
-     *        such that when uplo == 'U' or 'u', the leading m x m part stores the 
+     * A      double precision array of dimensions (lda, ka), where ka is m when
+     *        side == 'L' or 'l' and is n otherwise. If side == 'L' or 'l' the
+     *        leading m x m part of array A must contain the symmetric matrix,
+     *        such that when uplo == 'U' or 'u', the leading m x m part stores the
      *        upper triangular part of the symmetric matrix, and the strictly lower
-     *        triangular part of A is not referenced, and when uplo == 'U' or 'u', 
-     *        the leading m x m part stores the lower triangular part of the 
-     *        symmetric matrix and the strictly upper triangular part is not 
-     *        referenced. If side == 'R' or 'r' the leading n x n part of array A 
+     *        triangular part of A is not referenced, and when uplo == 'U' or 'u',
+     *        the leading m x m part stores the lower triangular part of the
+     *        symmetric matrix and the strictly upper triangular part is not
+     *        referenced. If side == 'R' or 'r' the leading n x n part of array A
      *        must contain the symmetric matrix, such that when uplo == 'U' or 'u',
-     *        the leading n x n part stores the upper triangular part of the 
-     *        symmetric matrix and the strictly lower triangular part of A is not 
-     *        referenced, and when uplo == 'U' or 'u', the leading n x n part 
-     *        stores the lower triangular part of the symmetric matrix and the 
+     *        the leading n x n part stores the upper triangular part of the
+     *        symmetric matrix and the strictly lower triangular part of A is not
+     *        referenced, and when uplo == 'U' or 'u', the leading n x n part
+     *        stores the lower triangular part of the symmetric matrix and the
      *        strictly upper triangular part is not referenced.
-     * lda    leading dimension of A. When side == 'L' or 'l', it must be at least 
+     * lda    leading dimension of A. When side == 'L' or 'l', it must be at least
      *        max(1, m) and at least max(1, n) otherwise.
      * B      double precision array of dimensions (ldb, n). On entry, the leading
      *        m x n part of the array contains the matrix B.
      * ldb    leading dimension of B. It must be at least max (1, m).
-     * beta   double precision scalar multiplier applied to C. If beta is zero, C 
+     * beta   double precision scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input
      * C      double precision array of dimensions (ldc, n)
      * ldc    leading dimension of C. Must be at least max(1, m)
      *
      * Output
      * ------
-     * C      updated according to C = alpha * A * B + beta * C, or C = alpha * 
+     * C      updated according to C = alpha * A * B + beta * C, or C = alpha *
      *        B * A + beta * C
      *
      * Reference: http://www.netlib.org/blas/zsymm.f
@@ -9100,7 +9106,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if m or n are < 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -9118,66 +9124,66 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasDsyrk (char uplo, char trans, int n, int k, double alpha, 
+     * void
+     * cublasDsyrk (char uplo, char trans, int n, int k, double alpha,
      *              const double *A, int lda, double beta, double *C, int ldc)
      *
      * performs one of the symmetric rank k operations
-     * 
-     *   C = alpha * A * transpose(A) + beta * C, or 
+     *
+     *   C = alpha * A * transpose(A) + beta * C, or
      *   C = alpha * transpose(A) * A + beta * C.
      *
-     * Alpha and beta are double precision scalars. C is an n x n symmetric matrix 
-     * consisting of double precision elements and stored in either lower or 
+     * Alpha and beta are double precision scalars. C is an n x n symmetric matrix
+     * consisting of double precision elements and stored in either lower or
      * upper storage mode. A is a matrix consisting of double precision elements
      * with dimension of n x k in the first case, and k x n in the second case.
      *
      * Input
      * -----
-     * uplo   specifies whether the symmetric matrix C is stored in upper or lower 
-     *        storage mode as follows. If uplo == 'U' or 'u', only the upper 
-     *        triangular part of the symmetric matrix is to be referenced, and the 
+     * uplo   specifies whether the symmetric matrix C is stored in upper or lower
+     *        storage mode as follows. If uplo == 'U' or 'u', only the upper
+     *        triangular part of the symmetric matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the symmetric matrix is to be referenced, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the symmetric matrix is to be referenced,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
-     * trans  specifies the operation to be performed. If trans == 'N' or 'n', C = 
-     *        alpha * transpose(A) + beta * C. If trans == 'T', 't', 'C', or 'c', 
+     * trans  specifies the operation to be performed. If trans == 'N' or 'n', C =
+     *        alpha * transpose(A) + beta * C. If trans == 'T', 't', 'C', or 'c',
      *        C = transpose(A) * A + beta * C.
-     * n      specifies the number of rows and the number columns of matrix C. If 
-     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If 
-     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A. 
+     * n      specifies the number of rows and the number columns of matrix C. If
+     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If
+     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A.
      *        n must be at least zero.
-     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A. 
-     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of 
+     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A.
+     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of
      *        matrix A. k must be at least zero.
-     * alpha  double precision scalar multiplier applied to A * transpose(A) or 
+     * alpha  double precision scalar multiplier applied to A * transpose(A) or
      *        transpose(A) * A.
-     * A      double precision array of dimensions (lda, ka), where ka is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array A must contain the matrix A, 
-     *        otherwise the leading k x n part of the array must contains the 
+     * A      double precision array of dimensions (lda, ka), where ka is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array A must contain the matrix A,
+     *        otherwise the leading k x n part of the array must contains the
      *        matrix A.
      * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at
      *        least max(1, n). Otherwise lda must be at least max(1, k).
      * beta   double precision scalar multiplier applied to C. If beta izs zero, C
      *        does not have to be a valid input
      * C      double precision array of dimensions (ldc, n). If uplo = 'U' or 'u',
-     *        the leading n x n triangular part of the array C must contain the 
-     *        upper triangular part of the symmetric matrix C and the strictly 
-     *        lower triangular part of C is not referenced. On exit, the upper 
-     *        triangular part of C is overwritten by the upper triangular part of 
-     *        the updated matrix. If uplo = 'L' or 'l', the leading n x n 
+     *        the leading n x n triangular part of the array C must contain the
+     *        upper triangular part of the symmetric matrix C and the strictly
+     *        lower triangular part of C is not referenced. On exit, the upper
+     *        triangular part of C is overwritten by the upper triangular part of
+     *        the updated matrix. If uplo = 'L' or 'l', the leading n x n
      *        triangular part of the array C must contain the lower triangular part
      *        of the symmetric matrix C and the strictly upper triangular part of C
-     *        is not referenced. On exit, the lower triangular part of C is 
+     *        is not referenced. On exit, the lower triangular part of C is
      *        overwritten by the lower triangular part of the updated matrix.
      * ldc    leading dimension of C. It must be at least max(1, n).
      *
      * Output
      * ------
-     * C      updated according to C = alpha * A * transpose(A) + beta * C, or C = 
+     * C      updated according to C = alpha * A * transpose(A) + beta * C, or C =
      *        alpha * transpose(A) * A + beta * C
      *
      * Reference: http://www.netlib.org/blas/dsyrk.f
@@ -9206,66 +9212,66 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZsyrk (char uplo, char trans, int n, int k, cuDoubleComplex alpha, 
+     * void
+     * cublasZsyrk (char uplo, char trans, int n, int k, cuDoubleComplex alpha,
      *              const cuDoubleComplex *A, int lda, cuDoubleComplex beta, cuDoubleComplex *C, int ldc)
      *
      * performs one of the symmetric rank k operations
-     * 
-     *   C = alpha * A * transpose(A) + beta * C, or 
+     *
+     *   C = alpha * A * transpose(A) + beta * C, or
      *   C = alpha * transpose(A) * A + beta * C.
      *
-     * Alpha and beta are double precision complex scalars. C is an n x n symmetric matrix 
-     * consisting of double precision complex elements and stored in either lower or 
+     * Alpha and beta are double precision complex scalars. C is an n x n symmetric matrix
+     * consisting of double precision complex elements and stored in either lower or
      * upper storage mode. A is a matrix consisting of double precision complex elements
      * with dimension of n x k in the first case, and k x n in the second case.
      *
      * Input
      * -----
-     * uplo   specifies whether the symmetric matrix C is stored in upper or lower 
-     *        storage mode as follows. If uplo == 'U' or 'u', only the upper 
-     *        triangular part of the symmetric matrix is to be referenced, and the 
+     * uplo   specifies whether the symmetric matrix C is stored in upper or lower
+     *        storage mode as follows. If uplo == 'U' or 'u', only the upper
+     *        triangular part of the symmetric matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the symmetric matrix is to be referenced, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the symmetric matrix is to be referenced,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
-     * trans  specifies the operation to be performed. If trans == 'N' or 'n', C = 
-     *        alpha * transpose(A) + beta * C. If trans == 'T', 't', 'C', or 'c', 
+     * trans  specifies the operation to be performed. If trans == 'N' or 'n', C =
+     *        alpha * transpose(A) + beta * C. If trans == 'T', 't', 'C', or 'c',
      *        C = transpose(A) * A + beta * C.
-     * n      specifies the number of rows and the number columns of matrix C. If 
-     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If 
-     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A. 
+     * n      specifies the number of rows and the number columns of matrix C. If
+     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If
+     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A.
      *        n must be at least zero.
-     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A. 
-     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of 
+     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A.
+     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of
      *        matrix A. k must be at least zero.
-     * alpha  double precision complex scalar multiplier applied to A * transpose(A) or 
+     * alpha  double precision complex scalar multiplier applied to A * transpose(A) or
      *        transpose(A) * A.
-     * A      double precision complex array of dimensions (lda, ka), where ka is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array A must contain the matrix A, 
-     *        otherwise the leading k x n part of the array must contains the 
+     * A      double precision complex array of dimensions (lda, ka), where ka is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array A must contain the matrix A,
+     *        otherwise the leading k x n part of the array must contains the
      *        matrix A.
      * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at
      *        least max(1, n). Otherwise lda must be at least max(1, k).
      * beta   double precision complex scalar multiplier applied to C. If beta izs zero, C
      *        does not have to be a valid input
      * C      double precision complex array of dimensions (ldc, n). If uplo = 'U' or 'u',
-     *        the leading n x n triangular part of the array C must contain the 
-     *        upper triangular part of the symmetric matrix C and the strictly 
-     *        lower triangular part of C is not referenced. On exit, the upper 
-     *        triangular part of C is overwritten by the upper triangular part of 
-     *        the updated matrix. If uplo = 'L' or 'l', the leading n x n 
+     *        the leading n x n triangular part of the array C must contain the
+     *        upper triangular part of the symmetric matrix C and the strictly
+     *        lower triangular part of C is not referenced. On exit, the upper
+     *        triangular part of C is overwritten by the upper triangular part of
+     *        the updated matrix. If uplo = 'L' or 'l', the leading n x n
      *        triangular part of the array C must contain the lower triangular part
      *        of the symmetric matrix C and the strictly upper triangular part of C
-     *        is not referenced. On exit, the lower triangular part of C is 
+     *        is not referenced. On exit, the lower triangular part of C is
      *        overwritten by the lower triangular part of the updated matrix.
      * ldc    leading dimension of C. It must be at least max(1, n).
      *
      * Output
      * ------
-     * C      updated according to C = alpha * A * transpose(A) + beta * C, or C = 
+     * C      updated according to C = alpha * A * transpose(A) + beta * C, or C =
      *        alpha * transpose(A) * A + beta * C
      *
      * Reference: http://www.netlib.org/blas/zsyrk.f
@@ -9294,74 +9300,74 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZsyr2k (char uplo, char trans, int n, int k, cuDoubleComplex alpha, 
-     *               const cuDoubleComplex *A, int lda, const cuDoubleComplex *B, int ldb, 
+     * void
+     * cublasZsyr2k (char uplo, char trans, int n, int k, cuDoubleComplex alpha,
+     *               const cuDoubleComplex *A, int lda, const cuDoubleComplex *B, int ldb,
      *               cuDoubleComplex beta, cuDoubleComplex *C, int ldc)
      *
      * performs one of the symmetric rank 2k operations
-     * 
-     *    C = alpha * A * transpose(B) + alpha * B * transpose(A) + beta * C, or 
+     *
+     *    C = alpha * A * transpose(B) + alpha * B * transpose(A) + beta * C, or
      *    C = alpha * transpose(A) * B + alpha * transpose(B) * A + beta * C.
      *
      * Alpha and beta are double precision complex scalars. C is an n x n symmetric matrix
-     * consisting of double precision complex elements and stored in either lower or upper 
-     * storage mode. A and B are matrices consisting of double precision complex elements 
+     * consisting of double precision complex elements and stored in either lower or upper
+     * storage mode. A and B are matrices consisting of double precision complex elements
      * with dimension of n x k in the first case, and k x n in the second case.
      *
      * Input
      * -----
      * uplo   specifies whether the symmetric matrix C is stored in upper or lower
-     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper 
+     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper
      *        triangular part of the symmetric matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the symmetric matrix is to be references, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the symmetric matrix is to be references,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
-     * trans  specifies the operation to be performed. If trans == 'N' or 'n', 
-     *        C = alpha * A * transpose(B) + alpha * B * transpose(A) + beta * C, 
-     *        If trans == 'T', 't', 'C', or 'c', C = alpha * transpose(A) * B + 
+     * trans  specifies the operation to be performed. If trans == 'N' or 'n',
+     *        C = alpha * A * transpose(B) + alpha * B * transpose(A) + beta * C,
+     *        If trans == 'T', 't', 'C', or 'c', C = alpha * transpose(A) * B +
      *        alpha * transpose(B) * A + beta * C.
-     * n      specifies the number of rows and the number columns of matrix C. If 
-     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If 
-     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A. 
+     * n      specifies the number of rows and the number columns of matrix C. If
+     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If
+     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A.
      *        n must be at least zero.
-     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A. 
-     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of 
+     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A.
+     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of
      *        matrix A. k must be at least zero.
      * alpha  double precision scalar multiplier.
-     * A      double precision array of dimensions (lda, ka), where ka is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array A must contain the matrix A, 
+     * A      double precision array of dimensions (lda, ka), where ka is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array A must contain the matrix A,
      *        otherwise the leading k x n part of the array must contain the matrix
      *        A.
-     * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at 
+     * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at
      *        least max(1, n). Otherwise lda must be at least max(1,k).
-     * B      double precision array of dimensions (lda, kb), where kb is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array B must contain the matrix B, 
+     * B      double precision array of dimensions (lda, kb), where kb is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array B must contain the matrix B,
      *        otherwise the leading k x n part of the array must contain the matrix
      *        B.
      * ldb    leading dimension of N. When trans == 'N' or 'n' then ldb must be at
      *        least max(1, n). Otherwise ldb must be at least max(1, k).
-     * beta   double precision scalar multiplier applied to C. If beta is zero, C 
+     * beta   double precision scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input.
      * C      double precision array of dimensions (ldc, n). If uplo == 'U' or 'u',
-     *        the leading n x n triangular part of the array C must contain the 
-     *        upper triangular part of the symmetric matrix C and the strictly 
-     *        lower triangular part of C is not referenced. On exit, the upper 
-     *        triangular part of C is overwritten by the upper triangular part of 
-     *        the updated matrix. If uplo == 'L' or 'l', the leading n x n 
+     *        the leading n x n triangular part of the array C must contain the
+     *        upper triangular part of the symmetric matrix C and the strictly
+     *        lower triangular part of C is not referenced. On exit, the upper
+     *        triangular part of C is overwritten by the upper triangular part of
+     *        the updated matrix. If uplo == 'L' or 'l', the leading n x n
      *        triangular part of the array C must contain the lower triangular part
      *        of the symmetric matrix C and the strictly upper triangular part of C
-     *        is not referenced. On exit, the lower triangular part of C is 
+     *        is not referenced. On exit, the lower triangular part of C is
      *        overwritten by the lower triangular part of the updated matrix.
      * ldc    leading dimension of C. Must be at least max(1, n).
      *
      * Output
      * ------
-     * C      updated according to alpha*A*transpose(B) + alpha*B*transpose(A) + 
+     * C      updated according to alpha*A*transpose(B) + alpha*B*transpose(A) +
      *        beta*C or alpha*transpose(A)*B + alpha*transpose(B)*A + beta*C
      *
      * Reference:   http://www.netlib.org/blas/zsyr2k.f
@@ -9372,7 +9378,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0 or k < 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -9390,87 +9396,87 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZher2k (char uplo, char trans, int n, int k, cuDoubleComplex alpha, 
-     *               const cuDoubleComplex *A, int lda, const cuDoubleComplex *B, int ldb, 
+     * void
+     * cublasZher2k (char uplo, char trans, int n, int k, cuDoubleComplex alpha,
+     *               const cuDoubleComplex *A, int lda, const cuDoubleComplex *B, int ldb,
      *               double beta, cuDoubleComplex *C, int ldc)
      *
      * performs one of the hermitian rank 2k operations
-     * 
-     *    C =   alpha * A * conjugate(transpose(B)) 
-     *        + conjugate(alpha) * B * conjugate(transpose(A))  
-     *        + beta * C , 
-     *    or 
-     *    C =  alpha * conjugate(transpose(A)) * B 
-     *       + conjugate(alpha) * conjugate(transpose(B)) * A 
+     *
+     *    C =   alpha * A * conjugate(transpose(B))
+     *        + conjugate(alpha) * B * conjugate(transpose(A))
+     *        + beta * C ,
+     *    or
+     *    C =  alpha * conjugate(transpose(A)) * B
+     *       + conjugate(alpha) * conjugate(transpose(B)) * A
      *       + beta * C.
      *
      * Alpha is double precision complex scalar whereas Beta is a double precision real scalar.
-     * C is an n x n hermitian matrix consisting of double precision complex elements and 
-     * stored in either lower or upper storage mode. A and B are matrices consisting of 
-     * double precision complex elements with dimension of n x k in the first case, 
+     * C is an n x n hermitian matrix consisting of double precision complex elements and
+     * stored in either lower or upper storage mode. A and B are matrices consisting of
+     * double precision complex elements with dimension of n x k in the first case,
      * and k x n in the second case.
      *
      * Input
      * -----
      * uplo   specifies whether the hermitian matrix C is stored in upper or lower
-     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper 
+     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper
      *        triangular part of the hermitian matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the hermitian matrix is to be references, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the hermitian matrix is to be references,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
-     * trans  specifies the operation to be performed. If trans == 'N' or 'n', 
-     *        C =   alpha * A * conjugate(transpose(B)) 
-     *            + conjugate(alpha) * B * conjugate(transpose(A))  
+     * trans  specifies the operation to be performed. If trans == 'N' or 'n',
+     *        C =   alpha * A * conjugate(transpose(B))
+     *            + conjugate(alpha) * B * conjugate(transpose(A))
      *            + beta * C .
      *        If trans == 'T', 't', 'C', or 'c',
-     *        C =  alpha * conjugate(transpose(A)) * B 
-     *          + conjugate(alpha) * conjugate(transpose(B)) * A 
+     *        C =  alpha * conjugate(transpose(A)) * B
+     *          + conjugate(alpha) * conjugate(transpose(B)) * A
      *          + beta * C.
-     * n      specifies the number of rows and the number columns of matrix C. If 
-     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If 
-     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A. 
+     * n      specifies the number of rows and the number columns of matrix C. If
+     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If
+     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A.
      *        n must be at least zero.
-     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A. 
-     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of 
+     * k      If trans == 'N' or 'n', k specifies the number of rows of matrix A.
+     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of
      *        matrix A. k must be at least zero.
      * alpha  double precision scalar multiplier.
-     * A      double precision array of dimensions (lda, ka), where ka is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array A must contain the matrix A, 
+     * A      double precision array of dimensions (lda, ka), where ka is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array A must contain the matrix A,
      *        otherwise the leading k x n part of the array must contain the matrix
      *        A.
-     * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at 
+     * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at
      *        least max(1, n). Otherwise lda must be at least max(1,k).
-     * B      double precision array of dimensions (lda, kb), where kb is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array B must contain the matrix B, 
+     * B      double precision array of dimensions (lda, kb), where kb is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array B must contain the matrix B,
      *        otherwise the leading k x n part of the array must contain the matrix
      *        B.
      * ldb    leading dimension of N. When trans == 'N' or 'n' then ldb must be at
      *        least max(1, n). Otherwise ldb must be at least max(1, k).
-     * beta   double precision scalar multiplier applied to C. If beta is zero, C 
+     * beta   double precision scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input.
      * C      double precision array of dimensions (ldc, n). If uplo == 'U' or 'u',
-     *        the leading n x n triangular part of the array C must contain the 
-     *        upper triangular part of the hermitian matrix C and the strictly 
-     *        lower triangular part of C is not referenced. On exit, the upper 
-     *        triangular part of C is overwritten by the upper triangular part of 
-     *        the updated matrix. If uplo == 'L' or 'l', the leading n x n 
+     *        the leading n x n triangular part of the array C must contain the
+     *        upper triangular part of the hermitian matrix C and the strictly
+     *        lower triangular part of C is not referenced. On exit, the upper
+     *        triangular part of C is overwritten by the upper triangular part of
+     *        the updated matrix. If uplo == 'L' or 'l', the leading n x n
      *        triangular part of the array C must contain the lower triangular part
      *        of the hermitian matrix C and the strictly upper triangular part of C
-     *        is not referenced. On exit, the lower triangular part of C is 
+     *        is not referenced. On exit, the lower triangular part of C is
      *        overwritten by the lower triangular part of the updated matrix.
      *        The imaginary parts of the diagonal elements need
      *        not be set,  they are assumed to be zero,  and on exit they
-     *        are set to zero. 
+     *        are set to zero.
      * ldc    leading dimension of C. Must be at least max(1, n).
      *
      * Output
      * ------
-     * C      updated according to alpha*A*conjugate(transpose(B)) + 
+     * C      updated according to alpha*A*conjugate(transpose(B)) +
      *        + conjugate(alpha)*B*conjugate(transpose(A)) + beta*C or
      *        alpha*conjugate(transpose(A))*B + conjugate(alpha)*conjugate(transpose(B))*A
      *        + beta*C.
@@ -9483,7 +9489,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0 or k < 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -9501,42 +9507,42 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZher (char uplo, int n, double alpha, const cuDoubleComplex *x, int incx, 
+     * void
+     * cublasZher (char uplo, int n, double alpha, const cuDoubleComplex *x, int incx,
      *             cuDoubleComplex *A, int lda)
      *
      * performs the hermitian rank 1 operation
      *
      *    A = alpha * x * conjugate(transpose(x) + A,
      *
-     * where alpha is a double precision real scalar, x is an n element double 
-     * precision complex vector and A is an n x n hermitian matrix consisting of 
+     * where alpha is a double precision real scalar, x is an n element double
+     * precision complex vector and A is an n x n hermitian matrix consisting of
      * double precision complex elements. Matrix A is stored in column major format,
-     * and lda is the leading dimension of the two-dimensional array 
+     * and lda is the leading dimension of the two-dimensional array
      * containing A.
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix data is stored in the upper or 
+     * uplo   specifies whether the matrix data is stored in the upper or
      *        the lower triangular part of array A. If uplo = 'U' or 'u',
      *        then only the upper triangular part of A may be referenced.
      *        If uplo = 'L' or 'l', then only the lower triangular part of
      *        A may be referenced.
      * n      specifies the number of rows and columns of the matrix A. It
      *        must be at least 0.
-     * alpha  double precision real scalar multiplier applied to 
+     * alpha  double precision real scalar multiplier applied to
      *        x * conjugate(transpose(x))
      * x      double precision complex array of length at least (1 + (n - 1) * abs(incx))
-     * incx   specifies the storage spacing between elements of x. incx must 
+     * incx   specifies the storage spacing between elements of x. incx must
      *        not be zero.
-     * A      double precision complex array of dimensions (lda, n). If uplo = 'U' or 
-     *        'u', then A must contain the upper triangular part of a hermitian 
-     *        matrix, and the strictly lower triangular part is not referenced. 
-     *        If uplo = 'L' or 'l', then A contains the lower triangular part 
-     *        of a hermitian matrix, and the strictly upper triangular part is 
+     * A      double precision complex array of dimensions (lda, n). If uplo = 'U' or
+     *        'u', then A must contain the upper triangular part of a hermitian
+     *        matrix, and the strictly lower triangular part is not referenced.
+     *        If uplo = 'L' or 'l', then A contains the lower triangular part
+     *        of a hermitian matrix, and the strictly upper triangular part is
      *        not referenced. The imaginary parts of the diagonal elements need
      *        not be set, they are assumed to be zero, and on exit they
-     *        are set to zero. 
+     *        are set to zero.
      * lda    leading dimension of the two-dimensional array containing A. lda
      *        must be at least max(1, n).
      *
@@ -9570,23 +9576,23 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZhpr (char uplo, int n, double alpha, const cuDoubleComplex *x, int incx, 
+     * void
+     * cublasZhpr (char uplo, int n, double alpha, const cuDoubleComplex *x, int incx,
      *             cuDoubleComplex *AP)
      *
      * performs the hermitian rank 1 operation
-     * 
+     *
      *    A = alpha * x * conjugate(transpose(x)) + A,
-     * 
-     * where alpha is a double precision real scalar and x is an n element double 
-     * precision complex vector. A is a hermitian n x n matrix consisting of double 
+     *
+     * where alpha is a double precision real scalar and x is an n element double
+     * precision complex vector. A is a hermitian n x n matrix consisting of double
      * precision complex elements that is supplied in packed form.
      *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper 
-     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then 
+     *        triangular part of array AP. If uplo == 'U' or 'u', then the upper
+     *        triangular part of A is supplied in AP. If uplo == 'L' or 'l', then
      *        the lower triangular part of A is supplied in AP.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
@@ -9594,14 +9600,14 @@ public class JCublas
      * x      double precision array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * AP     double precision complex array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the hermitian matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the hermitian matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the hermitian matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the hermitian matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      *        The imaginary parts of the diagonal elements need not be set, they
-     *        are assumed to be zero, and on exit they are set to zero. 
+     *        are assumed to be zero, and on exit they are set to zero.
      *
      * Output
      * ------
@@ -9615,7 +9621,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, or incx == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -9632,44 +9638,44 @@ public class JCublas
 
 
     /**
-     * <pre> 
-     * void 
-     * cublasZhpr2 (char uplo, int n, cuDoubleComplex alpha, const cuDoubleComplex *x, int incx, 
+     * <pre>
+     * void
+     * cublasZhpr2 (char uplo, int n, cuDoubleComplex alpha, const cuDoubleComplex *x, int incx,
      *              const cuDoubleComplex *y, int incy, cuDoubleComplex *AP)
      *
      * performs the hermitian rank 2 operation
      *
      *    A = alpha*x*conjugate(transpose(y)) + conjugate(alpha)*y*conjugate(transpose(x)) + A,
      *
-     * where alpha is a double precision complex scalar, and x and y are n element double 
-     * precision complex vectors. A is a hermitian n x n matrix consisting of double 
+     * where alpha is a double precision complex scalar, and x and y are n element double
+     * precision complex vectors. A is a hermitian n x n matrix consisting of double
      * precision complex elements that is supplied in packed form.
      *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array A. If uplo == 'U' or 'u', then only the 
+     *        triangular part of array A. If uplo == 'U' or 'u', then only the
      *        upper triangular part of A may be referenced and the lower triangular
-     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower 
+     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower
      *        triangular part of A may be referenced and the upper triangular part
      *        of A is inferred.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
-     * alpha  double precision complex scalar multiplier applied to x * conjugate(transpose(y)) + 
+     * alpha  double precision complex scalar multiplier applied to x * conjugate(transpose(y)) +
      *        y * conjugate(transpose(x)).
      * x      double precision complex array of length at least (1 + (n - 1) * abs (incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
      * y      double precision complex array of length at least (1 + (n - 1) * abs (incy)).
      * incy   storage spacing between elements of y. incy must not be zero.
      * AP     double precision complex array with at least ((n * (n + 1)) / 2) elements. If
-     *        uplo == 'U' or 'u', the array AP contains the upper triangular part 
-     *        of the hermitian matrix A, packed sequentially, column by column; 
-     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If 
-     *        uplo == 'L' or 'L', the array AP contains the lower triangular part 
-     *        of the hermitian matrix A, packed sequentially, column by column; 
+     *        uplo == 'U' or 'u', the array AP contains the upper triangular part
+     *        of the hermitian matrix A, packed sequentially, column by column;
+     *        that is, if i <= j, then A[i,j] is stored is AP[i+(j*(j+1)/2)]. If
+     *        uplo == 'L' or 'L', the array AP contains the lower triangular part
+     *        of the hermitian matrix A, packed sequentially, column by column;
      *        that is, if i >= j, then A[i,j] is stored in AP[i+((2*n-j+1)*j)/2].
      *        The imaginary parts of the diagonal elements need not be set, they
-     *        are assumed to be zero, and on exit they are set to zero.  
+     *        are assumed to be zero, and on exit they are set to zero.
      *
      * Output
      * ------
@@ -9684,7 +9690,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, incx == 0, incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -9702,28 +9708,28 @@ public class JCublas
 
     /**
      * <pre>
-     * void cublasZher2 (char uplo, int n, cuDoubleComplex alpha, const cuDoubleComplex *x, int incx, 
+     * void cublasZher2 (char uplo, int n, cuDoubleComplex alpha, const cuDoubleComplex *x, int incx,
      *                   const cuDoubleComplex *y, int incy, cuDoubleComplex *A, int lda)
      *
      * performs the hermitian rank 2 operation
      *
      *    A = alpha*x*conjugate(transpose(y)) + conjugate(alpha)*y*conjugate(transpose(x)) + A,
      *
-     * where alpha is a double precision complex scalar, x and y are n element double 
-     * precision complex vector and A is an n by n hermitian matrix consisting of double 
+     * where alpha is a double precision complex scalar, x and y are n element double
+     * precision complex vector and A is an n by n hermitian matrix consisting of double
      * precision complex elements.
-     * 
+     *
      * Input
      * -----
      * uplo   specifies whether the matrix data is stored in the upper or the lower
-     *        triangular part of array A. If uplo == 'U' or 'u', then only the 
+     *        triangular part of array A. If uplo == 'U' or 'u', then only the
      *        upper triangular part of A may be referenced and the lower triangular
-     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower 
+     *        part of A is inferred. If uplo == 'L' or 'l', then only the lower
      *        triangular part of A may be referenced and the upper triangular part
      *        of A is inferred.
      * n      specifies the number of rows and columns of the matrix A. It must be
      *        at least zero.
-     * alpha  double precision complex scalar multiplier applied to x * conjugate(transpose(y)) + 
+     * alpha  double precision complex scalar multiplier applied to x * conjugate(transpose(y)) +
      *        y * conjugate(transpose(x)).
      * x      double precision array of length at least (1 + (n - 1) * abs (incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
@@ -9732,10 +9738,10 @@ public class JCublas
      * A      double precision complex array of dimensions (lda, n). If uplo == 'U' or 'u',
      *        then A must contains the upper triangular part of a hermitian matrix,
      *        and the strictly lower triangular parts is not referenced. If uplo ==
-     *        'L' or 'l', then A contains the lower triangular part of a hermitian 
+     *        'L' or 'l', then A contains the lower triangular part of a hermitian
      *        matrix, and the strictly upper triangular part is not referenced.
-     *        The imaginary parts of the diagonal elements need not be set, 
-     *        they are assumed to be zero, and on exit they are set to zero. 
+     *        The imaginary parts of the diagonal elements need not be set,
+     *        they are assumed to be zero, and on exit they are set to zero.
      *
      * lda    leading dimension of A. It must be at least max(1, n).
      *
@@ -9747,12 +9753,12 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/zher2.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if n < 0, incx == 0, incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support  
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -9941,9 +9947,9 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZtrmm (char side, char uplo, char transa, char diag, int m, int n, 
-     *              cuDoubleComplex alpha, const cuDoubleComplex *A, int lda, const cuDoubleComplex *B, 
+     * void
+     * cublasZtrmm (char side, char uplo, char transa, char diag, int m, int n,
+     *              cuDoubleComplex alpha, const cuDoubleComplex *A, int lda, const cuDoubleComplex *B,
      *              int ldb)
      *
      * performs one of the matrix-matrix operations
@@ -9951,13 +9957,13 @@ public class JCublas
      *   B = alpha * op(A) * B,  or  B = alpha * B * op(A)
      *
      * where alpha is a double-precision complex scalar, B is an m x n matrix composed
-     * of double precision complex elements, and A is a unit or non-unit, upper or lower, 
+     * of double precision complex elements, and A is a unit or non-unit, upper or lower,
      * triangular matrix composed of double precision complex elements. op(A) is one of
      *
      *   op(A) = A  , op(A) = transpose(A) or op(A) = conjugate(transpose(A))
      *
-     * Matrices A and B are stored in column major format, and lda and ldb are 
-     * the leading dimensions of the two-dimensonials arrays that contain A and 
+     * Matrices A and B are stored in column major format, and lda and ldb are
+     * the leading dimensions of the two-dimensonials arrays that contain A and
      * B, respectively.
      *
      * Input
@@ -9968,7 +9974,7 @@ public class JCublas
      * uplo   specifies whether the matrix A is an upper or lower triangular
      *        matrix. If uplo = 'U' or 'u', A is an upper triangular matrix.
      *        If uplo = 'L' or 'l', A is a lower triangular matrix.
-     * transa specifies the form of op(A) to be used in the matrix 
+     * transa specifies the form of op(A) to be used in the matrix
      *        multiplication. If transa = 'N' or 'n', then op(A) = A. If
      *        transa = 'T' or 't', then op(A) = transpose(A).
      *        If transa = 'C' or 'c', then op(A) = conjugate(transpose(A)).
@@ -9992,7 +9998,7 @@ public class JCublas
      *        to be unity.
      * lda    leading dimension of A. When side = 'L' or 'l', it must be at
      *        least max(1,m) and at least max(1,n) otherwise
-     * B      double precision complex array of dimensions (ldb, n). On entry, the 
+     * B      double precision complex array of dimensions (ldb, n). On entry, the
      *        leading m x n part of the array contains the matrix B. It is
      *        overwritten with the transformed matrix on exit.
      * ldb    leading dimension of B. It must be at least max (1, m).
@@ -10027,31 +10033,31 @@ public class JCublas
 
     /**
      * <pre>
-     * cublasZgeru (int m, int n, cuDoubleComplex alpha, const cuDoubleComplex *x, int incx, 
+     * cublasZgeru (int m, int n, cuDoubleComplex alpha, const cuDoubleComplex *x, int incx,
      *             const cuDoubleComplex *y, int incy, cuDoubleComplex *A, int lda)
      *
      * performs the symmetric rank 1 operation
      *
      *    A = alpha * x * transpose(y) + A,
      *
-     * where alpha is a double precision complex scalar, x is an m element double 
-     * precision complex vector, y is an n element double precision complex vector, and A 
+     * where alpha is a double precision complex scalar, x is an m element double
+     * precision complex vector, y is an n element double precision complex vector, and A
      * is an m by n matrix consisting of double precision complex elements. Matrix A
      * is stored in column major format, and lda is the leading dimension of
      * the two-dimensional array used to store A.
-     * 
+     *
      * Input
      * -----
-     * m      specifies the number of rows of the matrix A. It must be at least 
+     * m      specifies the number of rows of the matrix A. It must be at least
      *        zero.
-     * n      specifies the number of columns of the matrix A. It must be at 
+     * n      specifies the number of columns of the matrix A. It must be at
      *        least zero.
      * alpha  double precision complex scalar multiplier applied to x * transpose(y)
      * x      double precision complex array of length at least (1 + (m - 1) * abs(incx))
      * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
      * y      double precision complex array of length at least (1 + (n - 1) * abs(incy))
-     * incy   specifies the storage spacing between elements of y. incy must not 
+     * incy   specifies the storage spacing between elements of y. incy must not
      *        be zero.
      * A      double precision complex array of dimensions (lda, n).
      * lda    leading dimension of two-dimensional array used to store matrix A
@@ -10063,12 +10069,12 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/zgeru.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if m < 0, n < 0, incx == 0, incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -10086,31 +10092,31 @@ public class JCublas
 
     /**
      * <pre>
-     * cublasZgerc (int m, int n, cuDoubleComplex alpha, const cuDoubleComplex *x, int incx, 
+     * cublasZgerc (int m, int n, cuDoubleComplex alpha, const cuDoubleComplex *x, int incx,
      *             const cuDoubleComplex *y, int incy, cuDoubleComplex *A, int lda)
      *
      * performs the symmetric rank 1 operation
      *
      *    A = alpha * x * conjugate(transpose(y)) + A,
      *
-     * where alpha is a double precision complex scalar, x is an m element double 
-     * precision complex vector, y is an n element double precision complex vector, and A 
+     * where alpha is a double precision complex scalar, x is an m element double
+     * precision complex vector, y is an n element double precision complex vector, and A
      * is an m by n matrix consisting of double precision complex elements. Matrix A
      * is stored in column major format, and lda is the leading dimension of
      * the two-dimensional array used to store A.
-     * 
+     *
      * Input
      * -----
-     * m      specifies the number of rows of the matrix A. It must be at least 
+     * m      specifies the number of rows of the matrix A. It must be at least
      *        zero.
-     * n      specifies the number of columns of the matrix A. It must be at 
+     * n      specifies the number of columns of the matrix A. It must be at
      *        least zero.
      * alpha  double precision complex scalar multiplier applied to x * conjugate(transpose(y))
      * x      double precision array of length at least (1 + (m - 1) * abs(incx))
      * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
      * y      double precision complex array of length at least (1 + (n - 1) * abs(incy))
-     * incy   specifies the storage spacing between elements of y. incy must not 
+     * incy   specifies the storage spacing between elements of y. incy must not
      *        be zero.
      * A      double precision complex array of dimensions (lda, n).
      * lda    leading dimension of two-dimensional array used to store matrix A
@@ -10122,12 +10128,12 @@ public class JCublas
      * Reference: http://www.netlib.org/blas/zgerc.f
      *
      * Error status for this function can be retrieved via cublasGetError().
-     * 
+     *
      * Error Status
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if m < 0, n < 0, incx == 0, incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -10145,60 +10151,60 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZherk (char uplo, char trans, int n, int k, double alpha, 
+     * void
+     * cublasZherk (char uplo, char trans, int n, int k, double alpha,
      *              const cuDoubleComplex *A, int lda, double beta, cuDoubleComplex *C, int ldc)
      *
      * performs one of the hermitian rank k operations
-     * 
-     *   C = alpha * A * conjugate(transpose(A)) + beta * C, or 
+     *
+     *   C = alpha * A * conjugate(transpose(A)) + beta * C, or
      *   C = alpha * conjugate(transpose(A)) * A + beta * C.
      *
-     * Alpha and beta are double precision scalars. C is an n x n hermitian matrix 
-     * consisting of double precision complex elements and stored in either lower or 
+     * Alpha and beta are double precision scalars. C is an n x n hermitian matrix
+     * consisting of double precision complex elements and stored in either lower or
      * upper storage mode. A is a matrix consisting of double precision complex elements
      * with dimension of n x k in the first case, and k x n in the second case.
      *
      * Input
      * -----
-     * uplo   specifies whether the hermitian matrix C is stored in upper or lower 
-     *        storage mode as follows. If uplo == 'U' or 'u', only the upper 
-     *        triangular part of the hermitian matrix is to be referenced, and the 
+     * uplo   specifies whether the hermitian matrix C is stored in upper or lower
+     *        storage mode as follows. If uplo == 'U' or 'u', only the upper
+     *        triangular part of the hermitian matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the hermitian matrix is to be referenced, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the hermitian matrix is to be referenced,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
-     * trans  specifies the operation to be performed. If trans == 'N' or 'n', C = 
-     *        alpha * A * conjugate(transpose(A)) + beta * C. If trans == 'T', 't', 'C', or 'c', 
+     * trans  specifies the operation to be performed. If trans == 'N' or 'n', C =
+     *        alpha * A * conjugate(transpose(A)) + beta * C. If trans == 'T', 't', 'C', or 'c',
      *        C = alpha * conjugate(transpose(A)) * A + beta * C.
-     * n      specifies the number of rows and the number columns of matrix C. If 
-     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If 
-     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A. 
+     * n      specifies the number of rows and the number columns of matrix C. If
+     *        trans == 'N' or 'n', n specifies the number of rows of matrix A. If
+     *        trans == 'T', 't', 'C', or 'c', n specifies the columns of matrix A.
      *        n must be at least zero.
-     * k      If trans == 'N' or 'n', k specifies the number of columns of matrix A. 
-     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of 
+     * k      If trans == 'N' or 'n', k specifies the number of columns of matrix A.
+     *        If trans == 'T', 't', 'C', or 'c', k specifies the number of rows of
      *        matrix A. k must be at least zero.
-     * alpha  double precision scalar multiplier applied to A * conjugate(transpose(A)) or 
+     * alpha  double precision scalar multiplier applied to A * conjugate(transpose(A)) or
      *        conjugate(transpose(A)) * A.
-     * A      double precision complex array of dimensions (lda, ka), where ka is k when 
-     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n', 
-     *        the leading n x k part of array A must contain the matrix A, 
-     *        otherwise the leading k x n part of the array must contains the 
+     * A      double precision complex array of dimensions (lda, ka), where ka is k when
+     *        trans == 'N' or 'n', and is n otherwise. When trans == 'N' or 'n',
+     *        the leading n x k part of array A must contain the matrix A,
+     *        otherwise the leading k x n part of the array must contains the
      *        matrix A.
      * lda    leading dimension of A. When trans == 'N' or 'n' then lda must be at
      *        least max(1, n). Otherwise lda must be at least max(1, k).
      * beta   double precision scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input
      * C      double precision complex array of dimensions (ldc, n). If uplo = 'U' or 'u',
-     *        the leading n x n triangular part of the array C must contain the 
-     *        upper triangular part of the hermitian matrix C and the strictly 
-     *        lower triangular part of C is not referenced. On exit, the upper 
-     *        triangular part of C is overwritten by the upper triangular part of 
-     *        the updated matrix. If uplo = 'L' or 'l', the leading n x n 
+     *        the leading n x n triangular part of the array C must contain the
+     *        upper triangular part of the hermitian matrix C and the strictly
+     *        lower triangular part of C is not referenced. On exit, the upper
+     *        triangular part of C is overwritten by the upper triangular part of
+     *        the updated matrix. If uplo = 'L' or 'l', the leading n x n
      *        triangular part of the array C must contain the lower triangular part
      *        of the hermitian matrix C and the strictly upper triangular part of C
-     *        is not referenced. On exit, the lower triangular part of C is 
+     *        is not referenced. On exit, the lower triangular part of C is
      *        overwritten by the lower triangular part of the updated matrix.
      *        The imaginary parts of the diagonal elements need
      *        not be set,  they are assumed to be zero,  and on exit they
@@ -10207,7 +10213,7 @@ public class JCublas
      *
      * Output
      * ------
-     * C      updated according to C = alpha * A * conjugate(transpose(A)) + beta * C, or C = 
+     * C      updated according to C = alpha * A * conjugate(transpose(A)) + beta * C, or C =
      *        alpha * conjugate(transpose(A)) * A + beta * C
      *
      * Reference: http://www.netlib.org/blas/zherk.f
@@ -10236,72 +10242,72 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZhemm (char side, char uplo, int m, int n, cuDoubleComplex alpha, 
-     *              const cuDoubleComplex *A, int lda, const cuDoubleComplex *B, int ldb, 
+     * void
+     * cublasZhemm (char side, char uplo, int m, int n, cuDoubleComplex alpha,
+     *              const cuDoubleComplex *A, int lda, const cuDoubleComplex *B, int ldb,
      *              cuDoubleComplex beta, cuDoubleComplex *C, int ldc);
      *
      * performs one of the matrix-matrix operations
-     * 
-     *   C = alpha * A * B + beta * C, or 
+     *
+     *   C = alpha * A * B + beta * C, or
      *   C = alpha * B * A + beta * C,
      *
      * where alpha and beta are double precision complex scalars, A is a hermitian matrix
-     * consisting of double precision complex elements and stored in either lower or upper 
+     * consisting of double precision complex elements and stored in either lower or upper
      * storage mode, and B and C are m x n matrices consisting of double precision
      * complex elements.
      *
      * Input
      * -----
-     * side   specifies whether the hermitian matrix A appears on the left side 
-     *        hand side or right hand side of matrix B, as follows. If side == 'L' 
-     *        or 'l', then C = alpha * A * B + beta * C. If side = 'R' or 'r', 
+     * side   specifies whether the hermitian matrix A appears on the left side
+     *        hand side or right hand side of matrix B, as follows. If side == 'L'
+     *        or 'l', then C = alpha * A * B + beta * C. If side = 'R' or 'r',
      *        then C = alpha * B * A + beta * C.
-     * uplo   specifies whether the hermitian matrix A is stored in upper or lower 
-     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper 
-     *        triangular part of the hermitian matrix is to be referenced, and the 
+     * uplo   specifies whether the hermitian matrix A is stored in upper or lower
+     *        storage mode, as follows. If uplo == 'U' or 'u', only the upper
+     *        triangular part of the hermitian matrix is to be referenced, and the
      *        elements of the strictly lower triangular part are to be infered from
-     *        those in the upper triangular part. If uplo == 'L' or 'l', only the 
-     *        lower triangular part of the hermitian matrix is to be referenced, 
-     *        and the elements of the strictly upper triangular part are to be 
+     *        those in the upper triangular part. If uplo == 'L' or 'l', only the
+     *        lower triangular part of the hermitian matrix is to be referenced,
+     *        and the elements of the strictly upper triangular part are to be
      *        infered from those in the lower triangular part.
      * m      specifies the number of rows of the matrix C, and the number of rows
-     *        of matrix B. It also specifies the dimensions of hermitian matrix A 
+     *        of matrix B. It also specifies the dimensions of hermitian matrix A
      *        when side == 'L' or 'l'. m must be at least zero.
-     * n      specifies the number of columns of the matrix C, and the number of 
-     *        columns of matrix B. It also specifies the dimensions of hermitian 
+     * n      specifies the number of columns of the matrix C, and the number of
+     *        columns of matrix B. It also specifies the dimensions of hermitian
      *        matrix A when side == 'R' or 'r'. n must be at least zero.
      * alpha  double precision scalar multiplier applied to A * B, or B * A
-     * A      double precision complex array of dimensions (lda, ka), where ka is m when 
-     *        side == 'L' or 'l' and is n otherwise. If side == 'L' or 'l' the 
-     *        leading m x m part of array A must contain the hermitian matrix, 
-     *        such that when uplo == 'U' or 'u', the leading m x m part stores the 
+     * A      double precision complex array of dimensions (lda, ka), where ka is m when
+     *        side == 'L' or 'l' and is n otherwise. If side == 'L' or 'l' the
+     *        leading m x m part of array A must contain the hermitian matrix,
+     *        such that when uplo == 'U' or 'u', the leading m x m part stores the
      *        upper triangular part of the hermitian matrix, and the strictly lower
-     *        triangular part of A is not referenced, and when uplo == 'U' or 'u', 
-     *        the leading m x m part stores the lower triangular part of the 
-     *        hermitian matrix and the strictly upper triangular part is not 
-     *        referenced. If side == 'R' or 'r' the leading n x n part of array A 
+     *        triangular part of A is not referenced, and when uplo == 'U' or 'u',
+     *        the leading m x m part stores the lower triangular part of the
+     *        hermitian matrix and the strictly upper triangular part is not
+     *        referenced. If side == 'R' or 'r' the leading n x n part of array A
      *        must contain the hermitian matrix, such that when uplo == 'U' or 'u',
-     *        the leading n x n part stores the upper triangular part of the 
-     *        hermitian matrix and the strictly lower triangular part of A is not 
-     *        referenced, and when uplo == 'U' or 'u', the leading n x n part 
-     *        stores the lower triangular part of the hermitian matrix and the 
+     *        the leading n x n part stores the upper triangular part of the
+     *        hermitian matrix and the strictly lower triangular part of A is not
+     *        referenced, and when uplo == 'U' or 'u', the leading n x n part
+     *        stores the lower triangular part of the hermitian matrix and the
      *        strictly upper triangular part is not referenced. The imaginary parts
      *        of the diagonal elements need not be set, they are assumed to be zero.
      *
-     * lda    leading dimension of A. When side == 'L' or 'l', it must be at least 
+     * lda    leading dimension of A. When side == 'L' or 'l', it must be at least
      *        max(1, m) and at least max(1, n) otherwise.
      * B      double precision complex array of dimensions (ldb, n). On entry, the leading
      *        m x n part of the array contains the matrix B.
      * ldb    leading dimension of B. It must be at least max (1, m).
-     * beta   double precision complex scalar multiplier applied to C. If beta is zero, C 
+     * beta   double precision complex scalar multiplier applied to C. If beta is zero, C
      *        does not have to be a valid input
      * C      double precision complex array of dimensions (ldc, n)
      * ldc    leading dimension of C. Must be at least max(1, m)
      *
      * Output
      * ------
-     * C      updated according to C = alpha * A * B + beta * C, or C = alpha * 
+     * C      updated according to C = alpha * A * B + beta * C, or C = alpha *
      *        B * A + beta * C
      *
      * Reference: http://www.netlib.org/blas/zhemm.f
@@ -10312,7 +10318,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if m or n are < 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -10330,45 +10336,45 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
-     * cublasZtrsv (char uplo, char trans, char diag, int n, const cuDoubleComplex *A, 
+     * void
+     * cublasZtrsv (char uplo, char trans, char diag, int n, const cuDoubleComplex *A,
      *              int lda, cuDoubleComplex *x, int incx)
      *
-     * solves a system of equations op(A) * x = b, where op(A) is either A,  
-     * transpose(A) or conjugate(transpose(A)). b and x are double precision 
-     * complex vectors consisting of n elements, and A is an n x n matrix 
+     * solves a system of equations op(A) * x = b, where op(A) is either A,
+     * transpose(A) or conjugate(transpose(A)). b and x are double precision
+     * complex vectors consisting of n elements, and A is an n x n matrix
      * composed of a unit or non-unit, upper or lower triangular matrix.
-     * Matrix A is stored in column major format, and lda is the leading 
+     * Matrix A is stored in column major format, and lda is the leading
      * dimension of the two-dimensional array containing A.
      *
-     * No test for singularity or near-singularity is included in this function. 
+     * No test for singularity or near-singularity is included in this function.
      * Such tests must be performed before calling this function.
      *
      * Input
      * -----
-     * uplo   specifies whether the matrix data is stored in the upper or the 
-     *        lower triangular part of array A. If uplo = 'U' or 'u', then only 
-     *        the upper triangular part of A may be referenced. If uplo = 'L' or 
+     * uplo   specifies whether the matrix data is stored in the upper or the
+     *        lower triangular part of array A. If uplo = 'U' or 'u', then only
+     *        the upper triangular part of A may be referenced. If uplo = 'L' or
      *        'l', then only the lower triangular part of A may be referenced.
      * trans  specifies op(A). If transa = 'n' or 'N', op(A) = A. If transa = 't',
      *        'T', 'c', or 'C', op(A) = transpose(A)
      * diag   specifies whether or not A is a unit triangular matrix like so:
-     *        if diag = 'U' or 'u', A is assumed to be unit triangular. If 
+     *        if diag = 'U' or 'u', A is assumed to be unit triangular. If
      *        diag = 'N' or 'n', then A is not assumed to be unit triangular.
      * n      specifies the number of rows and columns of the matrix A. It
-     *        must be at least 0. 
-     * A      is a double precision complex array of dimensions (lda, n). If uplo = 'U' 
+     *        must be at least 0.
+     * A      is a double precision complex array of dimensions (lda, n). If uplo = 'U'
      *        or 'u', then A must contains the upper triangular part of a symmetric
-     *        matrix, and the strictly lower triangular parts is not referenced. 
-     *        If uplo = 'L' or 'l', then A contains the lower triangular part of 
-     *        a symmetric matrix, and the strictly upper triangular part is not 
-     *        referenced. 
+     *        matrix, and the strictly lower triangular parts is not referenced.
+     *        If uplo = 'L' or 'l', then A contains the lower triangular part of
+     *        a symmetric matrix, and the strictly upper triangular part is not
+     *        referenced.
      * lda    is the leading dimension of the two-dimensional array containing A.
      *        lda must be at least max(1, n).
      * x      double precision complex array of length at least (1 + (n - 1) * abs(incx)).
      *        On entry, x contains the n element right-hand side vector b. On exit,
      *        it is overwritten with the solution vector x.
-     * incx   specifies the storage spacing between elements of x. incx must not 
+     * incx   specifies the storage spacing between elements of x. incx must not
      *        be zero.
      *
      * Output
@@ -10383,7 +10389,7 @@ public class JCublas
      * ------------
      * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if incx == 0 or if n < 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support 
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */
@@ -10401,7 +10407,7 @@ public class JCublas
 
     /**
      * <pre>
-     * void 
+     * void
      * cublasZhbmv (char uplo, int n, int k, cuDoubleComplex alpha, const cuDoubleComplex *A, int lda,
      *              const cuDoubleComplex *x, int incx, cuDoubleComplex beta, cuDoubleComplex *y, int incy)
      *
@@ -10410,15 +10416,15 @@ public class JCublas
      *     y := alpha*A*x + beta*y
      *
      * alpha and beta are double precision complex scalars. x and y are double precision
-     * complex vectors with n elements. A is an n by n hermitian band matrix consisting 
+     * complex vectors with n elements. A is an n by n hermitian band matrix consisting
      * of double precision complex elements, with k super-diagonals and the same number
      * of subdiagonals.
      *
      * Input
      * -----
      * uplo   specifies whether the upper or lower triangular part of the hermitian
-     *        band matrix A is being supplied. If uplo == 'U' or 'u', the upper 
-     *        triangular part is being supplied. If uplo == 'L' or 'l', the lower 
+     *        band matrix A is being supplied. If uplo == 'U' or 'u', the upper
+     *        triangular part is being supplied. If uplo == 'L' or 'l', the lower
      *        triangular part is being supplied.
      * n      specifies the number of rows and the number of columns of the
      *        hermitian matrix A. n must be at least zero.
@@ -10426,25 +10432,25 @@ public class JCublas
      *        is hermitian, this is also the number of sub-diagonals. k must be at
      *        least zero.
      * alpha  double precision complex scalar multiplier applied to A*x.
-     * A      double precision complex array of dimensions (lda, n). When uplo == 'U' or 
+     * A      double precision complex array of dimensions (lda, n). When uplo == 'U' or
      *        'u', the leading (k + 1) x n part of array A must contain the upper
      *        triangular band of the hermitian matrix, supplied column by column,
      *        with the leading diagonal of the matrix in row (k+1) of the array,
      *        the first super-diagonal starting at position 2 in row k, and so on.
      *        The top left k x k triangle of the array A is not referenced. When
      *        uplo == 'L' or 'l', the leading (k + 1) x n part of the array A must
-     *        contain the lower triangular band part of the hermitian matrix, 
+     *        contain the lower triangular band part of the hermitian matrix,
      *        supplied column by column, with the leading diagonal of the matrix in
      *        row 1 of the array, the first sub-diagonal starting at position 1 in
      *        row 2, and so on. The bottom right k x k triangle of the array A is
-     *        not referenced. The imaginary parts of the diagonal elements need 
-     *        not be set, they are assumed to be zero. 
+     *        not referenced. The imaginary parts of the diagonal elements need
+     *        not be set, they are assumed to be zero.
      * lda    leading dimension of A. lda must be at least (k + 1).
      * x      double precision complex array of length at least (1 + (n - 1) * abs(incx)).
      * incx   storage spacing between elements of x. incx must not be zero.
-     * beta   double precision complex scalar multiplier applied to vector y. If beta is 
+     * beta   double precision complex scalar multiplier applied to vector y. If beta is
      *        zero, y is not read.
-     * y      double precision complex array of length at least (1 + (n - 1) * abs(incy)). 
+     * y      double precision complex array of length at least (1 + (n - 1) * abs(incy)).
      *        If beta is zero, y is not read.
      * incy   storage spacing between elements of y. incy must not be zero.
      *
@@ -10458,9 +10464,9 @@ public class JCublas
      *
      * Error Status
      * ------------
-     * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized 
+     * CUBLAS_STATUS_NOT_INITIALIZED  if CUBLAS library has not been initialized
      * CUBLAS_STATUS_INVALID_VALUE    if k or n < 0, or if incx or incy == 0
-     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support   
+     * CUBLAS_STATUS_ARCH_MISMATCH    if invoked on device without DP support
      * CUBLAS_STATUS_EXECUTION_FAILED if function failed to launch on GPU
      * </pre>
      */

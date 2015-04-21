@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -30,14 +30,14 @@ package jcuda.driver;
 import jcuda.*;
 
 /**
- * Java bindings for the NVidia CUDA jcuda.driver API.<br />
+ * Java bindings for the NVidia CUDA driver API.<br />
  * <br />
  * Most comments are extracted from the CUDA online documentation
  */
 public class JCudaDriver
 {
     /** The CUDA version */
-    public static final int CUDA_VERSION = 5050;
+    public static final int CUDA_VERSION = 7000;
 
     /**
      * If set, host memory is portable between CUDA contexts.
@@ -118,6 +118,12 @@ public class JCudaDriver
      */
     public static final int CUDA_ARRAY3D_TEXTURE_GATHER = 0x08;
 
+    /**
+     * This flag if set indicates that the CUDA
+     * array is a DEPTH_TEXTURE.
+    */
+    public static final int CUDA_ARRAY3D_DEPTH_TEXTURE = 0x10;
+    
     /**
      * For texture references loaded into the module, use default
      * texunit from texture reference
@@ -214,6 +220,30 @@ public class JCudaDriver
 
 
     /**
+     * Private inner class for the constant stream values
+     */
+    private static class ConstantCUstream extends CUstream
+    {
+        private ConstantCUstream(long value)
+        {
+            super(value);
+        }
+    }
+    
+    /**
+     * Stream handle that can be passed as a CUstream to use an implicit stream
+     * with legacy synchronization behavior.
+     */
+    public static final CUstream CU_STREAM_LEGACY = new ConstantCUstream(0x1);
+    
+    /**
+     * Stream handle that can be passed as a CUstream to use an implicit stream
+     * with per-thread synchronization behavior.
+     */
+    public static final CUstream CU_STREAM_PER_THREAD = new ConstantCUstream(0x2);
+    
+    
+    /**
      * Whether a CudaException should be thrown if a method is about
      * to return a result code that is not CUresult.CUDA_SUCCESS
      */
@@ -231,7 +261,7 @@ public class JCudaDriver
     }
 
     /**
-     * Set the specified log level for the JCuda jcuda.driver library.<br />
+     * Set the specified log level for the JCuda driver library.<br />
      * <br />
      * Currently supported log levels:
      * <br />
@@ -321,21 +351,72 @@ public class JCudaDriver
     private static native int cuModuleLoadDataJITNative(CUmodule module, Pointer pointer, JITOptions jitOptions);
 
 
+    
+    /**
+     * <pre>
+     * Gets the string description of an error code
+     *
+     * Sets *pStr to the address of a NULL-terminated string description
+     * of the error code error.
+     * If the error code is not recognized, ::CUDA_ERROR_INVALID_VALUE
+     * will be returned and *pStr will be set to the NULL address.
+     * </pre>
+     *
+     * @param error - Error code to convert to string
+     * @param pStr - Address of the string pointer.
+     *
+     * @return
+     * ::CUDA_SUCCESS,
+     * ::CUDA_ERROR_INVALID_VALUE
+     *
+     * @see CUresult
+     */
+    public static int cuGetErrorString(int error, String pStr[])
+    {
+        return checkResult(cuGetErrorStringNative(error, pStr));
+    }
+    private static native int cuGetErrorStringNative(int error, String pStr[]);
 
     /**
-     * Initialize the CUDA jcuda.driver API.
+     * <pre>
+     * Gets the string representation of an error code enum name
+     *
+     * Sets *pStr to the address of a NULL-terminated string representation
+     * of the name of the enum error code error.
+     * If the error code is not recognized, ::CUDA_ERROR_INVALID_VALUE
+     * will be returned and *pStr will be set to the NULL address.
+     * </pre>
+     * @param error - Error code to convert to string
+     * @param pStr - Address of the string pointer.
+     *
+     * @return
+     * ::CUDA_SUCCESS,
+     * ::CUDA_ERROR_INVALID_VALUE
+     *
+     * @see CUresult
+     */
+    public static int cuGetErrorName(int error, String pStr[])
+    {
+        return checkResult(cuGetErrorNameNative(error, pStr));
+    }
+    private static native int cuGetErrorNameNative(int error, String pStr[]);
+    
+    
+
+    /**
+     * Initialize the CUDA driver API.
      * 
      * <pre>
      * CUresult cuInit (
      *      unsigned int  Flags )
      * </pre>
      * <div>
-     *   <p>Initialize the CUDA jcuda.driver API.
-     *     Initializes the jcuda.driver API and must be called before any other function
-     *     from the jcuda.driver API.
+     *   <p>Initialize the CUDA driver API. 
+     *     Initializes the driver API and must be called before any other function
+     *     from the driver API.
      *     Currently, the <tt>Flags</tt> parameter
      *     must be 0. If cuInit() has not been called, any function from the
-     *     jcuda.driver API will return CUDA_ERROR_NOT_INITIALIZED.
+     *     driver API will return CUDA_ERROR_NOT_INITIALIZED.
      *   </p>
      *   <div>
      *     <span>Note:</span>
@@ -543,6 +624,31 @@ public class JCudaDriver
 
     private static native int cuDeviceComputeCapabilityNative(int major[], int minor[], CUdevice dev);
 
+    
+    public static int cuDevicePrimaryCtxRetain(CUcontext pctx, CUdevice dev)
+    {
+        return checkResult(cuDevicePrimaryCtxRetainNative(pctx, dev));
+    }
+    private static native int cuDevicePrimaryCtxRetainNative(CUcontext pctx, CUdevice dev);
+    
+    
+    
+    public static int cuDevicePrimaryCtxRelease(CUdevice dev)
+    {
+        return checkResult(cuDevicePrimaryCtxReleaseNative(dev));
+    }
+    private static native int cuDevicePrimaryCtxReleaseNative(CUdevice dev);
+
+    
+    public static int cuDevicePrimaryCtxSetFlags(CUdevice dev, int flags)
+    {
+        return checkResult(cuDevicePrimaryCtxSetFlagsNative(dev, flags));
+    }
+    private static native int cuDevicePrimaryCtxSetFlagsNative(CUdevice dev, int flags);
+
+    
+    
+    
     /**
      * Returns the total amount of memory on the device.
      * 
@@ -1076,7 +1182,7 @@ public class JCudaDriver
      *     </li>
      *     <li>
      *       <p>CU_DEVICE_ATTRIBUTE_TCC_DRIVER:
-     *         1 if the device is using a TCC jcuda.driver. TCC is only available on Tesla
+     *         1 if the device is using a TCC driver. TCC is only available on Tesla
      *         hardware running Windows Vista or later;
      *       </p>
      *     </li>
@@ -1150,16 +1256,16 @@ public class JCudaDriver
 
 
     /**
-     * Returns the CUDA jcuda.driver version.
+     * Returns the CUDA driver version.
      * 
      * <pre>
      * CUresult cuDriverGetVersion (
      *      int* driverVersion )
      * </pre>
      * <div>
-     *   <p>Returns the CUDA jcuda.driver version.  Returns
+     *   <p>Returns the CUDA driver version.  Returns
      *     in <tt>*driverVersion</tt> the version number of the installed CUDA
-     *     jcuda.driver. This function automatically returns CUDA_ERROR_INVALID_VALUE
+     *     driver. This function automatically returns CUDA_ERROR_INVALID_VALUE
      *     if the <tt>driverVersion</tt> argument is NULL.
      *   </p>
      *   <div>
@@ -1172,7 +1278,7 @@ public class JCudaDriver
      *   </p>
      * </div>
      * 
-     * @param driverVersion Returns the CUDA jcuda.driver version
+     * @param driverVersion Returns the CUDA driver version
      * 
      * @return CUDA_SUCCESS, CUDA_ERROR_INVALID_VALUE
      * 
@@ -1750,6 +1856,12 @@ public class JCudaDriver
     private static native int cuCtxGetDeviceNative(CUdevice device);
 
 
+    public static int cuCtxGetFlags(int flags[])
+    {
+        return checkResult(cuCtxGetFlagsNative(flags));
+    }
+    private static native int cuCtxGetFlagsNative(int flags[]);
+    
     /**
      * Block for a context's tasks to complete.
      * 
@@ -1809,7 +1921,7 @@ public class JCudaDriver
      * <div>
      *   <p>Loads a compute module.  Takes a filename
      *     <tt>fname</tt> and loads the corresponding module <tt>module</tt>
-     *     into the current context. The CUDA jcuda.driver API does not attempt to
+     *     into the current context. The CUDA driver API does not attempt to
      *     lazily allocate the resources needed by a module; if the
      *     memory for functions and data (constant
      *     and global) needed by the module cannot be allocated, cuModuleLoad()
@@ -2506,7 +2618,7 @@ public class JCudaDriver
      * <div>
      *   <p>Allocates page-locked host memory. 
      *     Allocates <tt>bytesize</tt> bytes of host memory that is page-locked
-     *     and accessible to the device. The jcuda.driver tracks the virtual memory
+     *     and accessible to the device. The driver tracks the virtual memory
      *     ranges allocated
      *     with this function and automatically
      *     accelerates calls to functions such as cuMemcpyHtoD(). Since the memory
@@ -2828,6 +2940,13 @@ public class JCudaDriver
     private static native int cuDeviceGetByPCIBusIdNative(CUdevice dev, String pciBusId);
 
 
+    public static int cuMemAllocManaged(CUdeviceptr dptr, long bytesize, int flags)
+    {
+        return checkResult(cuMemAllocManagedNative(dptr, bytesize, flags));
+    }
+    private static native int cuMemAllocManagedNative(CUdeviceptr dptr, long bytesize, int flags);
+    
+    
     /**
      * Returns a PCI Bus Id string for the device.
      * 
@@ -3765,7 +3884,7 @@ public class JCudaDriver
      * <div>
      *   <p>Allocates page-locked host memory. 
      *     Allocates <tt>bytesize</tt> bytes of host memory that is page-locked
-     *     and accessible to the device. The jcuda.driver tracks the virtual memory
+     *     and accessible to the device. The driver tracks the virtual memory
      *     ranges allocated
      *     with this function and automatically
      *     accelerates calls to functions such as cuMemcpy(). Since the memory
@@ -7539,7 +7658,7 @@ public class JCudaDriver
      *         The size in bytes of statically-allocated shared memory per block
      *         required by this function. This does not include dynamically-allocated
      *         shared memory requested by the
-     *         user at jcuda.runtime.
+     *         user at runtime.
      *       </p>
      *     </li>
      *     <li>
@@ -7734,7 +7853,7 @@ public class JCudaDriver
      *     use the same
      *     hardware resources, this sets through
      *     <tt>config</tt> the preferred cache configuration for the device
-     *     function <tt>hfunc</tt>. This is only a preference. The jcuda.driver will
+     *     function <tt>hfunc</tt>. This is only a preference. The driver will
      *     use the requested configuration if possible, but it is free to choose
      *     a different
      *     configuration if required to execute <tt>hfunc</tt>. Any context-wide preference set via cuCtxSetCacheConfig()
@@ -11274,7 +11393,117 @@ public class JCudaDriver
 
     private static native int cuParamSetTexRefNative(CUfunction hfunc, int texunit, CUtexref hTexRef);
 
+    /**
+     * <code><pre>
+     * \brief Returns occupancy of a function
+     *
+     * Returns in \p *numBlocks the number of the maximum active blocks per
+     * streaming multiprocessor.
+     *
+     * \param numBlocks       - Returned occupancy
+     * \param func            - Kernel for which occupancy is calulated
+     * \param blockSize       - Block size the kernel is intended to be launched with
+     * \param dynamicSMemSize - Per-block dynamic shared memory usage intended, in bytes
+     *
+     * \return
+     * ::CUDA_SUCCESS,
+     * ::CUDA_ERROR_DEINITIALIZED,
+     * ::CUDA_ERROR_NOT_INITIALIZED,
+     * ::CUDA_ERROR_INVALID_CONTEXT,
+     * ::CUDA_ERROR_INVALID_VALUE,
+     * ::CUDA_ERROR_UNKNOWN
+     * \notefnerr
+     * </pre></code>
+     */
+    public static int cuOccupancyMaxActiveBlocksPerMultiprocessor(int numBlocks[], CUfunction func, int blockSize, long dynamicSMemSize)
+    {
+        return checkResult(cuOccupancyMaxActiveBlocksPerMultiprocessorNative(numBlocks, func, blockSize, dynamicSMemSize));
+    }
+    private static native int cuOccupancyMaxActiveBlocksPerMultiprocessorNative(int numBlocks[], CUfunction func, int blockSize, long dynamicSMemSize);
 
+    
+    public static int cuOccupancyMaxActiveBlocksPerMultiprocessorWithFlags(int numBlocks[], CUfunction func, int blockSize, long dynamicSMemSize, int flags)
+    {
+        return checkResult(cuOccupancyMaxActiveBlocksPerMultiprocessorWithFlagsNative(numBlocks, func, blockSize, dynamicSMemSize, flags));
+    }
+    private static native int cuOccupancyMaxActiveBlocksPerMultiprocessorWithFlagsNative(int numBlocks[], CUfunction func, int blockSize, long dynamicSMemSize, int flags);
+    
+    
+    
+    /**
+     * <code><pre>
+     * \brief Suggest a launch configuration with reasonable occupancy
+     *
+     * Returns in \p *blockSize a reasonable block size that can achieve
+     * the maximum occupancy (or, the maximum number of active warps with
+     * the fewest blocks per multiprocessor), and in \p *minGridSize the
+     * minimum grid size to achieve the maximum occupancy.
+     *
+     * If \p blockSizeLimit is 0, the configurator will use the maximum
+     * block size permitted by the device / function instead.
+     *
+     * If per-block dynamic shared memory allocation is not needed, the
+     * user should leave both \p blockSizeToDynamicSMemSize and \p
+     * dynamicSMemSize as 0.
+     *
+     * If per-block dynamic shared memory allocation is needed, then if
+     * the dynamic shared memory size is constant regardless of block
+     * size, the size should be passed through \p dynamicSMemSize, and \p
+     * blockSizeToDynamicSMemSize should be NULL.
+     *
+     * Otherwise, if the per-block dynamic shared memory size varies with
+     * different block sizes, the user needs to provide a unary function
+     * through \p blockSizeToDynamicSMemSize that computes the dynamic
+     * shared memory needed by \p func for any given block size. \p
+     * dynamicSMemSize is ignored. An example signature is:
+     *
+     * \code
+     *    // Take block size, returns dynamic shared memory needed
+     *    size_t blockToSmem(int blockSize);
+     * \endcode
+     *
+     * \param minGridSize - Returned minimum grid size needed to achieve the maximum occupancy
+     * \param blockSize   - Returned maximum block size that can achieve the maximum occupancy
+     * \param func        - Kernel for which launch configuration is calulated
+     * \param blockSizeToDynamicSMemSize - A function that calculates how much per-block dynamic shared memory \p func uses based on the block size
+     * \param dynamicSMemSize - Dynamic shared memory usage intended, in bytes
+     * \param blockSizeLimit  - The maximum block size \p func is designed to handle
+     *
+     * \return
+     * ::CUDA_SUCCESS,
+     * ::CUDA_ERROR_DEINITIALIZED,
+     * ::CUDA_ERROR_NOT_INITIALIZED,
+     * ::CUDA_ERROR_INVALID_CONTEXT,
+     * ::CUDA_ERROR_INVALID_VALUE,
+     * ::CUDA_ERROR_UNKNOWN
+     * \notefnerr
+     * </pre></code>
+     */
+    public static int cuOccupancyMaxPotentialBlockSize(int minGridSize[], int blockSize[], CUfunction func, CUoccupancyB2DSize blockSizeToDynamicSMemSize, long dynamicSMemSize, int blockSizeLimit)
+    {
+        // The callback involves a state on the native side, 
+        // so ensure synchronization here
+        synchronized (OCCUPANCY_LOCK)
+        {
+            return checkResult(cuOccupancyMaxPotentialBlockSizeNative(minGridSize, blockSize, func, blockSizeToDynamicSMemSize, dynamicSMemSize, blockSizeLimit));
+        }
+    }
+    private static native int cuOccupancyMaxPotentialBlockSizeNative(int minGridSize[], int blockSize[], CUfunction func, CUoccupancyB2DSize blockSizeToDynamicSMemSize, long dynamicSMemSize, int blockSizeLimit);
+    
+    
+    public static int cuOccupancyMaxPotentialBlockSizeWithFlags(int minGridSize[], int blockSize[], CUfunction func, CUoccupancyB2DSize blockSizeToDynamicSMemSize, long dynamicSMemSize, int blockSizeLimit, int flags)
+    {
+        // The callback involves a state on the native side, 
+        // so ensure synchronization here
+        synchronized (OCCUPANCY_LOCK)
+        {
+            return checkResult(cuOccupancyMaxPotentialBlockSizeWithFlagsNative(minGridSize, blockSize, func, blockSizeToDynamicSMemSize, dynamicSMemSize, blockSizeLimit, flags));
+        }
+    }
+    private static native int cuOccupancyMaxPotentialBlockSizeWithFlagsNative(int minGridSize[], int blockSize[], CUfunction func, CUoccupancyB2DSize blockSizeToDynamicSMemSize, long dynamicSMemSize, int blockSizeLimit, int flags);
+
+    private static final Object OCCUPANCY_LOCK = new Object();
+    
     /**
      * Launches a CUDA function.
      * 
@@ -11970,6 +12199,20 @@ public class JCudaDriver
 
     private static native int cuPointerGetAttributeNative(Pointer data, int attribute, CUdeviceptr ptr);
 
+    
+    public static int cuPointerSetAttribute(Pointer value, int attribute, CUdeviceptr ptr)
+    {
+        return checkResult(cuPointerSetAttribute(value, attribute, ptr));
+    }
+    private static native int cuPointerSetAttributeNative(Pointer value, int attribute, CUdeviceptr ptr);
+
+    
+    public static int cuPointerGetAttributes(int numAttributes, int attributes[], Pointer data, CUdeviceptr ptr)
+    {
+        return checkResult(cuPointerGetAttributesNative(numAttributes, attributes, data, ptr));
+    }
+    private static native int cuPointerGetAttributesNative(int numAttributes, int attributes[], Pointer data, CUdeviceptr ptr);
+    
 
     /**
      * Create a stream.
@@ -12181,6 +12424,14 @@ public class JCudaDriver
     }
     private static native int cuStreamAddCallbackNative(CUstream hStream, CUstreamCallback callback, Object userData, int flags);
 
+    
+    public static int cuStreamAttachMemAsync(CUstream hStream, CUdeviceptr dptr, long length, int flags)
+    {
+        return checkResult(cuStreamAttachMemAsyncNative(hStream, dptr, length, flags));
+    }
+    private static native int cuStreamAttachMemAsyncNative(CUstream hStream, CUdeviceptr dptr, long length, int flags);
+    
+    
     /**
      * Determine status of a compute stream.
      * 
@@ -12325,7 +12576,7 @@ public class JCudaDriver
      *     deprecated as of Cuda 3.0.</span>Initializes OpenGL interoperability.
      *     This function is deprecated and calling it is no longer required. It
      *     may fail if the
-     *     needed OpenGL jcuda.driver facilities are
+     *     needed OpenGL driver facilities are
      *     not available.
      *   </p>
      *   <div>
@@ -13431,7 +13682,7 @@ public class JCudaDriver
      * </pre>
      * <div>
      *   <p>Set resource limits.  Setting <tt>limit</tt> to <tt>value</tt> is a request by the application to
-     *     update the current limit maintained by the context. The jcuda.driver is free
+     *     update the current limit maintained by the context. The driver is free
      *     to modify the requested
      *     value to meet h/w requirements (this
      *     could be clamping to minimum or maximum values, rounding up to nearest
@@ -13492,7 +13743,7 @@ public class JCudaDriver
      *         controls the maximum nesting depth of a grid at which a thread can
      *         safely call cudaDeviceSynchronize(). Setting this limit
      *         must be performed before any
-     *         launch of a kernel that uses the device jcuda.runtime and calls
+     *         launch of a kernel that uses the device runtime and calls
      *         cudaDeviceSynchronize() above the default
      *         sync depth, two levels of grids.
      *         Calls to cudaDeviceSynchronize() will fail with error code
@@ -13501,7 +13752,7 @@ public class JCudaDriver
      *         limit can be set smaller than the default or up the maximum launch
      *         depth of 24. When setting
      *         this limit, keep in mind that
-     *         additional levels of sync depth require the jcuda.driver to reserve large
+     *         additional levels of sync depth require the driver to reserve large
      *         amounts of device memory
      *         which can no longer be used for
      *         user allocations. If these reservations of device memory fail,
@@ -13518,19 +13769,19 @@ public class JCudaDriver
      *   <ul>
      *     <li>
      *       <p>CU_LIMIT_DEV_RUNTIME_PENDING_LAUNCH_COUNT controls the maximum number
-     *         of outstanding device jcuda.runtime launches that can be made from the
+     *         of outstanding device runtime launches that can be made from the
      *         current context. A grid is outstanding
      *         from the point of launch up
-     *         until the grid is known to have been completed. Device jcuda.runtime launches
+     *         until the grid is known to have been completed. Device runtime launches
      *         which violate this limitation
      *         fail and return
      *         cudaErrorLaunchPendingCountExceeded when cudaGetLastError() is called
      *         after launch. If more pending launches
      *         than the default (2048 launches)
-     *         are needed for a module using the device jcuda.runtime, this limit can be
+     *         are needed for a module using the device runtime, this limit can be
      *         increased. Keep in mind
      *         that being able to sustain
-     *         additional pending launches will require the jcuda.driver to reserve larger
+     *         additional pending launches will require the driver to reserve larger
      *         amounts of device memory
      *         upfront which can no longer be
      *         used for allocations. If these reservations fail, cuCtxSetLimit will
@@ -13592,7 +13843,7 @@ public class JCudaDriver
      *     memory use the
      *     same hardware resources, this function
      *     returns through <tt>pconfig</tt> the preferred cache configuration
-     *     for the current context. This is only a preference. The jcuda.driver will
+     *     for the current context. This is only a preference. The driver will
      *     use the requested configuration
      *     if possible, but it is free to choose a
      *     different configuration if required to execute functions.
@@ -13671,7 +13922,7 @@ public class JCudaDriver
      *     memory use the same
      *     hardware resources, this sets through
      *     <tt>config</tt> the preferred cache configuration for the current
-     *     context. This is only a preference. The jcuda.driver will use the requested
+     *     context. This is only a preference. The driver will use the requested
      *     configuration
      *     if possible, but it is free to choose a
      *     different configuration if required to execute the function. Any
@@ -13918,9 +14169,9 @@ public class JCudaDriver
      *   <p>Note that new API versions are only
      *     introduced when context capabilities are changed that break binary
      *     compatibility, so the
-     *     API version and jcuda.driver version may be
+     *     API version and driver version may be
      *     different. For example, it is valid for the API version to be 3020
-     *     while the jcuda.driver
+     *     while the driver
      *     version is 4020.
      *   </p>
      *   <div>
@@ -14242,14 +14493,14 @@ public class JCudaDriver
      *     </li>
      *     <li>
      *       <p>CU_LIMIT_DEV_RUNTIME_SYNC_DEPTH:
-     *         maximum grid depth at which a thread can issue the device jcuda.runtime call
+     *         maximum grid depth at which a thread can issue the device runtime call
      *         cudaDeviceSynchronize() to wait on child grid launches
      *         to complete.
      *       </p>
      *     </li>
      *     <li>
      *       <p>CU_LIMIT_DEV_RUNTIME_PENDING_LAUNCH_COUNT: maximum number of
-     *         outstanding device jcuda.runtime launches that can be made from this
+     *         outstanding device runtime launches that can be made from this
      *         context.
      *       </p>
      *     </li>

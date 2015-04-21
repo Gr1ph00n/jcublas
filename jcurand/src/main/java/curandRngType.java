@@ -46,13 +46,17 @@ public class curandRngType
      */
     public static final int CURAND_RNG_PSEUDO_MRG32K3A = 121;
     /**
-     * Mersenne Twister pseudorandom generator
+     * Mersenne Twister MTGP32 pseudorandom generator
      */
     public static final int CURAND_RNG_PSEUDO_MTGP32 = 141;
     /**
-     * Default pseudorandom generator
+     * Mersenne Twister MT19937 pseudorandom generator
      */
-    public static final int CURAND_RNG_PSEUDO_PHILOX4_32_10 = 161;
+    public static final int CURAND_RNG_PSEUDO_MT19937 = 142;
+    /**
+     * PHILOX-4x32-10 pseudorandom generator
+     */
+    public static final int CURAND_RNG_PSEUDO_PHILOX4_32_10 = 161; 
     /**
      * Default quasirandom generator
      */
@@ -93,6 +97,7 @@ public class curandRngType
             case CURAND_RNG_PSEUDO_XORWOW: return "CURAND_RNG_PSEUDO_XORWOW";
             case CURAND_RNG_PSEUDO_MRG32K3A: return "CURAND_RNG_PSEUDO_MRG32K3A";
             case CURAND_RNG_PSEUDO_MTGP32: return "CURAND_RNG_PSEUDO_MTGP32";
+            case CURAND_RNG_PSEUDO_MT19937: return "CURAND_RNG_PSEUDO_MT19937";
             case CURAND_RNG_QUASI_DEFAULT: return "CURAND_RNG_QUASI_DEFAULT";
             case CURAND_RNG_QUASI_SOBOL32: return "CURAND_RNG_QUASI_SOBOL32";
             case CURAND_RNG_QUASI_SCRAMBLED_SOBOL32: return "CURAND_RNG_QUASI_SCRAMBLED_SOBOL32";

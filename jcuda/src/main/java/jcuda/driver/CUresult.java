@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -54,13 +54,13 @@ public class CUresult
     public static final int CUDA_ERROR_OUT_OF_MEMORY                  = 2;
 
     /**
-     * This indicates that the CUDA jcuda.driver has not been initialized with
+     * This indicates that the CUDA driver has not been initialized with
      * ::cuInit() or that initialization has failed.
      */
     public static final int CUDA_ERROR_NOT_INITIALIZED                = 3;
 
     /**
-     * This indicates that the CUDA jcuda.driver is in the process of shutting down.
+     * This indicates that the CUDA driver is in the process of shutting down.
      */
     public static final int CUDA_ERROR_DEINITIALIZED                  = 4;
 
@@ -100,7 +100,7 @@ public class CUresult
 
     /**
      * This indicates that no CUDA-capable devices were detected by the installed
-     * CUDA jcuda.driver.
+     * CUDA driver.
      */
     public static final int CUDA_ERROR_NO_DEVICE                      = 100;
 
@@ -213,6 +213,16 @@ public class CUresult
     public static final int CUDA_ERROR_PEER_ACCESS_UNSUPPORTED        = 217;
     
     /**
+     * This indicates that a PTX JIT compilation failed.
+     */
+    public static final int CUDA_ERROR_INVALID_PTX                    = 218;
+    
+    /**
+     * This indicates an error with OpenGL or DirectX context.
+     */
+    public static final int CUDA_ERROR_INVALID_GRAPHICS_CONTEXT       = 219;
+    
+    /**
      * This indicates that the device kernel source is invalid.
      */
     public static final int CUDA_ERROR_INVALID_SOURCE                 = 300;
@@ -260,16 +270,14 @@ public class CUresult
      */
     public static final int CUDA_ERROR_NOT_READY                      = 600;
 
-
     /**
-     * An exception occurred on the device while executing a kernel. Common
-     * causes include dereferencing an invalid device pointer and accessing
-     * out of bounds shared memory. The context cannot be used, so it must
-     * be destroyed (and a new one should be created). All existing device
-     * memory allocations from this context are invalid and must be
-     * reconstructed if the program is to continue using CUDA.
+     * While executing a kernel, the device encountered a
+     * load or store instruction on an invalid memory address.
+     * The context cannot be used, so it must be destroyed (and a new one should be created).
+     * All existing device memory allocations from this context are invalid
+     * and must be reconstructed if the program is to continue using CUDA.
      */
-    public static final int CUDA_ERROR_LAUNCH_FAILED                  = 700;
+    public static final int CUDA_ERROR_ILLEGAL_ADDRESS                = 700;    
 
     /**
      * This indicates that a launch did not occur because it did not have
@@ -375,6 +383,61 @@ public class CUresult
     public static final int CUDA_ERROR_HOST_MEMORY_NOT_REGISTERED     = 713;
     
     /**
+     * While executing a kernel, the device encountered a stack error.
+     * This can be due to stack corruption or exceeding the stack size limit.
+     * The context cannot be used, so it must be destroyed (and a new one should be created).
+     * All existing device memory allocations from this context are invalid
+     * and must be reconstructed if the program is to continue using CUDA.
+     */
+    public static final int CUDA_ERROR_HARDWARE_STACK_ERROR           = 714;
+
+    /**
+     * While executing a kernel, the device encountered an illegal instruction.
+     * The context cannot be used, so it must be destroyed (and a new one should be created).
+     * All existing device memory allocations from this context are invalid
+     * and must be reconstructed if the program is to continue using CUDA.
+     */
+    public static final int CUDA_ERROR_ILLEGAL_INSTRUCTION            = 715;
+
+    /**
+     * While executing a kernel, the device encountered a load or store instruction
+     * on a memory address which is not aligned.
+     * The context cannot be used, so it must be destroyed (and a new one should be created).
+     * All existing device memory allocations from this context are invalid
+     * and must be reconstructed if the program is to continue using CUDA.
+     */
+    public static final int CUDA_ERROR_MISALIGNED_ADDRESS             = 716;
+
+    /**
+     * While executing a kernel, the device encountered an instruction
+     * which can only operate on memory locations in certain address spaces
+     * (global, shared, or local), but was supplied a memory address not
+     * belonging to an allowed address space.
+     * The context cannot be used, so it must be destroyed (and a new one should be created).
+     * All existing device memory allocations from this context are invalid
+     * and must be reconstructed if the program is to continue using CUDA.
+     */
+    public static final int CUDA_ERROR_INVALID_ADDRESS_SPACE          = 717;
+
+    /**
+     * While executing a kernel, the device program counter wrapped its address space.
+     * The context cannot be used, so it must be destroyed (and a new one should be created).
+     * All existing device memory allocations from this context are invalid
+     * and must be reconstructed if the program is to continue using CUDA.
+     */
+    public static final int CUDA_ERROR_INVALID_PC                     = 718;
+
+    /**
+     * An exception occurred on the device while executing a kernel. Common
+     * causes include dereferencing an invalid device pointer and accessing
+     * out of bounds shared memory. The context cannot be used, so it must
+     * be destroyed (and a new one should be created). All existing device
+     * memory allocations from this context are invalid and must be
+     * reconstructed if the program is to continue using CUDA.
+     */
+    public static final int CUDA_ERROR_LAUNCH_FAILED                  = 719;
+
+    /**
      * This error indicates that the attempted operation is not permitted.
      */
     public static final int CUDA_ERROR_NOT_PERMITTED                  = 800;
@@ -427,7 +490,9 @@ public class CUresult
             case CUDA_ERROR_ECC_UNCORRECTABLE              : return "CUDA_ERROR_ECC_UNCORRECTABLE";
             case CUDA_ERROR_UNSUPPORTED_LIMIT              : return "CUDA_ERROR_UNSUPPORTED_LIMIT";
             case CUDA_ERROR_CONTEXT_ALREADY_IN_USE         : return "CUDA_ERROR_CONTEXT_ALREADY_IN_USE";
-            case CUDA_ERROR_PEER_ACCESS_UNSUPPORTED         : return "CUDA_ERROR_PEER_ACCESS_UNSUPPORTED";
+            case CUDA_ERROR_PEER_ACCESS_UNSUPPORTED        : return "CUDA_ERROR_PEER_ACCESS_UNSUPPORTED";
+            case CUDA_ERROR_INVALID_PTX                    : return "CUDA_ERROR_INVALID_PTX";
+            case CUDA_ERROR_INVALID_GRAPHICS_CONTEXT       : return "CUDA_ERROR_INVALID_GRAPHICS_CONTEXT";
             case CUDA_ERROR_INVALID_SOURCE                 : return "CUDA_ERROR_INVALID_SOURCE";
             case CUDA_ERROR_FILE_NOT_FOUND                 : return "CUDA_ERROR_FILE_NOT_FOUND";
             case CUDA_ERROR_SHARED_OBJECT_SYMBOL_NOT_FOUND : return "CUDA_ERROR_SHARED_OBJECT_SYMBOL_NOT_FOUND";
@@ -436,7 +501,7 @@ public class CUresult
             case CUDA_ERROR_INVALID_HANDLE                 : return "CUDA_ERROR_INVALID_HANDLE";
             case CUDA_ERROR_NOT_FOUND                      : return "CUDA_ERROR_NOT_FOUND";
             case CUDA_ERROR_NOT_READY                      : return "CUDA_ERROR_NOT_READY";
-            case CUDA_ERROR_LAUNCH_FAILED                  : return "CUDA_ERROR_LAUNCH_FAILED";
+            case CUDA_ERROR_ILLEGAL_ADDRESS                : return "CUDA_ERROR_ILLEGAL_ADDRESS";
             case CUDA_ERROR_LAUNCH_OUT_OF_RESOURCES        : return "CUDA_ERROR_LAUNCH_OUT_OF_RESOURCES";
             case CUDA_ERROR_LAUNCH_TIMEOUT                 : return "CUDA_ERROR_LAUNCH_TIMEOUT";
             case CUDA_ERROR_LAUNCH_INCOMPATIBLE_TEXTURING  : return "CUDA_ERROR_LAUNCH_INCOMPATIBLE_TEXTURING";
@@ -450,6 +515,12 @@ public class CUresult
             case CUDA_ERROR_TOO_MANY_PEERS                 : return "CUDA_ERROR_TOO_MANY_PEERS";
             case CUDA_ERROR_HOST_MEMORY_ALREADY_REGISTERED : return "CUDA_ERROR_HOST_MEMORY_ALREADY_REGISTERED";
             case CUDA_ERROR_HOST_MEMORY_NOT_REGISTERED     : return "CUDA_ERROR_HOST_MEMORY_NOT_REGISTERED";
+            case CUDA_ERROR_HARDWARE_STACK_ERROR           : return "CUDA_ERROR_HARDWARE_STACK_ERROR";
+            case CUDA_ERROR_ILLEGAL_INSTRUCTION            : return "CUDA_ERROR_ILLEGAL_INSTRUCTION";
+            case CUDA_ERROR_MISALIGNED_ADDRESS             : return "CUDA_ERROR_MISALIGNED_ADDRESS";
+            case CUDA_ERROR_INVALID_ADDRESS_SPACE          : return "CUDA_ERROR_INVALID_ADDRESS_SPACE";
+            case CUDA_ERROR_INVALID_PC                     : return "CUDA_ERROR_INVALID_PC";
+            case CUDA_ERROR_LAUNCH_FAILED                  : return "CUDA_ERROR_LAUNCH_FAILED";
             case CUDA_ERROR_NOT_PERMITTED                  : return "CUDA_ERROR_NOT_PERMITTED";
             case CUDA_ERROR_NOT_SUPPORTED                  : return "CUDA_ERROR_NOT_SUPPORTED";
             case CUDA_ERROR_UNKNOWN                        : return "CUDA_ERROR_UNKNOWN";

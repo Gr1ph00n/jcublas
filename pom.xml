@@ -6,7 +6,7 @@
 
     <groupId>org.nd4j</groupId>
     <artifactId>jcuda-parent</artifactId>
-    <version>5.5</version>
+    <version>7.0</version>
 
     <packaging>pom</packaging>
 
@@ -102,9 +102,9 @@
         </profile>
     </profiles>
     <scm>
-        <connection>scm:git:git@github.com:SkymindIO/jcublas.git</connection>
-        <developerConnection>scm:git:git@github.com:SkymindIO/jcublas.git</developerConnection>
-        <url>git@github.com:SkymindIO/jcublas.git</url>
+        <connection>scm:git:git@github.com:Gr1ph00n/jcublas.git</connection>
+        <developerConnection>scm:git:git@github.com:Gr1ph00n/jcublas.git</developerConnection>
+        <url>git@github.com:Gr1ph00n/jcublas.git</url>
     </scm>
 
 
@@ -115,13 +115,13 @@
         <module>jcuda</module>
         <module>jcufft</module>
         <module>jcurand</module>
-        <module>jcusparse2</module>
+        <!-- <module>jcusparse2</module> -->
         <module>jcusparse</module>
     </modules>
 
     <build>
 
-        <plugins>
+        <!-- <plugins>
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
                 <executions>
@@ -144,11 +144,11 @@
                     </execution>
                 </executions>
             </plugin>
-        </plugins>
+        </plugins> -->
 
         <pluginManagement>
             <plugins>
-                <plugin>
+                <!-- <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <executions>
@@ -159,8 +159,8 @@
                             </goals>
                         </execution>
                     </executions>
-                </plugin>
-                <plugin>
+                </plugin> -->
+                <!-- <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
                     <executions>
@@ -171,7 +171,7 @@
                             </goals>
                         </execution>
                     </executions>
-                </plugin>
+                </plugin> -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>

@@ -59,7 +59,7 @@ public class cusparseIndexBase
             case CUSPARSE_INDEX_BASE_ZERO: return "CUSPARSE_INDEX_BASE_ZERO";
             case CUSPARSE_INDEX_BASE_ONE: return "CUSPARSE_INDEX_BASE_ONE";
         }
-        return "INVALID cusparseIndexBase";
+        return "INVALID cusparseIndexBase: "+n;
     }
 }
 

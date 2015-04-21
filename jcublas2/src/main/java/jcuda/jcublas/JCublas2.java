@@ -5139,6 +5139,123 @@ public class JCublas2
         Pointer INFO, 
         int batchSize);
 
+    
+    public static int cublasSgetrsBatched(
+        cublasHandle handle, 
+        int trans, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, 
+        int lda, 
+        Pointer devIpiv, 
+        Pointer Barray, 
+        int ldb, 
+        Pointer info, 
+        int batchSize)
+    {
+        return checkResult(cublasSgetrsBatchedNative(handle, trans, n, nrhs, Aarray, lda, devIpiv, Barray, ldb, info, batchSize));
+    }
+    private static native int cublasSgetrsBatchedNative(
+        cublasHandle handle, 
+        int trans, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, 
+        int lda, 
+        Pointer devIpiv, 
+        Pointer Barray, 
+        int ldb, 
+        Pointer info, 
+        int batchSize);
+
+
+    public static int cublasDgetrsBatched(
+        cublasHandle handle, 
+        int trans, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, 
+        int lda, 
+        Pointer devIpiv, 
+        Pointer Barray, 
+        int ldb, 
+        Pointer info, 
+        int batchSize)
+    {
+        return checkResult(cublasDgetrsBatchedNative(handle, trans, n, nrhs, Aarray, lda, devIpiv, Barray, ldb, info, batchSize));
+    }
+    private static native int cublasDgetrsBatchedNative(
+        cublasHandle handle, 
+        int trans, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, 
+        int lda, 
+        Pointer devIpiv, 
+        Pointer Barray, 
+        int ldb, 
+        Pointer info, 
+        int batchSize);
+
+
+    public static int cublasCgetrsBatched(
+        cublasHandle handle, 
+        int trans, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, 
+        int lda, 
+        Pointer devIpiv, 
+        Pointer Barray, 
+        int ldb, 
+        Pointer info, 
+        int batchSize)
+    {
+        return checkResult(cublasCgetrsBatchedNative(handle, trans, n, nrhs, Aarray, lda, devIpiv, Barray, ldb, info, batchSize));
+    }
+    private static native int cublasCgetrsBatchedNative(
+        cublasHandle handle, 
+        int trans, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, 
+        int lda, 
+        Pointer devIpiv, 
+        Pointer Barray, 
+        int ldb, 
+        Pointer info, 
+        int batchSize);
+
+
+    public static int cublasZgetrsBatched(
+        cublasHandle handle, 
+        int trans, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, 
+        int lda, 
+        Pointer devIpiv, 
+        Pointer Barray, 
+        int ldb, 
+        Pointer info, 
+        int batchSize)
+    {
+        return checkResult(cublasZgetrsBatchedNative(handle, trans, n, nrhs, Aarray, lda, devIpiv, Barray, ldb, info, batchSize));
+    }
+    private static native int cublasZgetrsBatchedNative(
+        cublasHandle handle, 
+        int trans, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, 
+        int lda, 
+        Pointer devIpiv, 
+        Pointer Barray, 
+        int ldb, 
+        Pointer info, 
+        int batchSize);
+    
+    
     public static int cublasStrsmBatched(
         cublasHandle handle, 
         int side, 
@@ -5361,6 +5478,223 @@ public class JCublas2
         Pointer INFO, /**Device Pointer*/
         int batchSize);
 
+    
+    public static int cublasSgeqrfBatched(
+        cublasHandle handle, 
+        int m, 
+        int n, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer TauArray, /** Device pointer*/
+        Pointer info, 
+        int batchSize)
+    {
+        return checkResult(cublasSgeqrfBatchedNative(handle, m, n, Aarray, lda, TauArray, info, batchSize));
+    }
+    private static native int cublasSgeqrfBatchedNative(
+        cublasHandle handle, 
+        int m, 
+        int n, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer TauArray, /** Device pointer*/
+        Pointer info, 
+        int batchSize);
+
+
+    public static int cublasDgeqrfBatched(
+        cublasHandle handle, 
+        int m, 
+        int n, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer TauArray, /** Device pointer*/
+        Pointer info, 
+        int batchSize)
+    {
+        return checkResult(cublasDgeqrfBatchedNative(handle, m, n, Aarray, lda, TauArray, info, batchSize));
+    }
+    private static native int cublasDgeqrfBatchedNative(
+        cublasHandle handle, 
+        int m, 
+        int n, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer TauArray, /** Device pointer*/
+        Pointer info, 
+        int batchSize);
+
+
+    public static int cublasCgeqrfBatched(
+        cublasHandle handle, 
+        int m, 
+        int n, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer TauArray, /** Device pointer*/
+        Pointer info, 
+        int batchSize)
+    {
+        return checkResult(cublasCgeqrfBatchedNative(handle, m, n, Aarray, lda, TauArray, info, batchSize));
+    }
+    private static native int cublasCgeqrfBatchedNative(
+        cublasHandle handle, 
+        int m, 
+        int n, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer TauArray, /** Device pointer*/
+        Pointer info, 
+        int batchSize);
+
+
+    public static int cublasZgeqrfBatched(
+        cublasHandle handle, 
+        int m, 
+        int n, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer TauArray, /** Device pointer*/
+        Pointer info, 
+        int batchSize)
+    {
+        return checkResult(cublasZgeqrfBatchedNative(handle, m, n, Aarray, lda, TauArray, info, batchSize));
+    }
+    private static native int cublasZgeqrfBatchedNative(
+        cublasHandle handle, 
+        int m, 
+        int n, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer TauArray, /** Device pointer*/
+        Pointer info, 
+        int batchSize);
+
+
+    public static int cublasSgelsBatched(
+        cublasHandle handle, 
+        int trans, 
+        int m, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer Carray, /** Device pointer*/
+        int ldc, 
+        Pointer info, 
+        Pointer devInfoArray, /** Device pointer*/
+        int batchSize)
+    {
+        return checkResult(cublasSgelsBatchedNative(handle, trans, m, n, nrhs, Aarray, lda, Carray, ldc, info, devInfoArray, batchSize));
+    }
+    private static native int cublasSgelsBatchedNative(
+        cublasHandle handle, 
+        int trans, 
+        int m, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer Carray, /** Device pointer*/
+        int ldc, 
+        Pointer info, 
+        Pointer devInfoArray, /** Device pointer*/
+        int batchSize);
+
+
+    public static int cublasDgelsBatched(
+        cublasHandle handle, 
+        int trans, 
+        int m, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer Carray, /** Device pointer*/
+        int ldc, 
+        Pointer info, 
+        Pointer devInfoArray, /** Device pointer*/
+        int batchSize)
+    {
+        return checkResult(cublasDgelsBatchedNative(handle, trans, m, n, nrhs, Aarray, lda, Carray, ldc, info, devInfoArray, batchSize));
+    }
+    private static native int cublasDgelsBatchedNative(
+        cublasHandle handle, 
+        int trans, 
+        int m, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer Carray, /** Device pointer*/
+        int ldc, 
+        Pointer info, 
+        Pointer devInfoArray, /** Device pointer*/
+        int batchSize);
+
+
+    public static int cublasCgelsBatched(
+        cublasHandle handle, 
+        int trans, 
+        int m, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer Carray, /** Device pointer*/
+        int ldc, 
+        Pointer info, 
+        Pointer devInfoArray, 
+        int batchSize)
+    {
+        return checkResult(cublasCgelsBatchedNative(handle, trans, m, n, nrhs, Aarray, lda, Carray, ldc, info, devInfoArray, batchSize));
+    }
+    private static native int cublasCgelsBatchedNative(
+        cublasHandle handle, 
+        int trans, 
+        int m, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer Carray, /** Device pointer*/
+        int ldc, 
+        Pointer info, 
+        Pointer devInfoArray, 
+        int batchSize);
+
+
+    public static int cublasZgelsBatched(
+        cublasHandle handle, 
+        int trans, 
+        int m, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer Carray, /** Device pointer*/
+        int ldc, 
+        Pointer info, 
+        Pointer devInfoArray, 
+        int batchSize)
+    {
+        return checkResult(cublasZgelsBatchedNative(handle, trans, m, n, nrhs, Aarray, lda, Carray, ldc, info, devInfoArray, batchSize));
+    }
+    private static native int cublasZgelsBatchedNative(
+        cublasHandle handle, 
+        int trans, 
+        int m, 
+        int n, 
+        int nrhs, 
+        Pointer Aarray, /**Device pointer*/
+        int lda, 
+        Pointer Carray, /** Device pointer*/
+        int ldc, 
+        Pointer info, 
+        Pointer devInfoArray, 
+        int batchSize);
+    
+    
     public static int cublasSdgmm(
         cublasHandle handle, 
         int mode, 
@@ -5467,6 +5801,162 @@ public class JCublas2
         int incx, 
         Pointer C, 
         int ldc);
+    
+    
+    
+    
+    
+    public static int cublasStpttr(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda)
+    {
+        return checkResult(cublasStpttrNative(handle, uplo, n, AP, A, lda));
+    }
+    private static native int cublasStpttrNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda);
+
+
+    public static int cublasDtpttr(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda)
+    {
+        return checkResult(cublasDtpttrNative(handle, uplo, n, AP, A, lda));
+    }
+    private static native int cublasDtpttrNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda);
+
+
+    public static int cublasCtpttr(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda)
+    {
+        return checkResult(cublasCtpttrNative(handle, uplo, n, AP, A, lda));
+    }
+    private static native int cublasCtpttrNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda);
+
+
+    public static int cublasZtpttr(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda)
+    {
+        return checkResult(cublasZtpttrNative(handle, uplo, n, AP, A, lda));
+    }
+    private static native int cublasZtpttrNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer AP, 
+        Pointer A, 
+        int lda);
+
+
+    public static int cublasStrttp(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP)
+    {
+        return checkResult(cublasStrttpNative(handle, uplo, n, A, lda, AP));
+    }
+    private static native int cublasStrttpNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP);
+
+
+    public static int cublasDtrttp(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP)
+    {
+        return checkResult(cublasDtrttpNative(handle, uplo, n, A, lda, AP));
+    }
+    private static native int cublasDtrttpNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP);
+
+
+    public static int cublasCtrttp(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP)
+    {
+        return checkResult(cublasCtrttpNative(handle, uplo, n, A, lda, AP));
+    }
+    private static native int cublasCtrttpNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP);
+
+
+    public static int cublasZtrttp(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP)
+    {
+        return checkResult(cublasZtrttpNative(handle, uplo, n, A, lda, AP));
+    }
+    private static native int cublasZtrttpNative(
+        cublasHandle handle, 
+        int uplo, 
+        int n, 
+        Pointer A, 
+        int lda, 
+        Pointer AP);
+    
 
 }
 

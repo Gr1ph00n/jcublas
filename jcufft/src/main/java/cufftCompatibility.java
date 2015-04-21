@@ -43,7 +43,9 @@ package jcuda.jcufft;
 public class cufftCompatibility
 {
     /**
-     * Disable any FFTW compatibility mode. 
+     * Disable any FFTW compatibility mode.
+     * 
+     * @deprecated as of CUDA 6.0RC
      */
     public static final int CUFFT_COMPATIBILITY_NATIVE          = 0x00;
     
@@ -59,6 +61,9 @@ public class cufftCompatibility
      * artificial (i.e. random) datasets as actual data will always be
      * symmetric if it has come from the real plane. If you don't
      * understand what this means, you probably don't have to use it.
+     * 
+     * @deprecated as of CUDA 6.5:  Asymmetric input is 
+     * always treated as in FFTW.
      */
     public static final int CUFFT_COMPATIBILITY_FFTW_ASYMMETRIC = 0x02;
 

@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -242,7 +242,7 @@ public class CUdevice_attribute
     public static final int CU_DEVICE_ATTRIBUTE_PCI_DEVICE_ID = 34;
     
     /** 
-     * Device is using TCC jcuda.driver model
+     * Device is using TCC driver model 
      */
     public static final int CU_DEVICE_ATTRIBUTE_TCC_DRIVER = 35;
     
@@ -461,6 +461,40 @@ public class CUdevice_attribute
      */
     public static final int CU_DEVICE_ATTRIBUTE_STREAM_PRIORITIES_SUPPORTED = 78;       
     
+    /** 
+     * Device supports caching globals in L1 
+     */
+    public static final int CU_DEVICE_ATTRIBUTE_GLOBAL_L1_CACHE_SUPPORTED = 79;
+
+    /** 
+     * Device supports caching locals in L1 
+     */
+    public static final int CU_DEVICE_ATTRIBUTE_LOCAL_L1_CACHE_SUPPORTED = 80;
+
+    /** 
+     * Maximum shared memory available per multiprocessor in bytes 
+     */
+    public static final int CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_MULTIPROCESSOR = 81;
+
+    /** 
+     * Maximum number of 32-bit registers available per multiprocessor 
+     */
+    public static final int CU_DEVICE_ATTRIBUTE_MAX_REGISTERS_PER_MULTIPROCESSOR = 82;
+
+    /** 
+     * Device can allocate managed memory on this system 
+     */
+    public static final int CU_DEVICE_ATTRIBUTE_MANAGED_MEMORY = 83;
+
+    /** 
+     * Device is on a multi-GPU board 
+     */ 
+    public static final int CU_DEVICE_ATTRIBUTE_MULTI_GPU_BOARD = 84;
+
+    /** 
+     * Undocumented 
+     */ 
+    public static final int CU_DEVICE_ATTRIBUTE_MULTI_GPU_BOARD_GROUP_ID = 85;
     
     /**
      * Returns the String identifying the given CUdevice_attribute
@@ -550,6 +584,13 @@ public class CUdevice_attribute
             case CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MINOR : return "CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MINOR";
             case CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE1D_MIPMAPPED_WIDTH : return "CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE1D_MIPMAPPED_WIDTH";
             case CU_DEVICE_ATTRIBUTE_STREAM_PRIORITIES_SUPPORTED : return "CU_DEVICE_ATTRIBUTE_STREAM_PRIORITIES_SUPPORTED";
+            case CU_DEVICE_ATTRIBUTE_GLOBAL_L1_CACHE_SUPPORTED : return "CU_DEVICE_ATTRIBUTE_GLOBAL_L1_CACHE_SUPPORTED";
+            case CU_DEVICE_ATTRIBUTE_LOCAL_L1_CACHE_SUPPORTED : return "CU_DEVICE_ATTRIBUTE_LOCAL_L1_CACHE_SUPPORTED";
+            case CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_MULTIPROCESSOR : return "CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_MULTIPROCESSOR";
+            case CU_DEVICE_ATTRIBUTE_MAX_REGISTERS_PER_MULTIPROCESSOR : return "CU_DEVICE_ATTRIBUTE_MAX_REGISTERS_PER_MULTIPROCESSOR";
+            case CU_DEVICE_ATTRIBUTE_MANAGED_MEMORY : return "CU_DEVICE_ATTRIBUTE_MANAGED_MEMORY";
+            case CU_DEVICE_ATTRIBUTE_MULTI_GPU_BOARD : return "CU_DEVICE_ATTRIBUTE_MULTI_GPU_BOARD";
+            case CU_DEVICE_ATTRIBUTE_MULTI_GPU_BOARD_GROUP_ID : return "CU_DEVICE_ATTRIBUTE_MULTI_GPU_BOARD_GROUP_ID";
         }
         return "INVALID CUdevice_attribute: "+n;
     }

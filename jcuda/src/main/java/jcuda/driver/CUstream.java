@@ -1,5 +1,5 @@
 /*
- * JCuda - Java bindings for NVIDIA CUDA jcuda.driver and jcuda.runtime API
+ * JCuda - Java bindings for NVIDIA CUDA driver and runtime API
  *
  * Copyright (c) 2009-2012 Marco Hutter - http://www.jcuda.org
  *
@@ -58,6 +58,18 @@ public class CUstream extends NativePointerObject
         super(stream);
     }
     
+    /**
+     * Create a CUstream that is a constant with the given 
+     * value. This is used for emulating the stream
+     * handling constants, {@link JCudaDriver#CU_STREAM_LEGACY} 
+     * and {@link JCudaDriver#CU_STREAM_PER_THREAD}
+     * 
+     * @param value The pointer value
+     */
+    CUstream(long value)
+    {
+        super(value);
+    }
 
     /**
      * Returns a String representation of this object.
