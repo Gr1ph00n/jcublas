@@ -592,4 +592,19 @@ public class Pointer extends NativePointerObject
                 "byteOffset="+byteOffset+"]";
         }
     }
+
+
+    /**************************************************************/
+
+
+    public void assign(Pointer oth)
+    {
+        super.assign(oth);
+        this.byteOffset = oth.byteOffset;
+        this.buffer = oth.buffer;
+        this.pointers = oth.pointers;
+    }
+
+
+
 }

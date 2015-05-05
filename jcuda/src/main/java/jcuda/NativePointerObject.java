@@ -104,4 +104,13 @@ public abstract class NativePointerObject
         return true;
     }
 
+
+    /**************************************************************/
+
+
+    public void assign(NativePointerObject oth)
+    {
+        this.nativePointer = oth.nativePointer;
+    }
+
 }

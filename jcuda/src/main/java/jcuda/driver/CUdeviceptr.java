@@ -83,4 +83,21 @@ public class CUdeviceptr extends Pointer
     }
 
 
+    /*********************************************************************************/
+
+    public void assign(CUdeviceptr oth)
+    {
+        super.assign(oth);
+    }
+
+    public CUdeviceptr increment(long offset)
+    {
+        return new CUdeviceptr(getNativePointer() + offset);
+    }
+
+    protected CUdeviceptr(long nativePointer)
+    {
+        super(nativePointer);
+    }
+
 }
